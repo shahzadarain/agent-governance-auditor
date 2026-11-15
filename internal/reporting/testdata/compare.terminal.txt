@@ -1,0 +1,20 @@
+AgentGov Auditor - Scan comparison
+Commits:  4f9c2d7 -> 9e8d7c6
+Decision: BLOCK -> BLOCK
+Maturity: 21/100 -> 25/100 (up 4) (illustrative only)
+
+Findings: 1 new, 1 resolved, 7 unchanged
+
+New findings
+  [x] MEDIUM AGC-012 Agent loop has no step limit
+      Where: src/agent/graph.py:57
+
+Resolved findings
+  [ok] CRITICAL AGC-008 Credential written in source code
+      Where: src/agent/config.py:9
+
+Control changes
+  AGC-008  Failed (0/4) -> Implemented (not yet tested) (2/4)
+  AGC-012  Verified in operation (4/4) -> Verified by tests (3/4)
+
+This is an evidence-based assessment, not a certification.

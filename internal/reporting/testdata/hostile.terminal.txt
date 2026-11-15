@@ -1,0 +1,85 @@
+AgentGov Auditor 0.1.0<script>alert(1)</script> - Local assessment
+Target:   repo<script>alert(1)</script>red
+Commit:   4f9c2d7
+Profile:  high-risk" onmouseover="alert(1) (set in the configuration file)
+Policy:   builtin/v1 1.0
+Offline:  yes
+
+Agents (1)
+  <script>alert(1)</script>" onmouseover="alert(1)red
+    Framework:    langgraphcell | injected | cells ``` # Injected heading ```
+    Language:     python
+    Detection:    detected (high confidence)
+    Risk tier:    high (declared)
+    Tools:        4 (3 sensitive)
+    Capabilities: credentials, data-access, mcp, mutating-actions, network, sensitive-actions,
+                  shell-exec, tools
+
+Assessment maturity: 21/100 (illustrative only)
+Coverage: 18 of 22 applicable controls have evidence
+Verified by tests: 14%   Verified in operation: 5%
+
+Release decision: BLOCK
+  [x] Do not release until the listed controls are fixed.
+
+What to fix first
+BLOCK   AGC-007 User-Enforced Data Layer <script>alert(1)</script>cell |... [Failed]
+        <img src=x onerror=alert(1)> The agent only sees data that the current user is allowed to
+        see.
+        Found: <script>alert(1)</script> cell | injected | cells ](javascript:alert(1)) <!-- hidden
+               ``` # Injected heading ``` " onmouseover="alert(1)
+        Where: src/evil<script>alert(1)</script> ](javascript:alert(1))|.py:42
+        Fix:   " onmouseover="alert(1)<script>alert(1)</script>
+
+BLOCK   AGC-008 Vault-Injected Secrets <script>alert(1)</script>cell | i... [Failed]
+        <img src=x onerror=alert(1)> Secrets come from a vault at run time and are never written in
+        code.
+        Found: <script>alert(1)</script> cell | injected | cells ](javascript:alert(1)) <!-- hidden
+               ``` # Injected heading ``` " onmouseover="alert(1)
+        Where: src/evil<script>alert(1)</script> ](javascript:alert(1))|.py:9
+        Fix:   " onmouseover="alert(1)<script>alert(1)</script>
+
+BLOCK   AGC-010 Human Approval Gates <script>alert(1)</script>cell | inj... [Failed]
+        <img src=x onerror=alert(1)> A person must approve risky actions before the agent carries
+        them out.
+        Found: <script>alert(1)</script> cell | injected | cells ](javascript:alert(1)) <!-- hidden
+               ``` # Injected heading ``` " onmouseover="alert(1)
+        Where: src/evil<script>alert(1)</script> ](javascript:alert(1))|.py:86
+        Fix:   " onmouseover="alert(1)<script>alert(1)</script>
+
+BLOCK   AGC-001 Owner and Inventory <script>alert(1)</script>cell... [Declared only]
+        <img src=x onerror=alert(1)> A named person is accountable for the agent, and its tools and
+        data are listed.
+        Found: <script>alert(1)</script> " onmouseover="alert(1) red ](javascript:alert(1))
+        Where: src/evil" onmouseover="alert(1).py:4
+        Fix:   ``` # Injected heading ``` <script>alert(1)</script>
+
+BLOCK   AGC-004 Dedicated Non-Human Identity <script>alert(1)</script>ce... [Failed]
+        <img src=x onerror=alert(1)> The agent has its own identity and does not borrow a person's
+        account.
+        Found: <script>alert(1)</script> cell | injected | cells ](javascript:alert(1)) <!-- hidden
+               ``` # Injected heading ``` " onmouseover="alert(1)
+        Where: src/evil<script>alert(1)</script> ](javascript:alert(1))|.py:14
+        Fix:   " onmouseover="alert(1)<script>alert(1)</script>
+
+6 more controls need attention. Run with --full to see every control.
+
+Controls by domain
+  A: Accountability            [ok] 0  [!]  2  [?]  1  [x]  0  [-]  0
+  B: Identity and Access       [ok] 1  [!]  0  [?]  1  [x]  3  [-]  0
+  C: Action Controls           [ok] 1  [!]  2  [?]  0  [x]  2  [-]  0
+  D: Trust Boundaries          [ok] 0  [!]  0  [?]  0  [x]  1  [-]  2
+  E: Containment and Recovery  [ok] 0  [!]  3  [?]  0  [x]  0  [-]  0
+  F: Assurance and Visibility  [ok] 1  [!]  0  [?]  2  [x]  2  [-]  0
+  All controls                 [ok] 3  [!]  7  [?]  4  [x]  8  [-]  2
+  Key: [ok] verified, [!] partial, [?] unknown, [x] failed or missing, [-] not applicable
+
+Findings: 3 critical, 2 high, 2 medium, 1 low, 0 info
+Warnings: 4
+
+Next:
+  agentgov explain AGC-007
+  agentgov scan . --full
+  agentgov scan . --format html --output report.html
+
+This is an evidence-based assessment, not a certification.

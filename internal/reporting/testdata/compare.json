@@ -1,0 +1,157 @@
+{
+  "comparable": true,
+  "before_commit": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+  "after_commit": "9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a291807",
+  "before_score": {
+    "value": 21,
+    "label": "21/100",
+    "applicable_controls": 22,
+    "controls_with_evidence": 18,
+    "coverage_percent": 82,
+    "tested_percent": 14,
+    "operational_percent": 5,
+    "findings_by_severity": {
+      "critical": 3,
+      "high": 2,
+      "info": 0,
+      "low": 1,
+      "medium": 2
+    },
+    "unresolved_mandatory": [
+      "AGC-001",
+      "AGC-004",
+      "AGC-007",
+      "AGC-008",
+      "AGC-009",
+      "AGC-010",
+      "AGC-013",
+      "AGC-020"
+    ],
+    "status_counts": {
+      "accepted-risk": 1,
+      "declared-only": 3,
+      "error": 1,
+      "failed": 4,
+      "missing": 3,
+      "not-applicable": 2,
+      "unknown": 4,
+      "verified-implementation": 3,
+      "verified-operational": 1,
+      "verified-tested": 2
+    }
+  },
+  "after_score": {
+    "value": 25,
+    "label": "21/100",
+    "applicable_controls": 22,
+    "controls_with_evidence": 18,
+    "coverage_percent": 82,
+    "tested_percent": 14,
+    "operational_percent": 5,
+    "findings_by_severity": {
+      "critical": 3,
+      "high": 2,
+      "info": 0,
+      "low": 1,
+      "medium": 2
+    },
+    "unresolved_mandatory": [
+      "AGC-001",
+      "AGC-004",
+      "AGC-007",
+      "AGC-008",
+      "AGC-009",
+      "AGC-010",
+      "AGC-013",
+      "AGC-020"
+    ],
+    "status_counts": {
+      "accepted-risk": 1,
+      "declared-only": 3,
+      "error": 1,
+      "failed": 4,
+      "missing": 3,
+      "not-applicable": 2,
+      "unknown": 4,
+      "verified-implementation": 3,
+      "verified-operational": 1,
+      "verified-tested": 2
+    }
+  },
+  "before_decision": "BLOCK",
+  "after_decision": "BLOCK",
+  "new_findings": [
+    {
+      "finding_id": "f-aaaabbbbcccc",
+      "fingerprint": "aaaabbbbccccddddeeeeffff00001111",
+      "rule_id": "AGC-012.no-step-limit",
+      "control_id": "AGC-012",
+      "agent_id": "finance-processing-agent",
+      "severity": "medium",
+      "confidence": "medium",
+      "title": "Agent loop has no step limit",
+      "description": "",
+      "why_it_matters": "",
+      "remediation": [],
+      "location": {
+        "path": "src/agent/graph.py",
+        "line": 57
+      },
+      "evidence_refs": [],
+      "mappings": []
+    }
+  ],
+  "resolved_findings": [
+    {
+      "finding_id": "f-2b4d6f8a0c1e",
+      "fingerprint": "2b4d6f8a0c1e3a5b7d9f1c3e5a7b9d0f",
+      "rule_id": "AGC-008.hardcoded-secret",
+      "control_id": "AGC-008",
+      "agent_id": "finance-processing-agent",
+      "severity": "critical",
+      "confidence": "high",
+      "title": "Credential written in source code",
+      "description": "A value that looks like an API credential is assigned to a variable. The value is not shown in this report.",
+      "why_it_matters": "Anyone who can read the repository can use the credential.",
+      "remediation": [
+        "Remove the value from the code and rotate the credential.",
+        "Load the secret from a vault at run time."
+      ],
+      "location": {
+        "path": "src/agent/config.py",
+        "line": 9
+      },
+      "evidence_refs": [
+        "ev-agc008-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    }
+  ],
+  "unchanged_count": 7,
+  "control_changes": [
+    {
+      "control_id": "AGC-008",
+      "agent_id": "finance-processing-agent",
+      "before_status": "failed",
+      "after_status": "verified-implementation",
+      "before_maturity": 0,
+      "after_maturity": 2
+    },
+    {
+      "control_id": "AGC-012",
+      "agent_id": "finance-processing-agent",
+      "before_status": "verified-operational",
+      "after_status": "verified-tested",
+      "before_maturity": 4,
+      "after_maturity": 3
+    }
+  ]
+}

@@ -1,0 +1,408 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "AgentGov Auditor",
+          "version": "0.1.0\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "rules": [
+            {
+              "id": "AGC-004.shared-account",
+              "name": "SharedAccount",
+              "shortDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1)"
+              },
+              "fullDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells"
+              },
+              "help": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells\n\nHow to fix:\n1. \" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e\n2. ``` # Injected heading ```\n3. [click me](javascript:alert(1))",
+                "markdown": "\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;  \\# Injected heading cell \\| injected \\| cells\n\n**How to fix**\n\n1. \" onmouseover=\"alert\\(1\\)\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;\n2. \\`\\`\\` \\# Injected heading \\`\\`\\`\n3. \\[click me\\]\\(javascript:alert\\(1\\)\\)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-004"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "AGC-005.undeclared-tool",
+              "name": "UndeclaredTool",
+              "shortDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1)"
+              },
+              "fullDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells"
+              },
+              "help": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells\n\nHow to fix:\n1. \" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e\n2. ``` # Injected heading ```\n3. [click me](javascript:alert(1))",
+                "markdown": "\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;  \\# Injected heading cell \\| injected \\| cells\n\n**How to fix**\n\n1. \" onmouseover=\"alert\\(1\\)\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;\n2. \\`\\`\\` \\# Injected heading \\`\\`\\`\n3. \\[click me\\]\\(javascript:alert\\(1\\)\\)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-005"
+                ],
+                "security-severity": "5.5"
+              }
+            },
+            {
+              "id": "AGC-007.cross-user-read",
+              "name": "CrossUserRead",
+              "shortDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1)"
+              },
+              "fullDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells"
+              },
+              "help": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells\n\nHow to fix:\n1. \" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e\n2. ``` # Injected heading ```\n3. [click me](javascript:alert(1))",
+                "markdown": "\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;  \\# Injected heading cell \\| injected \\| cells\n\n**How to fix**\n\n1. \" onmouseover=\"alert\\(1\\)\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;\n2. \\`\\`\\` \\# Injected heading \\`\\`\\`\n3. \\[click me\\]\\(javascript:alert\\(1\\)\\)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-007"
+                ],
+                "security-severity": "9.5"
+              }
+            },
+            {
+              "id": "AGC-008.hardcoded-secret",
+              "name": "HardcodedSecret",
+              "shortDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1)"
+              },
+              "fullDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells"
+              },
+              "help": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells\n\nHow to fix:\n1. \" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e\n2. ``` # Injected heading ```\n3. [click me](javascript:alert(1))",
+                "markdown": "\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;  \\# Injected heading cell \\| injected \\| cells\n\n**How to fix**\n\n1. \" onmouseover=\"alert\\(1\\)\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;\n2. \\`\\`\\` \\# Injected heading \\`\\`\\`\n3. \\[click me\\]\\(javascript:alert\\(1\\)\\)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-008"
+                ],
+                "security-severity": "9.5"
+              }
+            },
+            {
+              "id": "AGC-009.no-enforcement-point",
+              "name": "NoEnforcementPoint",
+              "shortDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1)"
+              },
+              "fullDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells"
+              },
+              "help": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells\n\nHow to fix:\n1. \" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e\n2. ``` # Injected heading ```\n3. [click me](javascript:alert(1))",
+                "markdown": "\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;  \\# Injected heading cell \\| injected \\| cells\n\n**How to fix**\n\n1. \" onmouseover=\"alert\\(1\\)\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;\n2. \\`\\`\\` \\# Injected heading \\`\\`\\`\n3. \\[click me\\]\\(javascript:alert\\(1\\)\\)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-009"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "AGC-010.approval-bypass",
+              "name": "ApprovalBypass",
+              "shortDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1)"
+              },
+              "fullDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells"
+              },
+              "help": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells\n\nHow to fix:\n1. \" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e\n2. ``` # Injected heading ```\n3. [click me](javascript:alert(1))",
+                "markdown": "\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;  \\# Injected heading cell \\| injected \\| cells\n\n**How to fix**\n\n1. \" onmouseover=\"alert\\(1\\)\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;\n2. \\`\\`\\` \\# Injected heading \\`\\`\\`\n3. \\[click me\\]\\(javascript:alert\\(1\\)\\)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-010"
+                ],
+                "security-severity": "9.5"
+              }
+            },
+            {
+              "id": "AGC-014.unpinned-mcp-server",
+              "name": "UnpinnedMcpServer",
+              "shortDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1)"
+              },
+              "fullDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells"
+              },
+              "help": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells\n\nHow to fix:\n1. \" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e\n2. ``` # Injected heading ```\n3. [click me](javascript:alert(1))",
+                "markdown": "\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;  \\# Injected heading cell \\| injected \\| cells\n\n**How to fix**\n\n1. \" onmouseover=\"alert\\(1\\)\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;\n2. \\`\\`\\` \\# Injected heading \\`\\`\\`\n3. \\[click me\\]\\(javascript:alert\\(1\\)\\)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-014"
+                ],
+                "security-severity": "5.5"
+              }
+            },
+            {
+              "id": "AGC-023.plain-logs-only",
+              "name": "PlainLogsOnly",
+              "shortDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1)"
+              },
+              "fullDescription": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells"
+              },
+              "help": {
+                "text": "\u003cscript\u003ealert(1)\u003c/script\u003e  # Injected heading cell | injected | cells\n\nHow to fix:\n1. \" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e\n2. ``` # Injected heading ```\n3. [click me](javascript:alert(1))",
+                "markdown": "\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;  \\# Injected heading cell \\| injected \\| cells\n\n**How to fix**\n\n1. \" onmouseover=\"alert\\(1\\)\u0026lt;script\u0026gt;alert\\(1\\)\u0026lt;/script\u0026gt;\n2. \\`\\`\\` \\# Injected heading \\`\\`\\`\n3. \\[click me\\]\\(javascript:alert\\(1\\)\\)"
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-023"
+                ],
+                "security-severity": "3.0"
+              }
+            }
+          ]
+        }
+      },
+      "automationDetails": {
+        "id": "agentgov/high-risk--onmouseover--alert-1-"
+      },
+      "results": [
+        {
+          "ruleId": "AGC-014.unpinned-mcp-server",
+          "ruleIndex": 6,
+          "level": "warning",
+          "message": {
+            "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1). \u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) red safe textoverwritten"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/evil%3Cscript%3Ealert%281%29%3C/script%3E%20%5D%28javascript%3Aalert%281%29%29%7C.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 7
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "7a9c1e3f5b6d8e0a2c4d6f8b0e2a4c5f"
+          },
+          "properties": {
+            "controlId": "AGC-014",
+            "agentId": "finance-processing-agent",
+            "severity": "medium",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-008.hardcoded-secret",
+          "ruleIndex": 3,
+          "level": "error",
+          "message": {
+            "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1). \u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) red safe textoverwritten"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/evil%3Cscript%3Ealert%281%29%3C/script%3E%20%5D%28javascript%3Aalert%281%29%29%7C.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 9
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "2b4d6f8a0c1e3a5b7d9f1c3e5a7b9d0f"
+          },
+          "properties": {
+            "controlId": "AGC-008",
+            "agentId": "finance-processing-agent",
+            "severity": "critical",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-004.shared-account",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1). \u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) red safe textoverwritten"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/evil%3Cscript%3Ealert%281%29%3C/script%3E%20%5D%28javascript%3Aalert%281%29%29%7C.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 14
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "4d6f8b0c2e3a5b7d9f1a3c5e7b9d1f2c"
+          },
+          "properties": {
+            "controlId": "AGC-004",
+            "agentId": "finance-processing-agent",
+            "severity": "high",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-007.cross-user-read",
+          "ruleIndex": 2,
+          "level": "error",
+          "message": {
+            "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1). \u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) red safe textoverwritten"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/evil%3Cscript%3Ealert%281%29%3C/script%3E%20%5D%28javascript%3Aalert%281%29%29%7C.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "3c5e7a9b1d2f4a6c8e0b2d4f6a8c0e1b"
+          },
+          "properties": {
+            "controlId": "AGC-007",
+            "agentId": "finance-processing-agent",
+            "severity": "critical",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-010.approval-bypass",
+          "ruleIndex": 5,
+          "level": "error",
+          "message": {
+            "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1). \u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) red safe textoverwritten"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/evil%3Cscript%3Ealert%281%29%3C/script%3E%20%5D%28javascript%3Aalert%281%29%29%7C.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 86
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "1f0a9c3e5b7d2a4c6e8f0b1d3a5c7e9f"
+          },
+          "properties": {
+            "controlId": "AGC-010",
+            "agentId": "finance-processing-agent",
+            "severity": "critical",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-005.undeclared-tool",
+          "ruleIndex": 1,
+          "level": "warning",
+          "message": {
+            "text": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ``` # Injected heading ``` \" onmouseover=\"alert(1). \u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) red safe textoverwritten"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/evil%3Cscript%3Ealert%281%29%3C/script%3E%20%5D%28javascript%3Aalert%281%29%29%7C.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 131
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "6f8b0d2e4a5c7d9f1b3c5e7a9d1f3b4e"
+          },
+          "properties": {
+            "controlId": "AGC-005",
+            "agentId": "finance-processing-agent",
+            "severity": "medium",
+            "confidence": "high"
+          }
+        }
+      ],
+      "properties": {
+        "findingsWithoutLocation": 2,
+        "profile": "high-risk\" onmouseover=\"alert(1)",
+        "policyPack": "builtin/v1",
+        "policyVersion": "1.0",
+        "releaseDecision": "BLOCK"
+      }
+    }
+  ]
+}

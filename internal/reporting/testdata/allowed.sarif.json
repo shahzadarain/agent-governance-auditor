@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "AgentGov Auditor",
+          "version": "0.1.0",
+          "rules": [
+            {
+              "id": "AGC-019.runbook-not-exercised",
+              "name": "RunbookNotExercised",
+              "shortDescription": {
+                "text": "Incident runbook has no exercise record"
+              },
+              "fullDescription": {
+                "text": "A plan that nobody has practiced can fail when it is needed."
+              },
+              "help": {
+                "text": "A plan that nobody has practiced can fail when it is needed.\n\nHow to fix:\n1. Run an incident exercise and record the result as evidence.",
+                "markdown": "A plan that nobody has practiced can fail when it is needed.\n\n**How to fix**\n\n1. Run an incident exercise and record the result as evidence."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-019"
+                ],
+                "security-severity": "3.0"
+              }
+            }
+          ]
+        }
+      },
+      "automationDetails": {
+        "id": "agentgov/standard"
+      },
+      "results": [
+        {
+          "ruleId": "AGC-019.runbook-not-exercised",
+          "ruleIndex": 0,
+          "level": "note",
+          "message": {
+            "text": "Incident runbook has no exercise record. The runbook exists but no record shows that the team has practiced it."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "docs/runbook.md",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "9c1e3a5b7d8f0a2c4e6f8b0d2a4c6e7b"
+          },
+          "properties": {
+            "controlId": "AGC-019",
+            "agentId": "support-triage-agent",
+            "severity": "low",
+            "confidence": "high"
+          }
+        }
+      ],
+      "properties": {
+        "findingsWithoutLocation": 0,
+        "profile": "standard",
+        "policyPack": "builtin/v1",
+        "policyVersion": "1.0",
+        "releaseDecision": "ALLOW"
+      }
+    }
+  ]
+}

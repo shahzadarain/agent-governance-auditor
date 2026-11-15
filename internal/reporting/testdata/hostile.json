@@ -1,0 +1,1909 @@
+{
+  "schema_version": "1",
+  "tool": {
+    "name": "AgentGov Auditor",
+    "version": "0.1.0\u003cscript\u003ealert(1)\u003c/script\u003e"
+  },
+  "scan": {
+    "scan_id": "scan-4f9c2d7a1b3e",
+    "started_at": "2026-11-14T09:30:00Z",
+    "finished_at": "2026-11-14T09:30:01.84Z",
+    "target": "repo\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+    "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+    "profile": "high-risk\" onmouseover=\"alert(1)",
+    "profile_source": "config",
+    "policy_pack": "builtin/v1",
+    "policy_version": "1.0",
+    "config_path": ".agentgov.yaml\u003c!-- hidden",
+    "offline": true
+  },
+  "agents": [
+    {
+      "id": "finance-processing-agent",
+      "name": "\u003cscript\u003ealert(1)\u003c/script\u003e\" onmouseover=\"alert(1)\u001b[2J\u001b[31mred\u001b[0m",
+      "root": ".](javascript:alert(1))",
+      "detection": "detected",
+      "confidence": "high",
+      "framework": "langgraphcell | injected | cells",
+      "framework_version": "```\n# Injected heading\n```",
+      "language": "python",
+      "entrypoint": "src/\u001b[2J\u001b[31mred\u001b[0mevil\r.py",
+      "owner": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1))",
+      "risk_tier": "high",
+      "inferred_risk_tier": "high",
+      "tools": [
+        {
+          "name": "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003eissue_refund",
+          "kind": "function\u003cimg src=x onerror=alert(1)\u003e",
+          "location": {
+            "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e.py",
+            "line": 86
+          },
+          "sensitive": true,
+          "sensitive_why": "[click me](javascript:alert(1)) cell | injected | cells",
+          "capabilities": [
+            "mutating-actions",
+            "sensitive-actions",
+            "tools"
+          ],
+          "declared": true
+        },
+        {
+          "name": "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003elookup_invoice",
+          "kind": "function\u003cimg src=x onerror=alert(1)\u003e",
+          "location": {
+            "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e.py",
+            "line": 42
+          },
+          "sensitive": false,
+          "sensitive_why": "[click me](javascript:alert(1)) cell | injected | cells",
+          "capabilities": [
+            "data-access",
+            "tools"
+          ],
+          "declared": true
+        },
+        {
+          "name": "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003erun_report_script",
+          "kind": "function\u003cimg src=x onerror=alert(1)\u003e",
+          "location": {
+            "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e.py",
+            "line": 131
+          },
+          "sensitive": true,
+          "sensitive_why": "[click me](javascript:alert(1)) cell | injected | cells",
+          "capabilities": [
+            "shell-exec",
+            "tools"
+          ],
+          "declared": false
+        },
+        {
+          "name": "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003esend_payment_notice",
+          "kind": "function\u003cimg src=x onerror=alert(1)\u003e",
+          "location": {
+            "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e.py",
+            "line": 112
+          },
+          "sensitive": true,
+          "sensitive_why": "[click me](javascript:alert(1)) cell | injected | cells",
+          "capabilities": [
+            "network",
+            "sensitive-actions",
+            "tools"
+          ],
+          "declared": true
+        }
+      ],
+      "permissions_declared": [
+        "\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "cell | injected | cells"
+      ],
+      "data_access_paths": [
+        "data/\u001b[2J\u001b[31mred\u001b[0msafe text\roverwritten"
+      ],
+      "mcp_connections": [
+        {
+          "name": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "transport": "stdio",
+          "target": "\" onmouseover=\"alert(1)\u001b[2J\u001b[31mred\u001b[0m",
+          "pinned": false,
+          "version": "\u003c!-- hidden",
+          "location": {
+            "path": "mcp](javascript:alert(1)).json",
+            "line": 7
+          }
+        }
+      ],
+      "capabilities": [
+        "credentials",
+        "data-access",
+        "mcp",
+        "mutating-actions",
+        "network",
+        "sensitive-actions",
+        "shell-exec",
+        "tools"
+      ],
+      "facts": [
+        {
+          "kind": "framework-import",
+          "detail": "\u003cscript\u003ealert(1)\u003c/script\u003e```\n# Injected heading\n```",
+          "location": {
+            "path": "src/\" onmouseover=\"alert(1).py",
+            "line": 3
+          },
+          "confidence": "high",
+          "collector": "python.langgraph",
+          "parser_version": "1"
+        },
+        {
+          "kind": "tool-definition",
+          "detail": "\u003cscript\u003ealert(1)\u003c/script\u003e```\n# Injected heading\n```",
+          "location": {
+            "path": "src/\" onmouseover=\"alert(1).py",
+            "line": 86
+          },
+          "confidence": "high",
+          "collector": "python.langgraph",
+          "parser_version": "1"
+        }
+      ]
+    }
+  ],
+  "assessments": [
+    {
+      "agent_id": "finance-processing-agent",
+      "score": {
+        "value": 21,
+        "label": "21/100",
+        "applicable_controls": 22,
+        "controls_with_evidence": 18,
+        "coverage_percent": 82,
+        "tested_percent": 14,
+        "operational_percent": 5,
+        "findings_by_severity": {
+          "critical": 3,
+          "high": 2,
+          "info": 0,
+          "low": 1,
+          "medium": 2
+        },
+        "unresolved_mandatory": [
+          "AGC-001",
+          "AGC-004",
+          "AGC-007",
+          "AGC-008",
+          "AGC-009",
+          "AGC-010",
+          "AGC-013",
+          "AGC-020"
+        ],
+        "status_counts": {
+          "accepted-risk": 1,
+          "declared-only": 3,
+          "error": 1,
+          "failed": 4,
+          "missing": 3,
+          "not-applicable": 2,
+          "unknown": 4,
+          "verified-implementation": 3,
+          "verified-operational": 1,
+          "verified-tested": 2
+        }
+      },
+      "decision": {
+        "outcome": "BLOCK",
+        "reasons": [
+          {
+            "code": "mandatory-below-minimum",
+            "control_id": "AGC-001",
+            "agent_id": "finance-processing-agent",
+            "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+          },
+          {
+            "code": "mandatory-control-failed",
+            "control_id": "AGC-004",
+            "agent_id": "finance-processing-agent",
+            "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+          },
+          {
+            "code": "mandatory-control-failed",
+            "control_id": "AGC-007",
+            "agent_id": "finance-processing-agent",
+            "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+          },
+          {
+            "code": "mandatory-control-failed",
+            "control_id": "AGC-008",
+            "agent_id": "finance-processing-agent",
+            "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+          },
+          {
+            "code": "mandatory-control-missing",
+            "control_id": "AGC-009",
+            "agent_id": "finance-processing-agent",
+            "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+          },
+          {
+            "code": "mandatory-control-failed",
+            "control_id": "AGC-010",
+            "agent_id": "finance-processing-agent",
+            "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+          },
+          {
+            "code": "accepted-risk-needs-review",
+            "control_id": "AGC-013",
+            "agent_id": "finance-processing-agent",
+            "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+          },
+          {
+            "code": "mandatory-control-error",
+            "control_id": "AGC-020",
+            "agent_id": "finance-processing-agent",
+            "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+          }
+        ]
+      },
+      "controls": [
+        {
+          "control_id": "AGC-001",
+          "agent_id": "finance-processing-agent",
+          "title": "Owner and Inventory \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "A: Accountability",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e A named person is accountable for the agent, and its tools and data are listed.",
+          "status": "declared-only",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 1,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc001-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-002",
+          "agent_id": "finance-processing-agent",
+          "title": "Dynamic Risk Tiering \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "A: Accountability",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e The agent has a risk level that matches what it can actually do.",
+          "status": "verified-implementation",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc002-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-003",
+          "agent_id": "finance-processing-agent",
+          "title": "Integrated Change Control \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "A: Accountability",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Changes to models, tools, and prompts trigger a new assessment before release.",
+          "status": "unknown",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-004",
+          "agent_id": "finance-processing-agent",
+          "title": "Dedicated Non-Human Identity \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "B: Identity and Access",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e The agent has its own identity and does not borrow a person's account.",
+          "status": "failed",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc004-01"
+          ],
+          "finding_refs": [
+            "f-4d6f8b0c2e3a"
+          ],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-005",
+          "agent_id": "finance-processing-agent",
+          "title": "Allowlisted Tool Access \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "B: Identity and Access",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e The agent can only use tools on an approved list.",
+          "status": "verified-tested",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc005-01"
+          ],
+          "finding_refs": [
+            "f-6f8b0d2e4a5c"
+          ],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-006",
+          "agent_id": "finance-processing-agent",
+          "title": "Short-Lived Scoped Tokens \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "B: Identity and Access",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Access tokens expire quickly and only grant what the task needs.",
+          "status": "unknown",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc006-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-007",
+          "agent_id": "finance-processing-agent",
+          "title": "User-Enforced Data Layer \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "B: Identity and Access",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e The agent only sees data that the current user is allowed to see.",
+          "status": "failed",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [
+            "ev-agc007-01"
+          ],
+          "finding_refs": [
+            "f-3c5e7a9b1d2f"
+          ],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-008",
+          "agent_id": "finance-processing-agent",
+          "title": "Vault-Injected Secrets \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "B: Identity and Access",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Secrets come from a vault at run time and are never written in code.",
+          "status": "failed",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [
+            "ev-agc008-01"
+          ],
+          "finding_refs": [
+            "f-2b4d6f8a0c1e"
+          ],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-009",
+          "agent_id": "finance-processing-agent",
+          "title": "External Policy Engine \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "C: Action Controls",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e A separate rule engine checks sensitive actions before they run.",
+          "status": "missing",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc009-01"
+          ],
+          "finding_refs": [
+            "f-5e7a9c1d3f4b"
+          ],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-010",
+          "agent_id": "finance-processing-agent",
+          "title": "Human Approval Gates \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "C: Action Controls",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e A person must approve risky actions before the agent carries them out.",
+          "status": "failed",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [
+            "ev-agc010-01"
+          ],
+          "finding_refs": [
+            "f-1f0a9c3e5b7d"
+          ],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-011",
+          "agent_id": "finance-processing-agent",
+          "title": "Dual Content Guardrails \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "C: Action Controls",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Inputs and outputs are checked, including text returned by tools.",
+          "status": "verified-implementation",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc011-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-012",
+          "agent_id": "finance-processing-agent",
+          "title": "Multi-Level Resource Limits \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "C: Action Controls",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e The agent has limits on steps, cost, time, and spending.",
+          "status": "verified-operational",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 4,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc012-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-013",
+          "agent_id": "finance-processing-agent",
+          "title": "Disposable Sandbox Environments \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "C: Action Controls",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Code and commands run in a locked-down environment that is thrown away afterwards.",
+          "status": "accepted-risk",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc013-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-014",
+          "agent_id": "finance-processing-agent",
+          "title": "Vetted Tool Supply Chain \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Tools, MCP servers, and dependencies are pinned and come from known sources.",
+          "status": "missing",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc014-01"
+          ],
+          "finding_refs": [
+            "f-7a9c1e3f5b6d"
+          ],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-015",
+          "agent_id": "finance-processing-agent",
+          "title": "Context Memory Integrity \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e What the agent remembers is validated and kept separate for each user.",
+          "status": "not-applicable",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-016",
+          "agent_id": "finance-processing-agent",
+          "title": "Authenticated Inter-Agent Messages \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Agents prove who they are before they act on each other's messages.",
+          "status": "not-applicable",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "high",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-017",
+          "agent_id": "finance-processing-agent",
+          "title": "Instant Agent Kill Switch \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Operators can stop the agent and revoke its access at once.",
+          "status": "verified-implementation",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc017-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-018",
+          "agent_id": "finance-processing-agent",
+          "title": "Reversible Action Design \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Actions can be undone, or are approved when they cannot be.",
+          "status": "declared-only",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 1,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc018-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-019",
+          "agent_id": "finance-processing-agent",
+          "title": "Dedicated Incident Runbook \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e There is a written, practiced plan for when the agent misbehaves.",
+          "status": "declared-only",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 1,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 2,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc019-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-020",
+          "agent_id": "finance-processing-agent",
+          "title": "Mandatory Regression Evals \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Tests for allowed and forbidden behavior run on every change.",
+          "status": "error",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc020-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-021",
+          "agent_id": "finance-processing-agent",
+          "title": "Continuous Red Teaming \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e The agent is attacked on purpose, repeatedly, to find weaknesses.",
+          "status": "unknown",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-022",
+          "agent_id": "finance-processing-agent",
+          "title": "Complete Step Tracing \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Every decision and tool call is recorded and can be followed end to end.",
+          "status": "verified-tested",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc022-01"
+          ],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-023",
+          "agent_id": "finance-processing-agent",
+          "title": "Tamper-Evident Audit Trail \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Audit records cannot be changed without detection.",
+          "status": "missing",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc023-01"
+          ],
+          "finding_refs": [
+            "f-8b0d2f4a6c7e"
+          ],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        },
+        {
+          "control_id": "AGC-024",
+          "agent_id": "finance-processing-agent",
+          "title": "Real-Time Operational Monitoring \u003cscript\u003ealert(1)\u003c/script\u003ecell | injected | cells",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "\u003cimg src=x onerror=alert(1)\u003e Unusual agent behavior raises an alert while it is happening.",
+          "status": "unknown",
+          "status_reason": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m ](javascript:alert(1))",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "\u003c!-- hidden [click me](javascript:alert(1))",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "```\n# Injected heading\n``` \u003cscript\u003ealert(1)\u003c/script\u003e",
+          "remediation": [
+            "\u003cscript\u003ealert(1)\u003c/script\u003e",
+            "\" onmouseover=\"alert(1)cell | injected | cells"
+          ],
+          "limitations": [
+            "\u003cimg src=x onerror=alert(1)\u003e",
+            "safe text\roverwritten"
+          ]
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev-agc001-01",
+      "control_id": "AGC-001",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 4
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc002-01",
+      "control_id": "AGC-002",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 9
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc004-01",
+      "control_id": "AGC-004",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 14
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "fail",
+      "signal": "violation",
+      "strength": "implementation",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc005-01",
+      "control_id": "AGC-005",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 18
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc006-01",
+      "control_id": "AGC-006",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "external-attestation",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": "2026-01-01T00:00:00Z",
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "unsigned",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "expired",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc007-01",
+      "control_id": "AGC-007",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 31
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "verified",
+      "result": "fail",
+      "signal": "violation",
+      "strength": "tested",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc008-01",
+      "control_id": "AGC-008",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 9
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "fail",
+      "signal": "violation",
+      "strength": "implementation",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc009-01",
+      "control_id": "AGC-009",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "absent",
+      "strength": "implementation",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc010-01",
+      "control_id": "AGC-010",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 22
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "verified",
+      "result": "fail",
+      "signal": "violation",
+      "strength": "tested",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc011-01",
+      "control_id": "AGC-011",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 12
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc012-01",
+      "control_id": "AGC-012",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "runtime",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "operational",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc013-01",
+      "control_id": "AGC-013",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "manual-review",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 31
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc014-01",
+      "control_id": "AGC-014",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 7
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "absent",
+      "strength": "implementation",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc017-01",
+      "control_id": "AGC-017",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 20
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc018-01",
+      "control_id": "AGC-018",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 40
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc019-01",
+      "control_id": "AGC-019",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 1
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc020-01",
+      "control_id": "AGC-020",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py"
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "verified",
+      "result": "inconclusive",
+      "signal": "error",
+      "strength": "tested",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc022-01",
+      "control_id": "AGC-022",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\" onmouseover=\"alert(1).py",
+        "line": 15
+      },
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    },
+    {
+      "evidence_id": "ev-agc023-01",
+      "control_id": "AGC-023",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/\u003cscript\u003ealert(1)\u003c/script\u003e.json",
+      "collector": "collector\u003cimg src=x onerror=alert(1)\u003e",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "identity_context": "\" onmouseover=\"alert(1)",
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "absent",
+      "strength": "implementation",
+      "validity": "valid",
+      "validity_reason": "\u003c!-- hiddencell | injected | cells",
+      "summary": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m [click me](javascript:alert(1))",
+      "limitations": [
+        "```\n# Injected heading\n```",
+        "\u003cscript\u003ealert(1)\u003c/script\u003e"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "f-1f0a9c3e5b7d",
+      "fingerprint": "1f0a9c3e5b7d2a4c6e8f0b1d3a5c7e9f",
+      "rule_id": "AGC-010.approval-bypass",
+      "control_id": "AGC-010",
+      "agent_id": "finance-processing-agent",
+      "severity": "critical",
+      "confidence": "high",
+      "title": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` \" onmouseover=\"alert(1)",
+      "description": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) \u001b[2J\u001b[31mred\u001b[0m safe text\roverwritten",
+      "why_it_matters": "\u003cscript\u003ealert(1)\u003c/script\u003e\n\n# Injected heading\ncell | injected | cells",
+      "remediation": [
+        "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "```\n# Injected heading\n```",
+        "[click me](javascript:alert(1))"
+      ],
+      "reproduction": "\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e ](javascript:alert(1))|.py",
+        "line": 86
+      },
+      "evidence_refs": [
+        "ev-agc010-01"
+      ],
+      "mappings": [
+        {
+          "standard": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "version": "2025",
+          "requirement_id": "\" onmouseover=\"alert(1)",
+          "url": "javascript:alert(1)",
+          "rationale": "[click me](javascript:alert(1))"
+        }
+      ]
+    },
+    {
+      "finding_id": "f-2b4d6f8a0c1e",
+      "fingerprint": "2b4d6f8a0c1e3a5b7d9f1c3e5a7b9d0f",
+      "rule_id": "AGC-008.hardcoded-secret",
+      "control_id": "AGC-008",
+      "agent_id": "finance-processing-agent",
+      "severity": "critical",
+      "confidence": "high",
+      "title": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` \" onmouseover=\"alert(1)",
+      "description": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) \u001b[2J\u001b[31mred\u001b[0m safe text\roverwritten",
+      "why_it_matters": "\u003cscript\u003ealert(1)\u003c/script\u003e\n\n# Injected heading\ncell | injected | cells",
+      "remediation": [
+        "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "```\n# Injected heading\n```",
+        "[click me](javascript:alert(1))"
+      ],
+      "reproduction": "\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e ](javascript:alert(1))|.py",
+        "line": 9
+      },
+      "evidence_refs": [
+        "ev-agc008-01"
+      ],
+      "mappings": [
+        {
+          "standard": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "version": "2025",
+          "requirement_id": "\" onmouseover=\"alert(1)",
+          "url": "javascript:alert(1)",
+          "rationale": "[click me](javascript:alert(1))"
+        }
+      ]
+    },
+    {
+      "finding_id": "f-3c5e7a9b1d2f",
+      "fingerprint": "3c5e7a9b1d2f4a6c8e0b2d4f6a8c0e1b",
+      "rule_id": "AGC-007.cross-user-read",
+      "control_id": "AGC-007",
+      "agent_id": "finance-processing-agent",
+      "severity": "critical",
+      "confidence": "high",
+      "title": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` \" onmouseover=\"alert(1)",
+      "description": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) \u001b[2J\u001b[31mred\u001b[0m safe text\roverwritten",
+      "why_it_matters": "\u003cscript\u003ealert(1)\u003c/script\u003e\n\n# Injected heading\ncell | injected | cells",
+      "remediation": [
+        "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "```\n# Injected heading\n```",
+        "[click me](javascript:alert(1))"
+      ],
+      "reproduction": "\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e ](javascript:alert(1))|.py",
+        "line": 42
+      },
+      "evidence_refs": [
+        "ev-agc007-01"
+      ],
+      "mappings": [
+        {
+          "standard": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "version": "2025",
+          "requirement_id": "\" onmouseover=\"alert(1)",
+          "url": "javascript:alert(1)",
+          "rationale": "[click me](javascript:alert(1))"
+        }
+      ]
+    },
+    {
+      "finding_id": "f-4d6f8b0c2e3a",
+      "fingerprint": "4d6f8b0c2e3a5b7d9f1a3c5e7b9d1f2c",
+      "rule_id": "AGC-004.shared-account",
+      "control_id": "AGC-004",
+      "agent_id": "finance-processing-agent",
+      "severity": "high",
+      "confidence": "high",
+      "title": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` \" onmouseover=\"alert(1)",
+      "description": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) \u001b[2J\u001b[31mred\u001b[0m safe text\roverwritten",
+      "why_it_matters": "\u003cscript\u003ealert(1)\u003c/script\u003e\n\n# Injected heading\ncell | injected | cells",
+      "remediation": [
+        "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "```\n# Injected heading\n```",
+        "[click me](javascript:alert(1))"
+      ],
+      "reproduction": "\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e ](javascript:alert(1))|.py",
+        "line": 14
+      },
+      "evidence_refs": [
+        "ev-agc004-01"
+      ],
+      "mappings": [
+        {
+          "standard": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "version": "2025",
+          "requirement_id": "\" onmouseover=\"alert(1)",
+          "url": "javascript:alert(1)",
+          "rationale": "[click me](javascript:alert(1))"
+        }
+      ]
+    },
+    {
+      "finding_id": "f-5e7a9c1d3f4b",
+      "fingerprint": "5e7a9c1d3f4b6c8e0a2b4d6f8c0e2a3d",
+      "rule_id": "AGC-009.no-enforcement-point",
+      "control_id": "AGC-009",
+      "agent_id": "finance-processing-agent",
+      "severity": "high",
+      "confidence": "high",
+      "title": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` \" onmouseover=\"alert(1)",
+      "description": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) \u001b[2J\u001b[31mred\u001b[0m safe text\roverwritten",
+      "why_it_matters": "\u003cscript\u003ealert(1)\u003c/script\u003e\n\n# Injected heading\ncell | injected | cells",
+      "remediation": [
+        "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "```\n# Injected heading\n```",
+        "[click me](javascript:alert(1))"
+      ],
+      "reproduction": "\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+      "evidence_refs": [
+        "ev-agc009-01"
+      ],
+      "mappings": [
+        {
+          "standard": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "version": "2025",
+          "requirement_id": "\" onmouseover=\"alert(1)",
+          "url": "javascript:alert(1)",
+          "rationale": "[click me](javascript:alert(1))"
+        }
+      ]
+    },
+    {
+      "finding_id": "f-6f8b0d2e4a5c",
+      "fingerprint": "6f8b0d2e4a5c7d9f1b3c5e7a9d1f3b4e",
+      "rule_id": "AGC-005.undeclared-tool",
+      "control_id": "AGC-005",
+      "agent_id": "finance-processing-agent",
+      "severity": "medium",
+      "confidence": "high",
+      "title": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` \" onmouseover=\"alert(1)",
+      "description": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) \u001b[2J\u001b[31mred\u001b[0m safe text\roverwritten",
+      "why_it_matters": "\u003cscript\u003ealert(1)\u003c/script\u003e\n\n# Injected heading\ncell | injected | cells",
+      "remediation": [
+        "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "```\n# Injected heading\n```",
+        "[click me](javascript:alert(1))"
+      ],
+      "reproduction": "\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e ](javascript:alert(1))|.py",
+        "line": 131
+      },
+      "evidence_refs": [],
+      "mappings": [
+        {
+          "standard": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "version": "2025",
+          "requirement_id": "\" onmouseover=\"alert(1)",
+          "url": "javascript:alert(1)",
+          "rationale": "[click me](javascript:alert(1))"
+        }
+      ]
+    },
+    {
+      "finding_id": "f-7a9c1e3f5b6d",
+      "fingerprint": "7a9c1e3f5b6d8e0a2c4d6f8b0e2a4c5f",
+      "rule_id": "AGC-014.unpinned-mcp-server",
+      "control_id": "AGC-014",
+      "agent_id": "finance-processing-agent",
+      "severity": "medium",
+      "confidence": "high",
+      "title": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` \" onmouseover=\"alert(1)",
+      "description": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) \u001b[2J\u001b[31mred\u001b[0m safe text\roverwritten",
+      "why_it_matters": "\u003cscript\u003ealert(1)\u003c/script\u003e\n\n# Injected heading\ncell | injected | cells",
+      "remediation": [
+        "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "```\n# Injected heading\n```",
+        "[click me](javascript:alert(1))"
+      ],
+      "reproduction": "\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+      "location": {
+        "path": "src/\u001b[2Jevil\r\u003cscript\u003ealert(1)\u003c/script\u003e ](javascript:alert(1))|.py",
+        "line": 7
+      },
+      "evidence_refs": [
+        "ev-agc014-01"
+      ],
+      "mappings": [
+        {
+          "standard": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "version": "2025",
+          "requirement_id": "\" onmouseover=\"alert(1)",
+          "url": "javascript:alert(1)",
+          "rationale": "[click me](javascript:alert(1))"
+        }
+      ]
+    },
+    {
+      "finding_id": "f-8b0d2f4a6c7e",
+      "fingerprint": "8b0d2f4a6c7e9f1b3d5e7a9c1f3b5d6a",
+      "rule_id": "AGC-023.plain-logs-only",
+      "control_id": "AGC-023",
+      "agent_id": "finance-processing-agent",
+      "severity": "low",
+      "confidence": "high",
+      "title": "\u003cscript\u003ealert(1)\u003c/script\u003e cell | injected | cells ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` \" onmouseover=\"alert(1)",
+      "description": "\u003cimg src=x onerror=alert(1)\u003e [click me](javascript:alert(1)) \u001b[2J\u001b[31mred\u001b[0m safe text\roverwritten",
+      "why_it_matters": "\u003cscript\u003ealert(1)\u003c/script\u003e\n\n# Injected heading\ncell | injected | cells",
+      "remediation": [
+        "\" onmouseover=\"alert(1)\u003cscript\u003ealert(1)\u003c/script\u003e",
+        "```\n# Injected heading\n```",
+        "[click me](javascript:alert(1))"
+      ],
+      "reproduction": "\u003cscript\u003ealert(1)\u003c/script\u003e\u001b[2J\u001b[31mred\u001b[0m",
+      "evidence_refs": [
+        "ev-agc023-01"
+      ],
+      "mappings": [
+        {
+          "standard": "\u003cscript\u003ealert(1)\u003c/script\u003e",
+          "version": "2025",
+          "requirement_id": "\" onmouseover=\"alert(1)",
+          "url": "javascript:alert(1)",
+          "rationale": "[click me](javascript:alert(1))"
+        }
+      ]
+    }
+  ],
+  "score": {
+    "value": 21,
+    "label": "21/100",
+    "applicable_controls": 22,
+    "controls_with_evidence": 18,
+    "coverage_percent": 82,
+    "tested_percent": 14,
+    "operational_percent": 5,
+    "findings_by_severity": {
+      "critical": 3,
+      "high": 2,
+      "info": 0,
+      "low": 1,
+      "medium": 2
+    },
+    "unresolved_mandatory": [
+      "AGC-001",
+      "AGC-004",
+      "AGC-007",
+      "AGC-008",
+      "AGC-009",
+      "AGC-010",
+      "AGC-013",
+      "AGC-020"
+    ],
+    "status_counts": {
+      "accepted-risk": 1,
+      "declared-only": 3,
+      "error": 1,
+      "failed": 4,
+      "missing": 3,
+      "not-applicable": 2,
+      "unknown": 4,
+      "verified-implementation": 3,
+      "verified-operational": 1,
+      "verified-tested": 2
+    }
+  },
+  "decision": {
+    "outcome": "BLOCK",
+    "reasons": [
+      {
+        "code": "mandatory-below-minimum",
+        "control_id": "AGC-001",
+        "agent_id": "finance-processing-agent",
+        "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+      },
+      {
+        "code": "mandatory-control-failed",
+        "control_id": "AGC-004",
+        "agent_id": "finance-processing-agent",
+        "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+      },
+      {
+        "code": "mandatory-control-failed",
+        "control_id": "AGC-007",
+        "agent_id": "finance-processing-agent",
+        "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+      },
+      {
+        "code": "mandatory-control-failed",
+        "control_id": "AGC-008",
+        "agent_id": "finance-processing-agent",
+        "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+      },
+      {
+        "code": "mandatory-control-missing",
+        "control_id": "AGC-009",
+        "agent_id": "finance-processing-agent",
+        "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+      },
+      {
+        "code": "mandatory-control-failed",
+        "control_id": "AGC-010",
+        "agent_id": "finance-processing-agent",
+        "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+      },
+      {
+        "code": "accepted-risk-needs-review",
+        "control_id": "AGC-013",
+        "agent_id": "finance-processing-agent",
+        "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+      },
+      {
+        "code": "mandatory-control-error",
+        "control_id": "AGC-020",
+        "agent_id": "finance-processing-agent",
+        "message": "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1) \u001b[2J\u001b[31mred\u001b[0m cell | injected | cells"
+      }
+    ]
+  },
+  "stats": {
+    "files_scanned": 48,
+    "files_skipped": 3,
+    "bytes_read": 182344,
+    "duration_ms": 1840
+  },
+  "warnings": [
+    "\u003cscript\u003ealert(1)\u003c/script\u003e",
+    "\" onmouseover=\"alert(1) \u003cimg src=x onerror=alert(1)\u003e",
+    "path/\u001b[2J\u001b[31mred\u001b[0m/safe text\roverwritten",
+    "[click me](javascript:alert(1)) ](javascript:alert(1)) \u003c!-- hidden ```\n# Injected heading\n``` cell | injected | cells"
+  ],
+  "limitations": [
+    "\u003cscript\u003ealert(1)\u003c/script\u003e \" onmouseover=\"alert(1)",
+    "```\n# Injected heading\n``` \u003c!-- hidden"
+  ]
+}

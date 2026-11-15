@@ -1,0 +1,10 @@
+AgentGov Auditor 0.1.0 - Local assessment
+Target: vulnerable-agent | Commit: 4f9c2d7 | Profile: high-risk
+Assessment maturity: 21/100 (illustrative only)
+Release decision: BLOCK
+  [x] Do not release until the listed controls are fixed.
+Reasons:
+  - AGC-001 Owner and Inventory is declared only; the profile requires maturity 2.
+  - AGC-004 Dedicated Non-Human Identity failed.
+  - AGC-007 User-Enforced Data Layer failed.
+  - and 5 more

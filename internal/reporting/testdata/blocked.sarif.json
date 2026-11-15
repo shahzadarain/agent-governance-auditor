@@ -1,0 +1,408 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "AgentGov Auditor",
+          "version": "0.1.0",
+          "rules": [
+            {
+              "id": "AGC-004.shared-account",
+              "name": "SharedAccount",
+              "shortDescription": {
+                "text": "Agent uses a shared service account"
+              },
+              "fullDescription": {
+                "text": "Actions by the agent cannot be told apart from actions by other systems."
+              },
+              "help": {
+                "text": "Actions by the agent cannot be told apart from actions by other systems.\n\nHow to fix:\n1. Create a dedicated workload identity for the agent.\n2. Remove the shared account from the configuration.",
+                "markdown": "Actions by the agent cannot be told apart from actions by other systems.\n\n**How to fix**\n\n1. Create a dedicated workload identity for the agent.\n2. Remove the shared account from the configuration."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-004"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "AGC-005.undeclared-tool",
+              "name": "UndeclaredTool",
+              "shortDescription": {
+                "text": "Shell tool is not in the declared tool list"
+              },
+              "fullDescription": {
+                "text": "A tool that nobody reviewed can still be called by the agent."
+              },
+              "help": {
+                "text": "A tool that nobody reviewed can still be called by the agent.\n\nHow to fix:\n1. Add the tool to declared_tools with a scope, or remove it.",
+                "markdown": "A tool that nobody reviewed can still be called by the agent.\n\n**How to fix**\n\n1. Add the tool to declared\\_tools with a scope, or remove it."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-005"
+                ],
+                "security-severity": "5.5"
+              }
+            },
+            {
+              "id": "AGC-007.cross-user-read",
+              "name": "CrossUserRead",
+              "shortDescription": {
+                "text": "Invoice lookup does not filter by the current user"
+              },
+              "fullDescription": {
+                "text": "One customer can read another customer's invoices through the agent."
+              },
+              "help": {
+                "text": "One customer can read another customer's invoices through the agent.\n\nHow to fix:\n1. Enforce caller-specific authorization in the data service.\n2. Pass the caller identity to lookup_invoice.\n3. Keep the two-user test in CI.",
+                "markdown": "One customer can read another customer's invoices through the agent.\n\n**How to fix**\n\n1. Enforce caller-specific authorization in the data service.\n2. Pass the caller identity to lookup\\_invoice.\n3. Keep the two-user test in CI."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-007"
+                ],
+                "security-severity": "9.5"
+              }
+            },
+            {
+              "id": "AGC-008.hardcoded-secret",
+              "name": "HardcodedSecret",
+              "shortDescription": {
+                "text": "Credential written in source code"
+              },
+              "fullDescription": {
+                "text": "Anyone who can read the repository can use the credential."
+              },
+              "help": {
+                "text": "Anyone who can read the repository can use the credential.\n\nHow to fix:\n1. Remove the value from the code and rotate the credential.\n2. Load the secret from a vault at run time.",
+                "markdown": "Anyone who can read the repository can use the credential.\n\n**How to fix**\n\n1. Remove the value from the code and rotate the credential.\n2. Load the secret from a vault at run time."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-008"
+                ],
+                "security-severity": "9.5"
+              }
+            },
+            {
+              "id": "AGC-009.no-enforcement-point",
+              "name": "NoEnforcementPoint",
+              "shortDescription": {
+                "text": "No policy check before sensitive tools"
+              },
+              "fullDescription": {
+                "text": "Nothing outside the model decides whether a sensitive action is allowed."
+              },
+              "help": {
+                "text": "Nothing outside the model decides whether a sensitive action is allowed.\n\nHow to fix:\n1. Route sensitive tool calls through a policy enforcement point.\n2. Deny by default when the policy service does not answer.",
+                "markdown": "Nothing outside the model decides whether a sensitive action is allowed.\n\n**How to fix**\n\n1. Route sensitive tool calls through a policy enforcement point.\n2. Deny by default when the policy service does not answer."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-009"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "AGC-010.approval-bypass",
+              "name": "ApprovalBypass",
+              "shortDescription": {
+                "text": "Refunds run without an enforced approval"
+              },
+              "fullDescription": {
+                "text": "The agent can move money without any person agreeing to it."
+              },
+              "help": {
+                "text": "The agent can move money without any person agreeing to it.\n\nHow to fix:\n1. Require an external approval bound to the actor, the exact action, and an expiry time.\n2. Reject the call when no valid approval record exists.\n3. Add tests for bypass, replay, and expired approvals.",
+                "markdown": "The agent can move money without any person agreeing to it.\n\n**How to fix**\n\n1. Require an external approval bound to the actor, the exact action, and an expiry time.\n2. Reject the call when no valid approval record exists.\n3. Add tests for bypass, replay, and expired approvals."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-010"
+                ],
+                "security-severity": "9.5"
+              }
+            },
+            {
+              "id": "AGC-014.unpinned-mcp-server",
+              "name": "UnpinnedMcpServer",
+              "shortDescription": {
+                "text": "MCP server version is not pinned"
+              },
+              "fullDescription": {
+                "text": "A changed server could give the agent different tools without a review."
+              },
+              "help": {
+                "text": "A changed server could give the agent different tools without a review.\n\nHow to fix:\n1. Pin the MCP server to a version or digest.",
+                "markdown": "A changed server could give the agent different tools without a review.\n\n**How to fix**\n\n1. Pin the MCP server to a version or digest."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-014"
+                ],
+                "security-severity": "5.5"
+              }
+            },
+            {
+              "id": "AGC-023.plain-logs-only",
+              "name": "PlainLogsOnly",
+              "shortDescription": {
+                "text": "Audit records are plain application logs"
+              },
+              "fullDescription": {
+                "text": "Someone who changes the logs could hide what the agent did."
+              },
+              "help": {
+                "text": "Someone who changes the logs could hide what the agent did.\n\nHow to fix:\n1. Write audit records to protected or hash-chained storage.",
+                "markdown": "Someone who changes the logs could hide what the agent did.\n\n**How to fix**\n\n1. Write audit records to protected or hash-chained storage."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "ai-agent-governance",
+                  "AGC-023"
+                ],
+                "security-severity": "3.0"
+              }
+            }
+          ]
+        }
+      },
+      "automationDetails": {
+        "id": "agentgov/high-risk"
+      },
+      "results": [
+        {
+          "ruleId": "AGC-014.unpinned-mcp-server",
+          "ruleIndex": 6,
+          "level": "warning",
+          "message": {
+            "text": "MCP server version is not pinned. The MCP server ledger-mcp is started without a version or digest."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "mcp.json",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 7
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "7a9c1e3f5b6d8e0a2c4d6f8b0e2a4c5f"
+          },
+          "properties": {
+            "controlId": "AGC-014",
+            "agentId": "finance-processing-agent",
+            "severity": "medium",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-010.approval-bypass",
+          "ruleIndex": 5,
+          "level": "error",
+          "message": {
+            "text": "Refunds run without an enforced approval. The tool issue_refund executes when the approval record is absent. The approval check reads a flag that the model can set."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/actions.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 86
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "1f0a9c3e5b7d2a4c6e8f0b1d3a5c7e9f"
+          },
+          "properties": {
+            "controlId": "AGC-010",
+            "agentId": "finance-processing-agent",
+            "severity": "critical",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-005.undeclared-tool",
+          "ruleIndex": 1,
+          "level": "warning",
+          "message": {
+            "text": "Shell tool is not in the declared tool list. The tool run_report_script is defined in code but is not listed in declared_tools."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/actions.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 131
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "6f8b0d2e4a5c7d9f1b3c5e7a9d1f3b4e"
+          },
+          "properties": {
+            "controlId": "AGC-005",
+            "agentId": "finance-processing-agent",
+            "severity": "medium",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-008.hardcoded-secret",
+          "ruleIndex": 3,
+          "level": "error",
+          "message": {
+            "text": "Credential written in source code. A value that looks like an API credential is assigned to a variable. The value is not shown in this report."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/agent/config.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 9
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "2b4d6f8a0c1e3a5b7d9f1c3e5a7b9d0f"
+          },
+          "properties": {
+            "controlId": "AGC-008",
+            "agentId": "finance-processing-agent",
+            "severity": "critical",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-004.shared-account",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "Agent uses a shared service account. The configuration sets the account name svc-finance-shared, which other services also use."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/agent/config.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 14
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "4d6f8b0c2e3a5b7d9f1a3c5e7b9d1f2c"
+          },
+          "properties": {
+            "controlId": "AGC-004",
+            "agentId": "finance-processing-agent",
+            "severity": "high",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "AGC-007.cross-user-read",
+          "ruleIndex": 2,
+          "level": "error",
+          "message": {
+            "text": "Invoice lookup does not filter by the current user. The query in lookup_invoice has no caller filter, and the cross-user test was not rejected."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/agent/retrieval.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "agentgovFingerprint/v1": "3c5e7a9b1d2f4a6c8e0b2d4f6a8c0e1b"
+          },
+          "properties": {
+            "controlId": "AGC-007",
+            "agentId": "finance-processing-agent",
+            "severity": "critical",
+            "confidence": "high"
+          }
+        }
+      ],
+      "properties": {
+        "findingsWithoutLocation": 2,
+        "profile": "high-risk",
+        "policyPack": "builtin/v1",
+        "policyVersion": "1.0",
+        "releaseDecision": "BLOCK"
+      }
+    }
+  ]
+}

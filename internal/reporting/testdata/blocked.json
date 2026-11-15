@@ -1,0 +1,1778 @@
+{
+  "schema_version": "1",
+  "tool": {
+    "name": "AgentGov Auditor",
+    "version": "0.1.0"
+  },
+  "scan": {
+    "scan_id": "scan-4f9c2d7a1b3e",
+    "started_at": "2026-11-14T09:30:00Z",
+    "finished_at": "2026-11-14T09:30:01.84Z",
+    "target": "vulnerable-agent",
+    "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+    "profile": "high-risk",
+    "profile_source": "config",
+    "policy_pack": "builtin/v1",
+    "policy_version": "1.0",
+    "config_path": ".agentgov.yaml",
+    "offline": true
+  },
+  "agents": [
+    {
+      "id": "finance-processing-agent",
+      "name": "finance-processing-agent",
+      "root": ".",
+      "detection": "detected",
+      "confidence": "high",
+      "framework": "langgraph",
+      "framework_version": "0.2.34",
+      "language": "python",
+      "entrypoint": "src/agent/graph.py",
+      "owner": "payments-platform-team",
+      "risk_tier": "high",
+      "inferred_risk_tier": "high",
+      "tools": [
+        {
+          "name": "issue_refund",
+          "kind": "function",
+          "location": {
+            "path": "src/actions.py",
+            "line": 86
+          },
+          "sensitive": true,
+          "sensitive_why": "Moves money.",
+          "capabilities": [
+            "mutating-actions",
+            "sensitive-actions",
+            "tools"
+          ],
+          "declared": true
+        },
+        {
+          "name": "lookup_invoice",
+          "kind": "database",
+          "location": {
+            "path": "src/agent/retrieval.py",
+            "line": 42
+          },
+          "sensitive": false,
+          "capabilities": [
+            "data-access",
+            "tools"
+          ],
+          "declared": true
+        },
+        {
+          "name": "run_report_script",
+          "kind": "shell",
+          "location": {
+            "path": "src/actions.py",
+            "line": 131
+          },
+          "sensitive": true,
+          "sensitive_why": "Runs shell commands.",
+          "capabilities": [
+            "shell-exec",
+            "tools"
+          ],
+          "declared": false
+        },
+        {
+          "name": "send_payment_notice",
+          "kind": "http",
+          "location": {
+            "path": "src/actions.py",
+            "line": 112
+          },
+          "sensitive": true,
+          "sensitive_why": "Sends messages to customers.",
+          "capabilities": [
+            "network",
+            "sensitive-actions",
+            "tools"
+          ],
+          "declared": true
+        }
+      ],
+      "permissions_declared": [
+        "invoices:read",
+        "refunds:write"
+      ],
+      "data_access_paths": [
+        "src/agent/retrieval.py"
+      ],
+      "mcp_connections": [
+        {
+          "name": "ledger",
+          "transport": "stdio",
+          "target": "ledger-mcp",
+          "pinned": false,
+          "location": {
+            "path": "mcp.json",
+            "line": 7
+          }
+        }
+      ],
+      "capabilities": [
+        "credentials",
+        "data-access",
+        "mcp",
+        "mutating-actions",
+        "network",
+        "sensitive-actions",
+        "shell-exec",
+        "tools"
+      ],
+      "facts": [
+        {
+          "kind": "framework-import",
+          "detail": "imports langgraph.graph",
+          "location": {
+            "path": "src/agent/graph.py",
+            "line": 3
+          },
+          "confidence": "high",
+          "collector": "python.langgraph",
+          "parser_version": "1"
+        },
+        {
+          "kind": "tool-definition",
+          "detail": "tool function issue_refund",
+          "location": {
+            "path": "src/actions.py",
+            "line": 86
+          },
+          "confidence": "high",
+          "collector": "python.langgraph",
+          "parser_version": "1"
+        }
+      ]
+    }
+  ],
+  "assessments": [
+    {
+      "agent_id": "finance-processing-agent",
+      "score": {
+        "value": 21,
+        "label": "21/100",
+        "applicable_controls": 22,
+        "controls_with_evidence": 18,
+        "coverage_percent": 82,
+        "tested_percent": 14,
+        "operational_percent": 5,
+        "findings_by_severity": {
+          "critical": 3,
+          "high": 2,
+          "info": 0,
+          "low": 1,
+          "medium": 2
+        },
+        "unresolved_mandatory": [
+          "AGC-001",
+          "AGC-004",
+          "AGC-007",
+          "AGC-008",
+          "AGC-009",
+          "AGC-010",
+          "AGC-013",
+          "AGC-020"
+        ],
+        "status_counts": {
+          "accepted-risk": 1,
+          "declared-only": 3,
+          "error": 1,
+          "failed": 4,
+          "missing": 3,
+          "not-applicable": 2,
+          "unknown": 4,
+          "verified-implementation": 3,
+          "verified-operational": 1,
+          "verified-tested": 2
+        }
+      },
+      "decision": {
+        "outcome": "BLOCK",
+        "reasons": [
+          {
+            "code": "mandatory-below-minimum",
+            "control_id": "AGC-001",
+            "agent_id": "finance-processing-agent",
+            "message": "AGC-001 Owner and Inventory is declared only; the profile requires maturity 2."
+          },
+          {
+            "code": "mandatory-control-failed",
+            "control_id": "AGC-004",
+            "agent_id": "finance-processing-agent",
+            "message": "AGC-004 Dedicated Non-Human Identity failed."
+          },
+          {
+            "code": "mandatory-control-failed",
+            "control_id": "AGC-007",
+            "agent_id": "finance-processing-agent",
+            "message": "AGC-007 User-Enforced Data Layer failed."
+          },
+          {
+            "code": "mandatory-control-failed",
+            "control_id": "AGC-008",
+            "agent_id": "finance-processing-agent",
+            "message": "AGC-008 Vault-Injected Secrets failed."
+          },
+          {
+            "code": "mandatory-control-missing",
+            "control_id": "AGC-009",
+            "agent_id": "finance-processing-agent",
+            "message": "AGC-009 External Policy Engine is missing."
+          },
+          {
+            "code": "mandatory-control-failed",
+            "control_id": "AGC-010",
+            "agent_id": "finance-processing-agent",
+            "message": "AGC-010 Human Approval Gates failed."
+          },
+          {
+            "code": "accepted-risk-needs-review",
+            "control_id": "AGC-013",
+            "agent_id": "finance-processing-agent",
+            "message": "AGC-013 Disposable Sandbox Environments has an accepted risk that needs a review."
+          },
+          {
+            "code": "mandatory-control-error",
+            "control_id": "AGC-020",
+            "agent_id": "finance-processing-agent",
+            "message": "AGC-020 Mandatory Regression Evals could not be assessed because of an error."
+          }
+        ]
+      },
+      "controls": [
+        {
+          "control_id": "AGC-001",
+          "agent_id": "finance-processing-agent",
+          "title": "Owner and Inventory",
+          "domain": "A: Accountability",
+          "plain_language": "A named person is accountable for the agent, and its tools and data are listed.",
+          "status": "declared-only",
+          "status_reason": "An owner is declared, but no registry record or signed attestation confirms it. The profile requires maturity 2.",
+          "maturity": 1,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc001-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Attach a signed owner attestation or a registry record as evidence.",
+          "remediation": [
+            "Record the owner, purpose, and registry reference in .agentgov.yaml.",
+            "Attach a signed owner attestation or a registry record as evidence."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-002",
+          "agent_id": "finance-processing-agent",
+          "title": "Dynamic Risk Tiering",
+          "domain": "A: Accountability",
+          "plain_language": "The agent has a risk level that matches what it can actually do.",
+          "status": "verified-implementation",
+          "status_reason": "The declared tier high matches the detected capabilities.",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc002-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Declare a risk tier with a written rationale.",
+          "remediation": [
+            "Declare a risk tier with a written rationale.",
+            "Review the tier when the agent gains a new capability."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-003",
+          "agent_id": "finance-processing-agent",
+          "title": "Integrated Change Control",
+          "domain": "A: Accountability",
+          "plain_language": "Changes to models, tools, and prompts trigger a new assessment before release.",
+          "status": "unknown",
+          "status_reason": "No detector produced evidence for this control and no external evidence was supplied.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Supply test or runtime evidence for this control.",
+          "remediation": [
+            "Run the governance scan in CI on every change to agent files.",
+            "Link each release to its commit and artifact hash."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-004",
+          "agent_id": "finance-processing-agent",
+          "title": "Dedicated Non-Human Identity",
+          "domain": "B: Identity and Access",
+          "plain_language": "The agent has its own identity and does not borrow a person's account.",
+          "status": "failed",
+          "status_reason": "A shared service account is configured for the agent.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc004-01"
+          ],
+          "finding_refs": [
+            "f-4d6f8b0c2e3a"
+          ],
+          "next_action": "Create a dedicated workload identity for the agent.",
+          "remediation": [
+            "Create a dedicated workload identity for the agent.",
+            "Remove shared and personal credentials from the agent configuration."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-005",
+          "agent_id": "finance-processing-agent",
+          "title": "Allowlisted Tool Access",
+          "domain": "B: Identity and Access",
+          "plain_language": "The agent can only use tools on an approved list.",
+          "status": "verified-tested",
+          "status_reason": "A test shows that a tool outside the allowlist is rejected.",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc005-01"
+          ],
+          "finding_refs": [
+            "f-6f8b0d2e4a5c"
+          ],
+          "next_action": "Define an explicit tool allowlist with deny by default.",
+          "remediation": [
+            "Define an explicit tool allowlist with deny by default.",
+            "Add a test that calls a tool outside the list and expects a rejection."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-006",
+          "agent_id": "finance-processing-agent",
+          "title": "Short-Lived Scoped Tokens",
+          "domain": "B: Identity and Access",
+          "plain_language": "Access tokens expire quickly and only grant what the task needs.",
+          "status": "unknown",
+          "status_reason": "Evidence was supplied but it expired on 2026-01-01.",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc006-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Submit a current token lifetime test result.",
+          "remediation": [
+            "Issue tokens with a short lifetime, a narrow scope, and a fixed audience.",
+            "Test expired and wrong-audience tokens against a mock identity provider."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-007",
+          "agent_id": "finance-processing-agent",
+          "title": "User-Enforced Data Layer",
+          "domain": "B: Identity and Access",
+          "plain_language": "The agent only sees data that the current user is allowed to see.",
+          "status": "failed",
+          "status_reason": "The cross-user access test was not rejected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [
+            "ev-agc007-01"
+          ],
+          "finding_refs": [
+            "f-3c5e7a9b1d2f"
+          ],
+          "next_action": "Pass the caller identity to every data-access tool.",
+          "remediation": [
+            "Pass the caller identity to every data-access tool.",
+            "Enforce the filter in the data service, not in the prompt.",
+            "Add a two-user test that expects cross-user reads to fail."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-008",
+          "agent_id": "finance-processing-agent",
+          "title": "Vault-Injected Secrets",
+          "domain": "B: Identity and Access",
+          "plain_language": "Secrets come from a vault at run time and are never written in code.",
+          "status": "failed",
+          "status_reason": "A credential is written in source code.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [
+            "ev-agc008-01"
+          ],
+          "finding_refs": [
+            "f-2b4d6f8a0c1e"
+          ],
+          "next_action": "Remove the hardcoded value and rotate the credential.",
+          "remediation": [
+            "Remove the hardcoded value and rotate the credential.",
+            "Load secrets from a vault through the workload identity."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-009",
+          "agent_id": "finance-processing-agent",
+          "title": "External Policy Engine",
+          "domain": "C: Action Controls",
+          "plain_language": "A separate rule engine checks sensitive actions before they run.",
+          "status": "missing",
+          "status_reason": "The scanner looked for a policy enforcement point and found none.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc009-01"
+          ],
+          "finding_refs": [
+            "f-5e7a9c1d3f4b"
+          ],
+          "next_action": "Route sensitive tool calls through a policy enforcement point.",
+          "remediation": [
+            "Route sensitive tool calls through a policy enforcement point.",
+            "Deny by default when the policy service is unavailable."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-010",
+          "agent_id": "finance-processing-agent",
+          "title": "Human Approval Gates",
+          "domain": "C: Action Controls",
+          "plain_language": "A person must approve risky actions before the agent carries them out.",
+          "status": "failed",
+          "status_reason": "The approval bypass test failed.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [
+            "ev-agc010-01"
+          ],
+          "finding_refs": [
+            "f-1f0a9c3e5b7d"
+          ],
+          "next_action": "Require an external approval bound to the actor, the exact action, and an expiry time.",
+          "remediation": [
+            "Require an external approval bound to the actor, the exact action, and an expiry time.",
+            "Test bypass, replay, and expired approval cases."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-011",
+          "agent_id": "finance-processing-agent",
+          "title": "Dual Content Guardrails",
+          "domain": "C: Action Controls",
+          "plain_language": "Inputs and outputs are checked, including text returned by tools.",
+          "status": "verified-implementation",
+          "status_reason": "Validators are present in code. No adversarial test result was supplied.",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc011-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Validate tool returns before the model reads them.",
+          "remediation": [
+            "Validate tool returns before the model reads them.",
+            "Add adversarial fixtures for injected instructions."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-012",
+          "agent_id": "finance-processing-agent",
+          "title": "Multi-Level Resource Limits",
+          "domain": "C: Action Controls",
+          "plain_language": "The agent has limits on steps, cost, time, and spending.",
+          "status": "verified-operational",
+          "status_reason": "Signed runtime records show the limits working.",
+          "maturity": 4,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc012-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Set limits for steps, tokens, run time, and transaction amounts.",
+          "remediation": [
+            "Set limits for steps, tokens, run time, and transaction amounts.",
+            "Test a bounded loop and an over-limit request."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-013",
+          "agent_id": "finance-processing-agent",
+          "title": "Disposable Sandbox Environments",
+          "domain": "C: Action Controls",
+          "plain_language": "Code and commands run in a locked-down environment that is thrown away afterwards.",
+          "status": "accepted-risk",
+          "status_reason": "An approved exception accepts this risk until 2027-01-31.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc013-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Have a reviewer confirm that the exception is still acceptable.",
+          "remediation": [
+            "Run tool execution as a non-root user with a read-only file system.",
+            "Drop capabilities and restrict network access."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-014",
+          "agent_id": "finance-processing-agent",
+          "title": "Vetted Tool Supply Chain",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "Tools, MCP servers, and dependencies are pinned and come from known sources.",
+          "status": "missing",
+          "status_reason": "The MCP server is not pinned and no provenance record was found.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc014-01"
+          ],
+          "finding_refs": [
+            "f-7a9c1e3f5b6d"
+          ],
+          "next_action": "Pin every MCP server and dependency to a version or digest.",
+          "remediation": [
+            "Pin every MCP server and dependency to a version or digest.",
+            "Record provenance for container images."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-015",
+          "agent_id": "finance-processing-agent",
+          "title": "Context Memory Integrity",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "What the agent remembers is validated and kept separate for each user.",
+          "status": "not-applicable",
+          "status_reason": "No persistent memory was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Validate content before it is written to memory.",
+            "Separate memory by user and set a retention period."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-016",
+          "agent_id": "finance-processing-agent",
+          "title": "Authenticated Inter-Agent Messages",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "Agents prove who they are before they act on each other's messages.",
+          "status": "not-applicable",
+          "status_reason": "No agent-to-agent messaging was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "high",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Authenticate every agent-to-agent request.",
+            "Add replay protection and scoped authority."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-017",
+          "agent_id": "finance-processing-agent",
+          "title": "Instant Agent Kill Switch",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "Operators can stop the agent and revoke its access at once.",
+          "status": "verified-implementation",
+          "status_reason": "A cancellation path exists. Termination was not tested.",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc017-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Run a synthetic stop-and-revoke test.",
+          "remediation": [
+            "Add central revocation that cancels running jobs.",
+            "Run a stop-and-revoke test and record the time to stop."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-018",
+          "agent_id": "finance-processing-agent",
+          "title": "Reversible Action Design",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "Actions can be undone, or are approved when they cannot be.",
+          "status": "declared-only",
+          "status_reason": "A document describes a manual reversal. No code path or test confirms it.",
+          "maturity": 1,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc018-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Make mutating operations idempotent.",
+          "remediation": [
+            "Make mutating operations idempotent.",
+            "Add a compensation step or record why an action is not reversible."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-019",
+          "agent_id": "finance-processing-agent",
+          "title": "Dedicated Incident Runbook",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "There is a written, practiced plan for when the agent misbehaves.",
+          "status": "declared-only",
+          "status_reason": "A runbook file exists. No exercise record was supplied.",
+          "maturity": 1,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 2,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc019-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Write an agent-specific runbook with owner and escalation path.",
+          "remediation": [
+            "Write an agent-specific runbook with owner and escalation path.",
+            "Run an exercise and record the result."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-020",
+          "agent_id": "finance-processing-agent",
+          "title": "Mandatory Regression Evals",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "Tests for allowed and forbidden behavior run on every change.",
+          "status": "error",
+          "status_reason": "The test report reports/junit.xml could not be parsed.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc020-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Fix the test report and scan again.",
+          "remediation": [
+            "Add versioned behavior tests that run in CI.",
+            "Submit the CI results as evidence."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-021",
+          "agent_id": "finance-processing-agent",
+          "title": "Continuous Red Teaming",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "The agent is attacked on purpose, repeatedly, to find weaknesses.",
+          "status": "unknown",
+          "status_reason": "No detector produced evidence for this control and no external evidence was supplied.",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Supply test or runtime evidence for this control.",
+          "remediation": [
+            "Add repeatable adversarial scenarios for prompt injection and tool misuse.",
+            "Import the results through the evidence adapter."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-022",
+          "agent_id": "finance-processing-agent",
+          "title": "Complete Step Tracing",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "Every decision and tool call is recorded and can be followed end to end.",
+          "status": "verified-tested",
+          "status_reason": "A synthetic end-to-end trace was recorded and verified.",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc022-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Correlate runs, tool calls, and approvals with one trace ID.",
+          "remediation": [
+            "Correlate runs, tool calls, and approvals with one trace ID.",
+            "Record a synthetic end-to-end trace as evidence."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-023",
+          "agent_id": "finance-processing-agent",
+          "title": "Tamper-Evident Audit Trail",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "Audit records cannot be changed without detection.",
+          "status": "missing",
+          "status_reason": "Only plain application logs were found.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc023-01"
+          ],
+          "finding_refs": [
+            "f-8b0d2f4a6c7e"
+          ],
+          "next_action": "Write audit records to protected or hash-chained storage.",
+          "remediation": [
+            "Write audit records to protected or hash-chained storage.",
+            "Run a tampering test on sample records."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-024",
+          "agent_id": "finance-processing-agent",
+          "title": "Real-Time Operational Monitoring",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "Unusual agent behavior raises an alert while it is happening.",
+          "status": "unknown",
+          "status_reason": "No detector produced evidence for this control and no external evidence was supplied.",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Supply test or runtime evidence for this control.",
+          "remediation": [
+            "Define alerts for denied policy decisions and unusual tool use.",
+            "Send a synthetic signal and confirm that an alert fires."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev-agc001-01",
+      "control_id": "AGC-001",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": ".agentgov.yaml:4",
+      "location": {
+        "path": ".agentgov.yaml",
+        "line": 4
+      },
+      "collector": "config.owner",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "summary": "The configuration names an owner. No registry record or signed attestation confirms it.",
+      "limitations": [
+        "A name in a file does not prove that the owner exists."
+      ]
+    },
+    {
+      "evidence_id": "ev-agc002-01",
+      "control_id": "AGC-002",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": ".agentgov.yaml:9",
+      "location": {
+        "path": ".agentgov.yaml",
+        "line": 9
+      },
+      "collector": "config.risk-tier",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "The declared risk tier matches the detected capabilities.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc004-01",
+      "control_id": "AGC-004",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "src/agent/config.py:14",
+      "location": {
+        "path": "src/agent/config.py",
+        "line": 14
+      },
+      "collector": "rules.shared-account",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "fail",
+      "signal": "violation",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "The agent signs in with a shared service account name.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc005-01",
+      "control_id": "AGC-005",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "tests/governance/test_tool_allowlist.py:18",
+      "location": {
+        "path": "tests/governance/test_tool_allowlist.py",
+        "line": 18
+      },
+      "collector": "evidence.junit",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "The allowlist test rejected a tool that is not on the list.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc006-01",
+      "control_id": "AGC-006",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "external-attestation",
+      "source_location": "evidence/ev-agc006-01.json",
+      "collector": "evidence.external",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": "2026-01-01T00:00:00Z",
+      "integrity": "unsigned",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "expired",
+      "validity_reason": "The evidence expired on 2026-01-01.",
+      "summary": "Token lifetime test result from the identity team.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc007-01",
+      "control_id": "AGC-007",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "tests/governance/test_data_scope.py:31",
+      "location": {
+        "path": "tests/governance/test_data_scope.py",
+        "line": 31
+      },
+      "collector": "evidence.junit",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "fail",
+      "signal": "violation",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "The cross-user access test was not rejected.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc008-01",
+      "control_id": "AGC-008",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "src/agent/config.py:9",
+      "location": {
+        "path": "src/agent/config.py",
+        "line": 9
+      },
+      "collector": "rules.hardcoded-secret",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "fail",
+      "signal": "violation",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "A value that looks like a credential is assigned in code. The value is not shown.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc009-01",
+      "control_id": "AGC-009",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/ev-agc009-01.json",
+      "collector": "rules.policy-enforcement",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "absent",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "No policy enforcement point was found around sensitive tool calls.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc010-01",
+      "control_id": "AGC-010",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "tests/governance/test_approval.py:22",
+      "location": {
+        "path": "tests/governance/test_approval.py",
+        "line": 22
+      },
+      "collector": "evidence.junit",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "fail",
+      "signal": "violation",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "The approval bypass test failed: issue_refund ran without an approval record.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc011-01",
+      "control_id": "AGC-011",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "src/agent/guardrails.py:12",
+      "location": {
+        "path": "src/agent/guardrails.py",
+        "line": 12
+      },
+      "collector": "rules.guardrails",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "Input and output validators wrap the model call.",
+      "limitations": [
+        "The presence of a guardrail does not prove that it stops an attack."
+      ]
+    },
+    {
+      "evidence_id": "ev-agc012-01",
+      "control_id": "AGC-012",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "runtime",
+      "source_location": "evidence/ev-agc012-01.json",
+      "collector": "evidence.runtime",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "operational",
+      "validity": "valid",
+      "summary": "Runtime records show the step and spend limits stopping an over-limit run.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc013-01",
+      "control_id": "AGC-013",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "manual-review",
+      "source_location": ".agentgov.yaml:31",
+      "location": {
+        "path": ".agentgov.yaml",
+        "line": 31
+      },
+      "collector": "config.exceptions",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "summary": "A recorded exception accepts the risk of running report scripts without a sandbox until 2027-01-31.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc014-01",
+      "control_id": "AGC-014",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "mcp.json:7",
+      "location": {
+        "path": "mcp.json",
+        "line": 7
+      },
+      "collector": "rules.mcp-pinning",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "absent",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "The MCP server ledger-mcp has no pinned version or digest.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc017-01",
+      "control_id": "AGC-017",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "src/agent/control.py:20",
+      "location": {
+        "path": "src/agent/control.py",
+        "line": 20
+      },
+      "collector": "rules.kill-switch",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "A cancellation path revokes the run token and stops new tool calls.",
+      "limitations": [
+        "Termination was not tested."
+      ]
+    },
+    {
+      "evidence_id": "ev-agc018-01",
+      "control_id": "AGC-018",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": "docs/operations.md:40",
+      "location": {
+        "path": "docs/operations.md",
+        "line": 40
+      },
+      "collector": "config.docs",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "summary": "A document describes a manual refund reversal procedure.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc019-01",
+      "control_id": "AGC-019",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": "docs/runbook.md:1",
+      "location": {
+        "path": "docs/runbook.md",
+        "line": 1
+      },
+      "collector": "config.docs",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "summary": "An incident runbook file exists. No exercise record was supplied.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc020-01",
+      "control_id": "AGC-020",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "reports/junit.xml:0",
+      "location": {
+        "path": "reports/junit.xml"
+      },
+      "collector": "evidence.junit",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "inconclusive",
+      "signal": "error",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "The test report could not be parsed.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc022-01",
+      "control_id": "AGC-022",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "tests/governance/test_trace.py:15",
+      "location": {
+        "path": "tests/governance/test_trace.py",
+        "line": 15
+      },
+      "collector": "evidence.junit",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "A synthetic run produced one correlated trace across model, tool, and approval steps.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc023-01",
+      "control_id": "AGC-023",
+      "agent_id": "finance-processing-agent",
+      "commit_sha": "4f9c2d7a1b3e5f60718293a4b5c6d7e8f9012345",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "evidence/ev-agc023-01.json",
+      "collector": "rules.audit-trail",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "absent",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "Only plain application logs were found.",
+      "limitations": []
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "f-1f0a9c3e5b7d",
+      "fingerprint": "1f0a9c3e5b7d2a4c6e8f0b1d3a5c7e9f",
+      "rule_id": "AGC-010.approval-bypass",
+      "control_id": "AGC-010",
+      "agent_id": "finance-processing-agent",
+      "severity": "critical",
+      "confidence": "high",
+      "title": "Refunds run without an enforced approval",
+      "description": "The tool issue_refund executes when the approval record is absent. The approval check reads a flag that the model can set.",
+      "why_it_matters": "The agent can move money without any person agreeing to it.",
+      "remediation": [
+        "Require an external approval bound to the actor, the exact action, and an expiry time.",
+        "Reject the call when no valid approval record exists.",
+        "Add tests for bypass, replay, and expired approvals."
+      ],
+      "location": {
+        "path": "src/actions.py",
+        "line": 86
+      },
+      "evidence_refs": [
+        "ev-agc010-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    },
+    {
+      "finding_id": "f-2b4d6f8a0c1e",
+      "fingerprint": "2b4d6f8a0c1e3a5b7d9f1c3e5a7b9d0f",
+      "rule_id": "AGC-008.hardcoded-secret",
+      "control_id": "AGC-008",
+      "agent_id": "finance-processing-agent",
+      "severity": "critical",
+      "confidence": "high",
+      "title": "Credential written in source code",
+      "description": "A value that looks like an API credential is assigned to a variable. The value is not shown in this report.",
+      "why_it_matters": "Anyone who can read the repository can use the credential.",
+      "remediation": [
+        "Remove the value from the code and rotate the credential.",
+        "Load the secret from a vault at run time."
+      ],
+      "location": {
+        "path": "src/agent/config.py",
+        "line": 9
+      },
+      "evidence_refs": [
+        "ev-agc008-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    },
+    {
+      "finding_id": "f-3c5e7a9b1d2f",
+      "fingerprint": "3c5e7a9b1d2f4a6c8e0b2d4f6a8c0e1b",
+      "rule_id": "AGC-007.cross-user-read",
+      "control_id": "AGC-007",
+      "agent_id": "finance-processing-agent",
+      "severity": "critical",
+      "confidence": "high",
+      "title": "Invoice lookup does not filter by the current user",
+      "description": "The query in lookup_invoice has no caller filter, and the cross-user test was not rejected.",
+      "why_it_matters": "One customer can read another customer's invoices through the agent.",
+      "remediation": [
+        "Enforce caller-specific authorization in the data service.",
+        "Pass the caller identity to lookup_invoice.",
+        "Keep the two-user test in CI."
+      ],
+      "location": {
+        "path": "src/agent/retrieval.py",
+        "line": 42
+      },
+      "evidence_refs": [
+        "ev-agc007-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    },
+    {
+      "finding_id": "f-4d6f8b0c2e3a",
+      "fingerprint": "4d6f8b0c2e3a5b7d9f1a3c5e7b9d1f2c",
+      "rule_id": "AGC-004.shared-account",
+      "control_id": "AGC-004",
+      "agent_id": "finance-processing-agent",
+      "severity": "high",
+      "confidence": "high",
+      "title": "Agent uses a shared service account",
+      "description": "The configuration sets the account name svc-finance-shared, which other services also use.",
+      "why_it_matters": "Actions by the agent cannot be told apart from actions by other systems.",
+      "remediation": [
+        "Create a dedicated workload identity for the agent.",
+        "Remove the shared account from the configuration."
+      ],
+      "location": {
+        "path": "src/agent/config.py",
+        "line": 14
+      },
+      "evidence_refs": [
+        "ev-agc004-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    },
+    {
+      "finding_id": "f-5e7a9c1d3f4b",
+      "fingerprint": "5e7a9c1d3f4b6c8e0a2b4d6f8c0e2a3d",
+      "rule_id": "AGC-009.no-enforcement-point",
+      "control_id": "AGC-009",
+      "agent_id": "finance-processing-agent",
+      "severity": "high",
+      "confidence": "high",
+      "title": "No policy check before sensitive tools",
+      "description": "No policy enforcement point was found between the model and the tools issue_refund and send_payment_notice.",
+      "why_it_matters": "Nothing outside the model decides whether a sensitive action is allowed.",
+      "remediation": [
+        "Route sensitive tool calls through a policy enforcement point.",
+        "Deny by default when the policy service does not answer."
+      ],
+      "evidence_refs": [
+        "ev-agc009-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    },
+    {
+      "finding_id": "f-6f8b0d2e4a5c",
+      "fingerprint": "6f8b0d2e4a5c7d9f1b3c5e7a9d1f3b4e",
+      "rule_id": "AGC-005.undeclared-tool",
+      "control_id": "AGC-005",
+      "agent_id": "finance-processing-agent",
+      "severity": "medium",
+      "confidence": "high",
+      "title": "Shell tool is not in the declared tool list",
+      "description": "The tool run_report_script is defined in code but is not listed in declared_tools.",
+      "why_it_matters": "A tool that nobody reviewed can still be called by the agent.",
+      "remediation": [
+        "Add the tool to declared_tools with a scope, or remove it."
+      ],
+      "location": {
+        "path": "src/actions.py",
+        "line": 131
+      },
+      "evidence_refs": [],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    },
+    {
+      "finding_id": "f-7a9c1e3f5b6d",
+      "fingerprint": "7a9c1e3f5b6d8e0a2c4d6f8b0e2a4c5f",
+      "rule_id": "AGC-014.unpinned-mcp-server",
+      "control_id": "AGC-014",
+      "agent_id": "finance-processing-agent",
+      "severity": "medium",
+      "confidence": "high",
+      "title": "MCP server version is not pinned",
+      "description": "The MCP server ledger-mcp is started without a version or digest.",
+      "why_it_matters": "A changed server could give the agent different tools without a review.",
+      "remediation": [
+        "Pin the MCP server to a version or digest."
+      ],
+      "location": {
+        "path": "mcp.json",
+        "line": 7
+      },
+      "evidence_refs": [
+        "ev-agc014-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    },
+    {
+      "finding_id": "f-8b0d2f4a6c7e",
+      "fingerprint": "8b0d2f4a6c7e9f1b3d5e7a9c1f3b5d6a",
+      "rule_id": "AGC-023.plain-logs-only",
+      "control_id": "AGC-023",
+      "agent_id": "finance-processing-agent",
+      "severity": "low",
+      "confidence": "high",
+      "title": "Audit records are plain application logs",
+      "description": "No signed, hash-chained, or write-once audit storage was found.",
+      "why_it_matters": "Someone who changes the logs could hide what the agent did.",
+      "remediation": [
+        "Write audit records to protected or hash-chained storage."
+      ],
+      "evidence_refs": [
+        "ev-agc023-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    }
+  ],
+  "score": {
+    "value": 21,
+    "label": "21/100",
+    "applicable_controls": 22,
+    "controls_with_evidence": 18,
+    "coverage_percent": 82,
+    "tested_percent": 14,
+    "operational_percent": 5,
+    "findings_by_severity": {
+      "critical": 3,
+      "high": 2,
+      "info": 0,
+      "low": 1,
+      "medium": 2
+    },
+    "unresolved_mandatory": [
+      "AGC-001",
+      "AGC-004",
+      "AGC-007",
+      "AGC-008",
+      "AGC-009",
+      "AGC-010",
+      "AGC-013",
+      "AGC-020"
+    ],
+    "status_counts": {
+      "accepted-risk": 1,
+      "declared-only": 3,
+      "error": 1,
+      "failed": 4,
+      "missing": 3,
+      "not-applicable": 2,
+      "unknown": 4,
+      "verified-implementation": 3,
+      "verified-operational": 1,
+      "verified-tested": 2
+    }
+  },
+  "decision": {
+    "outcome": "BLOCK",
+    "reasons": [
+      {
+        "code": "mandatory-below-minimum",
+        "control_id": "AGC-001",
+        "agent_id": "finance-processing-agent",
+        "message": "AGC-001 Owner and Inventory is declared only; the profile requires maturity 2."
+      },
+      {
+        "code": "mandatory-control-failed",
+        "control_id": "AGC-004",
+        "agent_id": "finance-processing-agent",
+        "message": "AGC-004 Dedicated Non-Human Identity failed."
+      },
+      {
+        "code": "mandatory-control-failed",
+        "control_id": "AGC-007",
+        "agent_id": "finance-processing-agent",
+        "message": "AGC-007 User-Enforced Data Layer failed."
+      },
+      {
+        "code": "mandatory-control-failed",
+        "control_id": "AGC-008",
+        "agent_id": "finance-processing-agent",
+        "message": "AGC-008 Vault-Injected Secrets failed."
+      },
+      {
+        "code": "mandatory-control-missing",
+        "control_id": "AGC-009",
+        "agent_id": "finance-processing-agent",
+        "message": "AGC-009 External Policy Engine is missing."
+      },
+      {
+        "code": "mandatory-control-failed",
+        "control_id": "AGC-010",
+        "agent_id": "finance-processing-agent",
+        "message": "AGC-010 Human Approval Gates failed."
+      },
+      {
+        "code": "accepted-risk-needs-review",
+        "control_id": "AGC-013",
+        "agent_id": "finance-processing-agent",
+        "message": "AGC-013 Disposable Sandbox Environments has an accepted risk that needs a review."
+      },
+      {
+        "code": "mandatory-control-error",
+        "control_id": "AGC-020",
+        "agent_id": "finance-processing-agent",
+        "message": "AGC-020 Mandatory Regression Evals could not be assessed because of an error."
+      }
+    ]
+  },
+  "stats": {
+    "files_scanned": 48,
+    "files_skipped": 3,
+    "bytes_read": 182344,
+    "duration_ms": 1840
+  },
+  "warnings": [
+    "reports/junit.xml: the test report is not valid XML and was skipped.",
+    "vendor/: 3 files larger than 1 MiB were skipped."
+  ],
+  "limitations": [
+    "This was a static, offline scan. No repository code was executed.",
+    "Runtime behavior is known only from the evidence files that were supplied.",
+    "Python files were analyzed by a lexer, not a full parser. Unusual syntax can hide a tool definition."
+  ]
+}

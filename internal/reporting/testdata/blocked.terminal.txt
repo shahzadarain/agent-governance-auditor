@@ -1,0 +1,78 @@
+AgentGov Auditor 0.1.0 - Local assessment
+Target:   vulnerable-agent
+Commit:   4f9c2d7
+Profile:  high-risk (set in the configuration file)
+Policy:   builtin/v1 1.0
+Offline:  yes
+
+Agents (1)
+  finance-processing-agent
+    Framework:    langgraph 0.2.34
+    Language:     python
+    Detection:    detected (high confidence)
+    Risk tier:    high (declared)
+    Tools:        4 (3 sensitive)
+    Capabilities: credentials, data-access, mcp, mutating-actions, network, sensitive-actions,
+                  shell-exec, tools
+
+Assessment maturity: 21/100 (illustrative only)
+Coverage: 18 of 22 applicable controls have evidence
+Verified by tests: 14%   Verified in operation: 5%
+
+Release decision: BLOCK
+  [x] Do not release until the listed controls are fixed.
+
+What to fix first
+BLOCK   AGC-007 User-Enforced Data Layer                                    [Failed]
+        The agent only sees data that the current user is allowed to see.
+        Found: Invoice lookup does not filter by the current user
+        Where: src/agent/retrieval.py:42
+        Fix:   Enforce caller-specific authorization in the data service.
+
+BLOCK   AGC-008 Vault-Injected Secrets                                      [Failed]
+        Secrets come from a vault at run time and are never written in code.
+        Found: Credential written in source code
+        Where: src/agent/config.py:9
+        Fix:   Remove the value from the code and rotate the credential.
+
+BLOCK   AGC-010 Human Approval Gates                                        [Failed]
+        A person must approve risky actions before the agent carries them out.
+        Found: Refunds run without an enforced approval
+        Where: src/actions.py:86
+        Fix:   Require an external approval bound to the actor, the exact action, and an expiry
+               time.
+
+BLOCK   AGC-001 Owner and Inventory                                  [Declared only]
+        A named person is accountable for the agent, and its tools and data are listed.
+        Found: An owner is declared, but no registry record or signed attestation confirms it. The
+               profile requires maturity 2.
+        Where: .agentgov.yaml:4
+        Fix:   Attach a signed owner attestation or a registry record as evidence.
+
+BLOCK   AGC-004 Dedicated Non-Human Identity                                [Failed]
+        The agent has its own identity and does not borrow a person's account.
+        Found: Agent uses a shared service account
+        Where: src/agent/config.py:14
+        Fix:   Create a dedicated workload identity for the agent.
+
+6 more controls need attention. Run with --full to see every control.
+
+Controls by domain
+  A: Accountability            [ok] 0  [!]  2  [?]  1  [x]  0  [-]  0
+  B: Identity and Access       [ok] 1  [!]  0  [?]  1  [x]  3  [-]  0
+  C: Action Controls           [ok] 1  [!]  2  [?]  0  [x]  2  [-]  0
+  D: Trust Boundaries          [ok] 0  [!]  0  [?]  0  [x]  1  [-]  2
+  E: Containment and Recovery  [ok] 0  [!]  3  [?]  0  [x]  0  [-]  0
+  F: Assurance and Visibility  [ok] 1  [!]  0  [?]  2  [x]  2  [-]  0
+  All controls                 [ok] 3  [!]  7  [?]  4  [x]  8  [-]  2
+  Key: [ok] verified, [!] partial, [?] unknown, [x] failed or missing, [-] not applicable
+
+Findings: 3 critical, 2 high, 2 medium, 1 low, 0 info
+Warnings: 2
+
+Next:
+  agentgov explain AGC-007
+  agentgov scan . --full
+  agentgov scan . --format html --output report.html
+
+This is an evidence-based assessment, not a certification.

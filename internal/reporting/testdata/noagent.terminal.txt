@@ -1,0 +1,31 @@
+AgentGov Auditor 0.1.0 - Local assessment
+Target:   static-website
+Commit:   unknown
+Profile:  baseline (default profile)
+Policy:   builtin/v1 1.0
+Offline:  yes
+
+No AI agent was detected
+  Discovery looks for agent framework imports, tool definitions, MCP server or client configuration,
+  and model client calls in Python, TypeScript, and JavaScript files.
+  This is not a pass. No control was assessed, so there is no score.
+  If this repository contains an agent, declare it: run agentgov init, fill in the generated
+  .agentgov.yaml file, and scan again.
+
+Assessment maturity: insufficient evidence
+Coverage: no controls were assessed
+
+Release decision: REVIEW REQUIRED
+  [!] A person must review before release.
+
+Reasons
+  - No AI agent was detected, so no control could be assessed.
+
+Findings: 0 critical, 0 high, 0 medium, 0 low, 0 info
+Warnings: 1
+
+Next:
+  agentgov init
+  agentgov scan . --format html --output report.html
+
+This is an evidence-based assessment, not a certification.

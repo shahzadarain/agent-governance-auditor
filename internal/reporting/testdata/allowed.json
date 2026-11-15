@@ -1,0 +1,1202 @@
+{
+  "schema_version": "1",
+  "tool": {
+    "name": "AgentGov Auditor",
+    "version": "0.1.0"
+  },
+  "scan": {
+    "scan_id": "scan-0a1b2c3d4e5f",
+    "started_at": "2026-11-14T09:30:00Z",
+    "finished_at": "2026-11-14T09:30:01.84Z",
+    "target": "support-platform",
+    "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+    "profile": "standard",
+    "profile_source": "default",
+    "policy_pack": "builtin/v1",
+    "policy_version": "1.0",
+    "config_path": ".agentgov.yaml",
+    "offline": true
+  },
+  "agents": [
+    {
+      "id": "support-triage-agent",
+      "name": "support-triage-agent",
+      "root": "services/triage",
+      "detection": "detected",
+      "confidence": "high",
+      "framework": "openai-agents",
+      "framework_version": "unknown",
+      "language": "typescript",
+      "entrypoint": "services/triage/src/agent.ts",
+      "owner": "support-engineering",
+      "risk_tier": "standard",
+      "inferred_risk_tier": "standard",
+      "tools": [
+        {
+          "name": "search_help_articles",
+          "kind": "http",
+          "location": {
+            "path": "services/triage/src/tools.ts",
+            "line": 12
+          },
+          "sensitive": false,
+          "capabilities": [
+            "network",
+            "tools"
+          ],
+          "declared": true
+        },
+        {
+          "name": "tag_ticket",
+          "kind": "function",
+          "location": {
+            "path": "services/triage/src/tools.ts",
+            "line": 40
+          },
+          "sensitive": true,
+          "sensitive_why": "Changes ticket records.",
+          "capabilities": [
+            "mutating-actions",
+            "tools"
+          ],
+          "declared": true
+        }
+      ],
+      "permissions_declared": [
+        "tickets:tag"
+      ],
+      "data_access_paths": [],
+      "mcp_connections": [],
+      "capabilities": [
+        "mutating-actions",
+        "network",
+        "tools"
+      ],
+      "facts": [
+        {
+          "kind": "framework-import",
+          "detail": "imports @openai/agents",
+          "location": {
+            "path": "services/triage/src/agent.ts",
+            "line": 1
+          },
+          "confidence": "high",
+          "collector": "typescript.openai-agents",
+          "parser_version": "1"
+        }
+      ]
+    }
+  ],
+  "assessments": [
+    {
+      "agent_id": "support-triage-agent",
+      "score": {
+        "value": 60,
+        "label": "60/100",
+        "applicable_controls": 16,
+        "controls_with_evidence": 13,
+        "coverage_percent": 81,
+        "tested_percent": 50,
+        "operational_percent": 13,
+        "findings_by_severity": {
+          "critical": 0,
+          "high": 0,
+          "info": 0,
+          "low": 1,
+          "medium": 0
+        },
+        "unresolved_mandatory": [],
+        "status_counts": {
+          "declared-only": 1,
+          "not-applicable": 8,
+          "unknown": 3,
+          "verified-implementation": 4,
+          "verified-operational": 2,
+          "verified-tested": 6
+        }
+      },
+      "decision": {
+        "outcome": "ALLOW",
+        "reasons": []
+      },
+      "controls": [
+        {
+          "control_id": "AGC-001",
+          "agent_id": "support-triage-agent",
+          "title": "Owner and Inventory",
+          "domain": "A: Accountability",
+          "plain_language": "A named person is accountable for the agent, and its tools and data are listed.",
+          "status": "verified-tested",
+          "status_reason": "A signed owner attestation names support-engineering as the accountable owner.",
+          "maturity": 3,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc001-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Record the owner, purpose, and registry reference in .agentgov.yaml.",
+          "remediation": [
+            "Record the owner, purpose, and registry reference in .agentgov.yaml.",
+            "Attach a signed owner attestation or a registry record as evidence."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-002",
+          "agent_id": "support-triage-agent",
+          "title": "Dynamic Risk Tiering",
+          "domain": "A: Accountability",
+          "plain_language": "The agent has a risk level that matches what it can actually do.",
+          "status": "verified-implementation",
+          "status_reason": "The declared tier standard matches the detected capabilities.",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc002-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Declare a risk tier with a written rationale.",
+          "remediation": [
+            "Declare a risk tier with a written rationale.",
+            "Review the tier when the agent gains a new capability."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-003",
+          "agent_id": "support-triage-agent",
+          "title": "Integrated Change Control",
+          "domain": "A: Accountability",
+          "plain_language": "Changes to models, tools, and prompts trigger a new assessment before release.",
+          "status": "verified-tested",
+          "status_reason": "CI records show the governance scan running on the release commit.",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc003-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Run the governance scan in CI on every change to agent files.",
+          "remediation": [
+            "Run the governance scan in CI on every change to agent files.",
+            "Link each release to its commit and artifact hash."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-004",
+          "agent_id": "support-triage-agent",
+          "title": "Dedicated Non-Human Identity",
+          "domain": "B: Identity and Access",
+          "plain_language": "The agent has its own identity and does not borrow a person's account.",
+          "status": "verified-operational",
+          "status_reason": "Identity provider records show a dedicated workload identity for the agent.",
+          "maturity": 4,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc004-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Create a dedicated workload identity for the agent.",
+          "remediation": [
+            "Create a dedicated workload identity for the agent.",
+            "Remove shared and personal credentials from the agent configuration."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-005",
+          "agent_id": "support-triage-agent",
+          "title": "Allowlisted Tool Access",
+          "domain": "B: Identity and Access",
+          "plain_language": "The agent can only use tools on an approved list.",
+          "status": "verified-tested",
+          "status_reason": "The allowlist test rejected a tool that is not on the list.",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc005-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Define an explicit tool allowlist with deny by default.",
+          "remediation": [
+            "Define an explicit tool allowlist with deny by default.",
+            "Add a test that calls a tool outside the list and expects a rejection."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-006",
+          "agent_id": "support-triage-agent",
+          "title": "Short-Lived Scoped Tokens",
+          "domain": "B: Identity and Access",
+          "plain_language": "Access tokens expire quickly and only grant what the task needs.",
+          "status": "not-applicable",
+          "status_reason": "No capability that triggers this control was detected.",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Issue tokens with a short lifetime, a narrow scope, and a fixed audience.",
+            "Test expired and wrong-audience tokens against a mock identity provider."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-007",
+          "agent_id": "support-triage-agent",
+          "title": "User-Enforced Data Layer",
+          "domain": "B: Identity and Access",
+          "plain_language": "The agent only sees data that the current user is allowed to see.",
+          "status": "not-applicable",
+          "status_reason": "No capability that triggers this control was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Pass the caller identity to every data-access tool.",
+            "Enforce the filter in the data service, not in the prompt.",
+            "Add a two-user test that expects cross-user reads to fail."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-008",
+          "agent_id": "support-triage-agent",
+          "title": "Vault-Injected Secrets",
+          "domain": "B: Identity and Access",
+          "plain_language": "Secrets come from a vault at run time and are never written in code.",
+          "status": "not-applicable",
+          "status_reason": "No capability that triggers this control was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Remove the hardcoded value and rotate the credential.",
+            "Load secrets from a vault through the workload identity."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-009",
+          "agent_id": "support-triage-agent",
+          "title": "External Policy Engine",
+          "domain": "C: Action Controls",
+          "plain_language": "A separate rule engine checks sensitive actions before they run.",
+          "status": "not-applicable",
+          "status_reason": "No capability that triggers this control was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Route sensitive tool calls through a policy enforcement point.",
+            "Deny by default when the policy service is unavailable."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-010",
+          "agent_id": "support-triage-agent",
+          "title": "Human Approval Gates",
+          "domain": "C: Action Controls",
+          "plain_language": "A person must approve risky actions before the agent carries them out.",
+          "status": "not-applicable",
+          "status_reason": "No capability that triggers this control was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 5,
+          "severity": "critical",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Require an external approval bound to the actor, the exact action, and an expiry time.",
+            "Test bypass, replay, and expired approval cases."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-011",
+          "agent_id": "support-triage-agent",
+          "title": "Dual Content Guardrails",
+          "domain": "C: Action Controls",
+          "plain_language": "Inputs and outputs are checked, including text returned by tools.",
+          "status": "verified-implementation",
+          "status_reason": "Input and output validators wrap the model call.",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc011-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Validate tool returns before the model reads them.",
+          "remediation": [
+            "Validate tool returns before the model reads them.",
+            "Add adversarial fixtures for injected instructions."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-012",
+          "agent_id": "support-triage-agent",
+          "title": "Multi-Level Resource Limits",
+          "domain": "C: Action Controls",
+          "plain_language": "The agent has limits on steps, cost, time, and spending.",
+          "status": "verified-tested",
+          "status_reason": "The over-limit test stopped the run at the configured step limit.",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc012-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Set limits for steps, tokens, run time, and transaction amounts.",
+          "remediation": [
+            "Set limits for steps, tokens, run time, and transaction amounts.",
+            "Test a bounded loop and an over-limit request."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-013",
+          "agent_id": "support-triage-agent",
+          "title": "Disposable Sandbox Environments",
+          "domain": "C: Action Controls",
+          "plain_language": "Code and commands run in a locked-down environment that is thrown away afterwards.",
+          "status": "not-applicable",
+          "status_reason": "No capability that triggers this control was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Run tool execution as a non-root user with a read-only file system.",
+            "Drop capabilities and restrict network access."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-014",
+          "agent_id": "support-triage-agent",
+          "title": "Vetted Tool Supply Chain",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "Tools, MCP servers, and dependencies are pinned and come from known sources.",
+          "status": "verified-implementation",
+          "status_reason": "All dependencies are pinned by a lock file.",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc014-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Pin every MCP server and dependency to a version or digest.",
+          "remediation": [
+            "Pin every MCP server and dependency to a version or digest.",
+            "Record provenance for container images."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-015",
+          "agent_id": "support-triage-agent",
+          "title": "Context Memory Integrity",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "What the agent remembers is validated and kept separate for each user.",
+          "status": "not-applicable",
+          "status_reason": "No capability that triggers this control was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Validate content before it is written to memory.",
+            "Separate memory by user and set a retention period."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-016",
+          "agent_id": "support-triage-agent",
+          "title": "Authenticated Inter-Agent Messages",
+          "domain": "D: Trust Boundaries",
+          "plain_language": "Agents prove who they are before they act on each other's messages.",
+          "status": "not-applicable",
+          "status_reason": "No capability that triggers this control was detected.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": false,
+          "applicability_basis": "inferred",
+          "applicability_reason": "No capability that triggers this control was detected.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "high",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Confirm that the agent does not have this capability.",
+          "remediation": [
+            "Authenticate every agent-to-agent request.",
+            "Add replay protection and scoped authority."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-017",
+          "agent_id": "support-triage-agent",
+          "title": "Instant Agent Kill Switch",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "Operators can stop the agent and revoke its access at once.",
+          "status": "verified-tested",
+          "status_reason": "The stop-and-revoke test denied new actions within 2 seconds.",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 5,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc017-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Add central revocation that cancels running jobs.",
+          "remediation": [
+            "Add central revocation that cancels running jobs.",
+            "Run a stop-and-revoke test and record the time to stop."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-018",
+          "agent_id": "support-triage-agent",
+          "title": "Reversible Action Design",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "Actions can be undone, or are approved when they cannot be.",
+          "status": "verified-implementation",
+          "status_reason": "tag_ticket is idempotent and records the previous tags.",
+          "maturity": 2,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "detected",
+          "applicability_reason": "The agent has a capability that this control governs.",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc018-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Make mutating operations idempotent.",
+          "remediation": [
+            "Make mutating operations idempotent.",
+            "Add a compensation step or record why an action is not reversible."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-019",
+          "agent_id": "support-triage-agent",
+          "title": "Dedicated Incident Runbook",
+          "domain": "E: Containment and Recovery",
+          "plain_language": "There is a written, practiced plan for when the agent misbehaves.",
+          "status": "declared-only",
+          "status_reason": "An incident runbook file exists. No exercise record was supplied.",
+          "maturity": 1,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 2,
+          "severity": "medium",
+          "evidence_refs": [
+            "ev-agc019-01"
+          ],
+          "finding_refs": [
+            "f-9c1e3a5b7d8f"
+          ],
+          "next_action": "Write an agent-specific runbook with owner and escalation path.",
+          "remediation": [
+            "Write an agent-specific runbook with owner and escalation path.",
+            "Run an exercise and record the result."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-020",
+          "agent_id": "support-triage-agent",
+          "title": "Mandatory Regression Evals",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "Tests for allowed and forbidden behavior run on every change.",
+          "status": "verified-tested",
+          "status_reason": "CI results show 42 behavior tests passing on the release commit.",
+          "maturity": 3,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc020-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Add versioned behavior tests that run in CI.",
+          "remediation": [
+            "Add versioned behavior tests that run in CI.",
+            "Submit the CI results as evidence."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-021",
+          "agent_id": "support-triage-agent",
+          "title": "Continuous Red Teaming",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "The agent is attacked on purpose, repeatedly, to find weaknesses.",
+          "status": "unknown",
+          "status_reason": "No detector produced evidence for this control and no external evidence was supplied.",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Supply test or runtime evidence for this control.",
+          "remediation": [
+            "Add repeatable adversarial scenarios for prompt injection and tool misuse.",
+            "Import the results through the evidence adapter."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-022",
+          "agent_id": "support-triage-agent",
+          "title": "Complete Step Tracing",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "Every decision and tool call is recorded and can be followed end to end.",
+          "status": "verified-operational",
+          "status_reason": "Runtime traces correlate model, tool, and ticket updates end to end.",
+          "maturity": 4,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": true,
+          "min_maturity": 2,
+          "weight": 4,
+          "severity": "high",
+          "evidence_refs": [
+            "ev-agc022-01"
+          ],
+          "finding_refs": [],
+          "next_action": "Correlate runs, tool calls, and approvals with one trace ID.",
+          "remediation": [
+            "Correlate runs, tool calls, and approvals with one trace ID.",
+            "Record a synthetic end-to-end trace as evidence."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-023",
+          "agent_id": "support-triage-agent",
+          "title": "Tamper-Evident Audit Trail",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "Audit records cannot be changed without detection.",
+          "status": "unknown",
+          "status_reason": "No detector produced evidence for this control and no external evidence was supplied.",
+          "maturity": 0,
+          "max_static_maturity": 2,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Supply test or runtime evidence for this control.",
+          "remediation": [
+            "Write audit records to protected or hash-chained storage.",
+            "Run a tampering test on sample records."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        },
+        {
+          "control_id": "AGC-024",
+          "agent_id": "support-triage-agent",
+          "title": "Real-Time Operational Monitoring",
+          "domain": "F: Assurance and Visibility",
+          "plain_language": "Unusual agent behavior raises an alert while it is happening.",
+          "status": "unknown",
+          "status_reason": "No detector produced evidence for this control and no external evidence was supplied.",
+          "maturity": 0,
+          "max_static_maturity": 1,
+          "applicable": true,
+          "applicability_basis": "always",
+          "applicability_reason": "",
+          "mandatory": false,
+          "min_maturity": 0,
+          "weight": 3,
+          "severity": "medium",
+          "evidence_refs": [],
+          "finding_refs": [],
+          "next_action": "Supply test or runtime evidence for this control.",
+          "remediation": [
+            "Define alerts for denied policy decisions and unusual tool use.",
+            "Send a synthetic signal and confirm that an alert fires."
+          ],
+          "limitations": [
+            "A static scan cannot confirm how this control behaves in production."
+          ]
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev-agc001-01",
+      "control_id": "AGC-001",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "external-attestation",
+      "source_location": "evidence/ev-agc001-01.json",
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "A signed owner attestation names support-engineering as the accountable owner.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc002-01",
+      "control_id": "AGC-002",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": ".agentgov.yaml:8",
+      "location": {
+        "path": ".agentgov.yaml",
+        "line": 8
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "The declared tier standard matches the detected capabilities.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc003-01",
+      "control_id": "AGC-003",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": ".github/workflows/governance.yml:14",
+      "location": {
+        "path": ".github/workflows/governance.yml",
+        "line": 14
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "CI records show the governance scan running on the release commit.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc004-01",
+      "control_id": "AGC-004",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "runtime",
+      "source_location": "evidence/ev-agc004-01.json",
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "operational",
+      "validity": "valid",
+      "summary": "Identity provider records show a dedicated workload identity for the agent.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc005-01",
+      "control_id": "AGC-005",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "services/triage/test/allowlist.test.ts:9",
+      "location": {
+        "path": "services/triage/test/allowlist.test.ts",
+        "line": 9
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "The allowlist test rejected a tool that is not on the list.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc011-01",
+      "control_id": "AGC-011",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "services/triage/src/guardrails.ts:5",
+      "location": {
+        "path": "services/triage/src/guardrails.ts",
+        "line": 5
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "Input and output validators wrap the model call.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc012-01",
+      "control_id": "AGC-012",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "services/triage/test/limits.test.ts:21",
+      "location": {
+        "path": "services/triage/test/limits.test.ts",
+        "line": 21
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "The over-limit test stopped the run at the configured step limit.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc014-01",
+      "control_id": "AGC-014",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "services/triage/package-lock.json:1",
+      "location": {
+        "path": "services/triage/package-lock.json",
+        "line": 1
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "All dependencies are pinned by a lock file.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc017-01",
+      "control_id": "AGC-017",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "services/triage/test/stop.test.ts:30",
+      "location": {
+        "path": "services/triage/test/stop.test.ts",
+        "line": 30
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "The stop-and-revoke test denied new actions within 2 seconds.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc018-01",
+      "control_id": "AGC-018",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "static",
+      "source_location": "services/triage/src/tools.ts:52",
+      "location": {
+        "path": "services/triage/src/tools.ts",
+        "line": 52
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "pass",
+      "signal": "present",
+      "strength": "implementation",
+      "validity": "valid",
+      "summary": "tag_ticket is idempotent and records the previous tags.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc019-01",
+      "control_id": "AGC-019",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "configuration",
+      "source_location": "docs/runbook.md:1",
+      "location": {
+        "path": "docs/runbook.md",
+        "line": 1
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "not-available",
+      "result": "inconclusive",
+      "signal": "declared",
+      "strength": "declared",
+      "validity": "valid",
+      "summary": "An incident runbook file exists. No exercise record was supplied.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc020-01",
+      "control_id": "AGC-020",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "test",
+      "source_location": "services/triage/test/behavior.test.ts:1",
+      "location": {
+        "path": "services/triage/test/behavior.test.ts",
+        "line": 1
+      },
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "validity": "valid",
+      "summary": "CI results show 42 behavior tests passing on the release commit.",
+      "limitations": []
+    },
+    {
+      "evidence_id": "ev-agc022-01",
+      "control_id": "AGC-022",
+      "agent_id": "support-triage-agent",
+      "commit_sha": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d",
+      "policy_version": "1.0",
+      "scanner_version": "0.1.0",
+      "source_type": "runtime",
+      "source_location": "evidence/ev-agc022-01.json",
+      "collector": "evidence.sample",
+      "observed_at": "2026-11-14T09:29:58Z",
+      "valid_until": null,
+      "integrity": "verified",
+      "result": "pass",
+      "signal": "present",
+      "strength": "operational",
+      "validity": "valid",
+      "summary": "Runtime traces correlate model, tool, and ticket updates end to end.",
+      "limitations": []
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "f-9c1e3a5b7d8f",
+      "fingerprint": "9c1e3a5b7d8f0a2c4e6f8b0d2a4c6e7b",
+      "rule_id": "AGC-019.runbook-not-exercised",
+      "control_id": "AGC-019",
+      "agent_id": "support-triage-agent",
+      "severity": "low",
+      "confidence": "high",
+      "title": "Incident runbook has no exercise record",
+      "description": "The runbook exists but no record shows that the team has practiced it.",
+      "why_it_matters": "A plan that nobody has practiced can fail when it is needed.",
+      "remediation": [
+        "Run an incident exercise and record the result as evidence."
+      ],
+      "location": {
+        "path": "docs/runbook.md",
+        "line": 1
+      },
+      "evidence_refs": [
+        "ev-agc019-01"
+      ],
+      "mappings": [
+        {
+          "standard": "OWASP Top 10 for LLM Applications",
+          "version": "2025",
+          "requirement_id": "LLM06",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "rationale": "Related guidance on excessive agency. This mapping is informative, not an endorsement."
+        }
+      ]
+    }
+  ],
+  "score": {
+    "value": 60,
+    "label": "60/100",
+    "applicable_controls": 16,
+    "controls_with_evidence": 13,
+    "coverage_percent": 81,
+    "tested_percent": 50,
+    "operational_percent": 13,
+    "findings_by_severity": {
+      "critical": 0,
+      "high": 0,
+      "info": 0,
+      "low": 1,
+      "medium": 0
+    },
+    "unresolved_mandatory": [],
+    "status_counts": {
+      "declared-only": 1,
+      "not-applicable": 8,
+      "unknown": 3,
+      "verified-implementation": 4,
+      "verified-operational": 2,
+      "verified-tested": 6
+    }
+  },
+  "decision": {
+    "outcome": "ALLOW",
+    "reasons": []
+  },
+  "stats": {
+    "files_scanned": 212,
+    "files_skipped": 0,
+    "bytes_read": 1048112,
+    "duration_ms": 2310
+  },
+  "warnings": [],
+  "limitations": [
+    "This was a static, offline scan. No repository code was executed.",
+    "Runtime behavior is known only from the evidence files that were supplied."
+  ]
+}
