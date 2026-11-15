@@ -1,0 +1,61 @@
+name: Feature request
+description: Suggest a new capability or a change to existing behavior.
+title: "Feature: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem first, then the idea. A concrete use case helps more than a list of features.
+        For a new detector, use the "New detector" template.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to do, and what stops you today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What should the tool do? Show an example command or output if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - CLI
+        - Reports
+        - Controls, profiles, or scoring (needs a design review)
+        - GitHub Action or other CI
+        - Self-hosted dashboard
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you work on this?
+      options:
+        - "Yes, I can send a pull request"
+        - "Yes, with guidance"
+        - "No"
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: I searched existing issues and the roadmap.
+          required: true
+        - label: This request keeps scans offline by default and needs no account, API key, or paid service.
+          required: true

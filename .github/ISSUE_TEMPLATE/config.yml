@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/shahzadarain/agent-governance-auditor/security/policy
+    about: Do not open a public issue. Read the security policy and report privately through the Security tab.
+  - name: Frequently asked questions
+    url: https://github.com/shahzadarain/agent-governance-auditor/blob/main/docs/faq.md
+    about: Why a control shows as unknown, why a high score can still block, and other common questions.

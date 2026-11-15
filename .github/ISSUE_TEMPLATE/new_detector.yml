@@ -1,0 +1,80 @@
+name: New detector
+description: Propose a detector that finds evidence for a governance control.
+title: "Detector: "
+labels: ["detector"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read docs/contributing-rules.md first. A detector reports evidence for exactly one control.
+        Static analysis can show that a control is declared or implemented. It cannot show that a control is tested or works in production.
+  - type: input
+    id: control
+    attributes:
+      label: Control ID
+      description: "Run agentgov controls list to see the IDs. If no control fits, open a design issue instead."
+      placeholder: "AGC-0XX"
+    validations:
+      required: true
+  - type: textarea
+    id: observes
+    attributes:
+      label: What the detector observes
+      description: Describe the pattern in plain language. Name the language, framework, or file type.
+    validations:
+      required: true
+  - type: dropdown
+    id: signal
+    attributes:
+      label: What the detector reports
+      options:
+        - Evidence that a control is implemented
+        - Evidence that a control is declared only
+        - A violation (a concrete problem in the code)
+        - More than one of the above
+    validations:
+      required: true
+  - type: textarea
+    id: positive
+    attributes:
+      label: Positive example
+      description: Minimal code that should produce evidence. No real secrets.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: negative
+    attributes:
+      label: Negative example
+      description: Similar-looking code that must not produce evidence.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: What the detector cannot prove
+      description: Known false positives, false negatives, and limits of the pattern.
+    validations:
+      required: true
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you implement this?
+      options:
+        - "Yes, I can send a pull request"
+        - "Yes, with guidance"
+        - "No"
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: The detector never claims a strength above "implementation".
+          required: true
+        - label: The detector reads files only. It does not execute scanned code or use the network.
+          required: true
+        - label: The examples contain no real secrets or private data.
+          required: true

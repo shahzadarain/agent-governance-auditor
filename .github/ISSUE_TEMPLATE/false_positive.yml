@@ -1,0 +1,79 @@
+name: False positive or wrong result
+description: The scan reported something that is not true, or missed something it should have found.
+title: "Wrong result: "
+labels: ["false-positive"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Wrong results are the most useful reports this project receives. Each one can become a test fixture.
+        Issues are public. Remove secrets, tokens, and private code. Replace real values with obvious fakes such as `sk-EXAMPLE-not-a-real-key`.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of problem
+      options:
+        - False positive (reported a finding or evidence that is wrong)
+        - False negative (missed a control or a problem that exists in the code)
+        - Agent not detected
+        - Wrong agent, tool, or framework identified
+        - Wrong status or maturity level
+    validations:
+      required: true
+  - type: input
+    id: rule-id
+    attributes:
+      label: Rule ID or control ID
+      description: "Shown in the report, for example AGC-008.hardcoded-secret or AGC-008. Write 'unknown' if you cannot tell."
+    validations:
+      required: true
+  - type: textarea
+    id: snippet
+    attributes:
+      label: Minimal snippet
+      description: The smallest piece of code or configuration that reproduces the result. Remove all secrets first.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: language
+    attributes:
+      label: Language and framework
+      placeholder: "Python, LangGraph"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What the scan reported
+      description: Paste the relevant lines of the report. Use --no-color.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What the scan should have reported, and why.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Output of agentgov version
+    validations:
+      required: true
+  - type: input
+    id: profile
+    attributes:
+      label: Profile and relevant flags
+      placeholder: "--profile standard"
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: The snippet contains no real secrets, tokens, or private data.
+          required: true
+        - label: The maintainers may add this snippet to the project's test fixtures under Apache-2.0.
+          required: false

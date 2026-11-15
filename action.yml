@@ -1,0 +1,182 @@
+name: AgentGov Auditor
+description: >-
+  Scan a repository for AI agents and check which governance controls have
+  real evidence. Read-only, offline, no account or API key needed.
+author: Shahzad Asghar
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  path:
+    description: Folder to scan, relative to the workspace.
+    required: false
+    default: "."
+  profile:
+    description: "Risk profile: baseline, standard, or high-risk. Empty selects from configuration or detected capabilities."
+    required: false
+    default: ""
+  config:
+    description: Path to .agentgov.yaml. Empty auto-discovers it in the scanned folder.
+    required: false
+    default: ""
+  baseline:
+    description: >-
+      Path to an organization baseline profile that the repository cannot
+      weaken. Check it out from a trusted location, not from the pull request.
+    required: false
+    default: ""
+  fail_on:
+    description: "Fail the job when the decision is: block, review (block or review required), or never."
+    required: false
+    default: block
+  upload_sarif:
+    description: >-
+      Upload findings to GitHub code scanning. Needs the security-events write
+      permission. Code scanning is available for public repositories and for
+      private repositories with GitHub Code Security.
+    required: false
+    default: "false"
+  comment:
+    description: Post or update a summary comment on the pull request. Needs the pull-requests write permission.
+    required: false
+    default: "false"
+  server_url:
+    description: Optional self-hosted AgentGov server to send the result to.
+    required: false
+    default: ""
+  token:
+    description: Project upload token for server_url. Pass it from a secret.
+    required: false
+    default: ""
+  artifact_name:
+    description: Name of the uploaded artifact that holds the JSON, SARIF, Markdown, and HTML reports. Empty skips the upload.
+    required: false
+    default: agentgov-reports
+
+outputs:
+  decision:
+    description: "Release decision: ALLOW, BLOCK, or REVIEW_REQUIRED."
+    value: ${{ steps.scan.outputs.decision }}
+  score:
+    description: Assessment maturity score from 0 to 100, or insufficient-evidence. Illustrative only.
+    value: ${{ steps.scan.outputs.score }}
+  findings:
+    description: Number of findings.
+    value: ${{ steps.scan.outputs.findings }}
+  exit_code:
+    description: "CLI exit code: 0 passed, 1 policy failed, 2 scan error."
+    value: ${{ steps.scan.outputs.exit_code }}
+  json:
+    description: Path of the JSON result file.
+    value: ${{ steps.scan.outputs.json }}
+  sarif:
+    description: Path of the SARIF file.
+    value: ${{ steps.scan.outputs.sarif }}
+  version:
+    description: Version of the agentgov CLI that ran.
+    value: ${{ steps.scan.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    # The CLI is built from the exact source of this action at the ref you
+    # pinned. Nothing is downloaded and piped into a shell. Go module
+    # downloads are verified against go.sum.
+    - name: Set up Go
+      uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+      with:
+        go-version-file: ${{ github.action_path }}/go.mod
+        cache-dependency-path: ${{ github.action_path }}/go.sum
+
+    - name: Build agentgov
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        mkdir -p "$RUNNER_TEMP/agentgov"
+        bin="$RUNNER_TEMP/agentgov/agentgov"
+        if [ "$RUNNER_OS" = "Windows" ]; then bin="$bin.exe"; fi
+        (cd "$ACTION_PATH" && CGO_ENABLED=0 go build -trimpath -o "$bin" ./cmd/agentgov)
+        echo "AGENTGOV_BIN=$bin" >> "$GITHUB_ENV"
+
+    # Inputs reach the script only through environment variables, never by
+    # text substitution into the script, so input values cannot inject shell.
+    # The scan reads files. It does not run code from the repository.
+    - name: Scan
+      id: scan
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_PROFILE: ${{ inputs.profile }}
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_BASELINE: ${{ inputs.baseline }}
+        INPUT_FAIL_ON: ${{ inputs.fail_on }}
+        INPUT_SERVER_URL: ${{ inputs.server_url }}
+        AGENTGOV_TOKEN: ${{ inputs.token }}
+        NO_COLOR: "1"
+      run: |
+        set -uo pipefail
+        out="$RUNNER_TEMP/agentgov"
+        args=(scan "$INPUT_PATH" --no-progress --fail-on "$INPUT_FAIL_ON"
+              --json-out "$out/agentgov-results.json"
+              --sarif-out "$out/agentgov.sarif"
+              --markdown-out "$out/agentgov-summary.md"
+              --html-out "$out/agentgov-report.html"
+              --github-output "$GITHUB_OUTPUT")
+        if [ -n "$INPUT_PROFILE" ]; then args+=(--profile "$INPUT_PROFILE"); fi
+        if [ -n "$INPUT_CONFIG" ]; then args+=(--config "$INPUT_CONFIG"); fi
+        if [ -n "$INPUT_BASELINE" ]; then args+=(--baseline "$INPUT_BASELINE"); fi
+        if [ -n "$INPUT_SERVER_URL" ]; then args+=(--upload-url "$INPUT_SERVER_URL"); fi
+        "$AGENTGOV_BIN" "${args[@]}"
+        code=$?
+        echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+        echo "json=$out/agentgov-results.json" >> "$GITHUB_OUTPUT"
+        echo "sarif=$out/agentgov.sarif" >> "$GITHUB_OUTPUT"
+        if [ -f "$out/agentgov-summary.md" ]; then
+          cat "$out/agentgov-summary.md" >> "$GITHUB_STEP_SUMMARY"
+        else
+          echo "AgentGov Auditor could not complete the scan (exit code $code). This is a tool or configuration error, not a policy result." >> "$GITHUB_STEP_SUMMARY"
+        fi
+        exit 0
+
+    - name: Upload reports
+      if: ${{ always() && inputs.artifact_name != '' && steps.scan.outputs.exit_code != '2' }}
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: ${{ runner.temp }}/agentgov/agentgov*
+        if-no-files-found: warn
+
+    - name: Upload SARIF to code scanning
+      if: ${{ always() && inputs.upload_sarif == 'true' && steps.scan.outputs.exit_code != '2' }}
+      continue-on-error: true
+      uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif }}
+        category: agentgov
+
+    - name: Comment on pull request
+      if: ${{ always() && inputs.comment == 'true' && github.event_name == 'pull_request' && steps.scan.outputs.exit_code != '2' }}
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        GH_REPO: ${{ github.repository }}
+      run: |
+        set -euo pipefail
+        gh pr comment "$PR_NUMBER" --body-file "$RUNNER_TEMP/agentgov/agentgov-summary.md" --edit-last --create-if-none
+
+    - name: Apply release policy
+      shell: bash
+      env:
+        CODE: ${{ steps.scan.outputs.exit_code }}
+        DECISION: ${{ steps.scan.outputs.decision }}
+      run: |
+        case "$CODE" in
+          0) echo "AgentGov decision: ${DECISION:-unknown}. The release policy did not fail." ;;
+          1) echo "::error title=AgentGov policy::Release decision is ${DECISION:-BLOCK}. See the job summary for the controls to fix."; exit 1 ;;
+          *) echo "::error title=AgentGov scan error::The scan could not run (exit code ${CODE:-unknown}). This is a tool or configuration error, not a policy result."; exit 2 ;;
+        esac

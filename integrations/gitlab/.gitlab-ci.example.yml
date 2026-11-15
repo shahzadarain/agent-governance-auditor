@@ -1,0 +1,56 @@
+# AgentGov Auditor on GitLab CI/CD.
+#
+# Status: illustrative. This configuration has not been run on GitLab by the
+# maintainers yet. Test it in your own project before you rely on it.
+#
+# The scan is read-only and offline. It does not run code from your repository
+# and needs no account, API key, or CI/CD variable.
+#
+# Copy the job into your .gitlab-ci.yml, or include this file.
+
+stages:
+  - test
+
+agentgov:
+  stage: test
+  # The official Go image. AgentGov Auditor needs Go 1.27 or later.
+  # For repeatable builds, pin the image by digest.
+  image: golang:1.27
+  variables:
+    # A shallow clone is enough. The scan reads the working tree.
+    GIT_DEPTH: "1"
+    NO_COLOR: "1"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    # Build the CLI from source. No release exists yet, so "latest" resolves
+    # to the newest commit on the default branch. For repeatable builds,
+    # replace "latest" with a commit SHA or, later, a release tag.
+    # The Go image puts the installed binary on PATH.
+    - go install github.com/shahzadarain/agent-governance-auditor/cmd/agentgov@latest
+    - agentgov version
+    - mkdir -p agentgov-out
+    # Exit codes: 0 = policy did not fail, 1 = policy failed, 2 = scan error.
+    - |
+      set +e
+      agentgov scan . \
+        --no-color \
+        --json-out agentgov-out/agentgov-results.json \
+        --sarif-out agentgov-out/agentgov.sarif \
+        --markdown-out agentgov-out/agentgov-summary.md \
+        --fail-on block
+      code=$?
+      set -e
+      case "$code" in
+        0) echo "AgentGov: the release policy did not fail." ;;
+        1) echo "AgentGov: the release policy failed. Read agentgov-out/agentgov-summary.md in the job artifacts." ;;
+        *) echo "AgentGov: the scan could not run (exit code $code). This is a tool or configuration error, not a policy result." ;;
+      esac
+      exit "$code"
+  artifacts:
+    # Keep the reports even when the job fails.
+    when: always
+    expire_in: 30 days
+    paths:
+      - agentgov-out/

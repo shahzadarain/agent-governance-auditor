@@ -1,0 +1,76 @@
+# AgentGov Auditor on GitHub Actions.
+# Copy this file to .github/workflows/agentgov.yml in your repository.
+#
+# The scan is read-only and offline. It does not run code from your repository
+# and needs no account, API key, or secret.
+name: AgentGov
+
+on:
+  # Use pull_request, not pull_request_target. See the fork note in README.md.
+  pull_request:
+  push:
+    branches: [main]
+
+# Least privilege: the default job can only read the repository.
+permissions:
+  contents: read
+
+concurrency:
+  group: agentgov-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Variant 1: minimal. Job summary, report artifact, and a pass or fail gate.
+  scan:
+    name: Governance scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # No release tag exists yet, so this example follows the main branch.
+      # For production use, replace "main" with a full commit SHA that you
+      # have reviewed.
+      - name: Run AgentGov Auditor
+        id: agentgov
+        uses: shahzadarain/agent-governance-auditor@main
+        with:
+          path: "."
+          fail_on: block
+
+      - name: Show the decision
+        if: always()
+        shell: bash
+        env:
+          DECISION: ${{ steps.agentgov.outputs.decision }}
+          FINDINGS: ${{ steps.agentgov.outputs.findings }}
+        run: echo "Decision is ${DECISION:-unknown} with ${FINDINGS:-0} findings."
+
+  # Variant 2: also send findings to GitHub code scanning.
+  # Remove this job if you do not use code scanning. Code scanning is available
+  # for public repositories and for private repositories with GitHub Code
+  # Security. Keep only one of the two jobs.
+  scan-with-code-scanning:
+    name: Governance scan with code scanning
+    runs-on: ubuntu-latest
+    # Fork pull requests get a read-only token, so SARIF upload cannot work
+    # there. This condition skips the job for forks. Variant 1 still runs.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+      security-events: write # required by upload_sarif
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run AgentGov Auditor
+        uses: shahzadarain/agent-governance-auditor@main
+        with:
+          path: "."
+          fail_on: block
+          upload_sarif: true
+          artifact_name: agentgov-reports-code-scanning

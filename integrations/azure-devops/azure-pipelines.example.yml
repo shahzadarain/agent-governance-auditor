@@ -1,0 +1,78 @@
+# AgentGov Auditor on Azure Pipelines.
+#
+# Status: illustrative. This configuration has not been run on Azure by the
+# maintainers yet. Test it in your own project before you rely on it.
+#
+# The scan is read-only and offline. It does not run code from your repository
+# and needs no account, API key, or pipeline secret.
+
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  # AgentGov Auditor needs Go 1.27 or later.
+  goVersion: "1.27.4"
+  outDir: $(Build.ArtifactStagingDirectory)/agentgov
+
+steps:
+  - checkout: self
+    fetchDepth: 1
+    persistCredentials: false
+
+  - task: GoTool@0
+    displayName: Install Go
+    inputs:
+      version: $(goVersion)
+
+  # Build the CLI from source. No release exists yet, so "latest" resolves to
+  # the newest commit on the default branch. For repeatable builds, replace
+  # "latest" with a commit SHA or, later, a release tag.
+  - bash: |
+      set -euo pipefail
+      go install github.com/shahzadarain/agent-governance-auditor/cmd/agentgov@latest
+      echo "##vso[task.prependpath]`go env GOPATH`/bin"
+    displayName: Install agentgov
+
+  # Exit codes: 0 = policy did not fail, 1 = policy failed, 2 = scan error.
+  - bash: |
+      set -uo pipefail
+      mkdir -p "$OUT_DIR"
+      agentgov version
+      agentgov scan . \
+        --no-color \
+        --json-out "$OUT_DIR/agentgov-results.json" \
+        --sarif-out "$OUT_DIR/agentgov.sarif" \
+        --markdown-out "$OUT_DIR/agentgov-summary.md" \
+        --fail-on block
+      code=$?
+      if [ -f "$OUT_DIR/agentgov-summary.md" ]; then
+        echo "##vso[task.uploadsummary]$OUT_DIR/agentgov-summary.md"
+      fi
+      case "$code" in
+        0) echo "AgentGov: the release policy did not fail." ;;
+        1) echo "##vso[task.logissue type=error]AgentGov: the release policy failed. Read the summary on the run page." ;;
+        *) echo "##vso[task.logissue type=error]AgentGov: the scan could not run (exit code $code). This is a tool or configuration error, not a policy result." ;;
+      esac
+      exit "$code"
+    displayName: AgentGov scan
+    env:
+      OUT_DIR: $(outDir)
+      NO_COLOR: "1"
+
+  # Keep the reports even when the scan step fails.
+  - task: PublishPipelineArtifact@1
+    displayName: Publish AgentGov reports
+    condition: always()
+    inputs:
+      targetPath: $(outDir)
+      artifact: agentgov-reports
