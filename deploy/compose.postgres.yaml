@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# STATUS: not yet verified on a Docker host, and the PostgreSQL storage path
+# is EXPERIMENTAL and UNTESTED. The code compiles and shares its queries with
+# the tested SQLite path, but it has never run against a PostgreSQL server.
+# Use SQLite (compose.yaml alone) for anything you depend on, and test this
+# profile yourself before use.
+#
+# Override file: use it together with compose.yaml.
+#
+#   docker compose -f deploy/compose.yaml -f deploy/compose.postgres.yaml up -d --build
+#
+# POSTGRES_PASSWORD has no default. Compose stops with an error when it is
+# not set in deploy/.env. Use a password of letters and digits only: it is
+# placed in a URL below and other characters would need percent-encoding.
+
+services:
+  agentgov:
+    environment:
+      AGENTGOV_DATABASE_URL: "postgres://agentgov:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in deploy/.env}@postgres:5432/agentgov?sslmode=disable"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - default
+      - db
+
+  postgres:
+    # Pinned by tag; release documentation pins by digest.
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: agentgov
+      POSTGRES_DB: agentgov
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in deploy/.env}"
+    volumes:
+      - agentgov-pgdata:/var/lib/postgresql/data
+    # No published port. The database is reachable only on the internal
+    # network "db", which has no route to the outside.
+    networks:
+      - db
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    stop_grace_period: 60s
+    mem_limit: 512m
+    cpus: 1.0
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agentgov -d agentgov"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+networks:
+  db:
+    internal: true
+
+volumes:
+  agentgov-pgdata:

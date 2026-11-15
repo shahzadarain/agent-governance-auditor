@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# STATUS: not yet verified on a Docker host. This file was written on a
+# machine without Docker. Run the checks in docs/self-hosting.md before you
+# rely on it.
+#
+# Single-node deployment with SQLite.
+#
+#   cp deploy/env.example deploy/.env      # then review the values
+#   docker compose -f deploy/compose.yaml up -d --build
+#   docker compose -f deploy/compose.yaml logs agentgov   # shows the one-time bootstrap token
+#
+# The dashboard and API are published on 127.0.0.1:8080 of the host only.
+# To reach them from other machines, put a TLS reverse proxy in front
+# (deploy/Caddyfile.example). Do not change the port mapping to 0.0.0.0.
+
+name: agentgov
+
+services:
+  agentgov:
+    image: agentgov:local
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    command: ["serve"]
+    # Values come from deploy/.env (copy of env.example). The file is required.
+    env_file:
+      - .env
+    environment:
+      # Inside the container the server must listen on all interfaces. The
+      # host-side exposure is limited by the "ports" mapping below.
+      AGENTGOV_LISTEN: "0.0.0.0:8080"
+      AGENTGOV_ALLOW_PUBLIC: "true"
+      AGENTGOV_DATA_DIR: /data
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - agentgov-data:/data
+    # Hardening: read-only root file system, no Linux capabilities, no
+    # privilege escalation, non-root user, no Docker socket, no host mounts.
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    user: "65532:65532"
+    restart: unless-stopped
+    stop_grace_period: 30s
+    # Starting values, not benchmark results. Password hashing uses 64 MiB
+    # per sign-in and the server allows 4 at a time; an upload of the maximum
+    # size is held in memory while it is validated. Sizing is not yet
+    # benchmarked: watch real usage and adjust.
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 256
+    healthcheck:
+      test: ["CMD", "/agentgov", "healthcheck", "--url", "http://127.0.0.1:8080/readyz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  agentgov-data:

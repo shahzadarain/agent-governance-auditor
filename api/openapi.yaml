@@ -1,0 +1,1456 @@
+# SPDX-License-Identifier: Apache-2.0
+openapi: 3.0.3
+info:
+  title: AgentGov Auditor server API
+  version: "1"
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  description: |
+    API of the self-hosted AgentGov Auditor server. The CLI uploads ScanResult
+    documents; the dashboard reads them.
+
+    Authentication
+    - Browser session: `POST /api/v1/login` sets the `agentgov_session` cookie
+      (HttpOnly, SameSite=Strict, Secure over HTTPS). Sessions end 12 hours
+      after login or after 2 hours without a request.
+    - CSRF: every cookie-authenticated POST or DELETE must send the
+      `X-CSRF-Token` header with the `csrf_token` value from
+      `GET /api/v1/session`, and must be same-origin (`Sec-Fetch-Site:
+      same-origin`, or an `Origin` whose host equals `Host`).
+    - Project API token: `Authorization: Bearer agt_<prefix>_<secret>`. A
+      token authenticates `POST /api/v1/scans` and `GET /api/v1/version`
+      only. Every other route ignores it.
+
+    Authorization
+    - Global role `administrator` may do everything. Other accounts have the
+      global role `user` and a role per project: `owner`, `reviewer`, or
+      `viewer`.
+    - A project, agent, scan, or token that the caller may not see answers
+      `404 not_found`, exactly like an object that does not exist.
+
+    Errors
+    - Every error has the body `{"error": {"code": "...", "message": "..."}}`.
+
+    Limits
+    - Scan upload: 5 MiB by default (`MaxUploadBytes`), at most 200 agents,
+      10,000 findings, 20,000 evidence items, 8,192 bytes per string, 256
+      bytes per identifier. Unknown JSON fields are rejected.
+    - Other request bodies: 64 KiB (evidence verification: 256 KiB).
+    - Uploads: 60 per token per minute by default. Sign-in: 20 attempts per
+      client IP (refilled at 20 per minute), and an exponential lockout per
+      username and IP after 5 failures. Limits are kept in memory.
+
+    Data handling
+    - Stored strings are returned as JSON data only. Clients must escape them
+      before rendering.
+    - The server never fetches a URL supplied by a client.
+    - The server stores scan metadata and the uploaded ScanResult. It does
+      not scan uploads for secrets; the CLI redacts before upload.
+servers:
+  - url: http://127.0.0.1:8080
+    description: Default local address
+tags:
+  - name: operations
+  - name: auth
+  - name: users
+  - name: projects
+  - name: scans
+  - name: agents
+  - name: catalog
+  - name: audit
+paths:
+  /healthz:
+    get:
+      tags: [operations]
+      operationId: getHealthz
+      summary: Liveness. No authentication and no detail.
+      security: []
+      responses:
+        "200":
+          description: The process is running.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Status" }
+  /readyz:
+    get:
+      tags: [operations]
+      operationId: getReadyz
+      summary: Readiness. The database responds and all migrations are applied.
+      security: []
+      responses:
+        "200":
+          description: Ready.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Status" }
+        "503": { $ref: "#/components/responses/Error" }
+  /metrics:
+    get:
+      tags: [operations]
+      operationId: getMetrics
+      summary: Prometheus metrics (request, ingest, and authentication failure counters only).
+      description: |
+        Available to an administrator session, or to a direct loopback caller
+        that sends no proxy headers. Everyone else receives 404. The metrics
+        hold no project, agent, or finding data.
+      security:
+        - sessionCookie: []
+        - {}
+      responses:
+        "200":
+          description: Prometheus text exposition format.
+          content:
+            text/plain:
+              schema: { type: string }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/version:
+    get:
+      tags: [operations]
+      operationId: getVersion
+      summary: Server version. With a Bearer token it also verifies the token.
+      security:
+        - {}
+        - bearerToken: []
+      responses:
+        "200":
+          description: Version information.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Version" }
+        "401": { $ref: "#/components/responses/Error" }
+  /api/v1/setup:
+    post:
+      tags: [auth]
+      operationId: postSetup
+      summary: Create the first administrator with the one-time bootstrap token.
+      description: |
+        The server prints the bootstrap token once to its console when no user
+        exists. The token expires after one hour or on first use.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SetupRequest" }
+      responses:
+        "201":
+          description: Administrator created. Sign in with `POST /api/v1/login`.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "415": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /api/v1/login:
+    post:
+      tags: [auth]
+      operationId: postLogin
+      summary: Sign in and receive the session cookie.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LoginRequest" }
+      responses:
+        "200":
+          description: Signed in. The response sets the `agentgov_session` cookie.
+          headers:
+            Set-Cookie:
+              schema: { type: string }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "415": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /api/v1/logout:
+    post:
+      tags: [auth]
+      operationId: postLogout
+      summary: End the session.
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      responses:
+        "200":
+          description: Signed out.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Status" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+  /api/v1/session:
+    get:
+      tags: [auth]
+      operationId: getSession
+      summary: Current user, role, and CSRF token.
+      responses:
+        "200":
+          description: The current session.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "401": { $ref: "#/components/responses/Error" }
+  /api/v1/users:
+    get:
+      tags: [users]
+      operationId: listUsers
+      summary: List accounts (administrator).
+      responses:
+        "200":
+          description: Accounts.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/User" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+    post:
+      tags: [users]
+      operationId: createUser
+      summary: Create an account (administrator).
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateUserRequest" }
+      responses:
+        "201":
+          description: Account created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+  /api/v1/projects:
+    get:
+      tags: [projects]
+      operationId: listProjects
+      summary: List the projects the caller can see.
+      responses:
+        "200":
+          description: Projects with the caller's role in each.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/Project" }
+        "401": { $ref: "#/components/responses/Error" }
+    post:
+      tags: [projects]
+      operationId: createProject
+      summary: Create a project (administrator).
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateProjectRequest" }
+      responses:
+        "201":
+          description: Project created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Project" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+  /api/v1/projects/{projectId}:
+    parameters:
+      - $ref: "#/components/parameters/projectId"
+    get:
+      tags: [projects]
+      operationId: getProject
+      summary: Project with its overview and recent scans (any member).
+      responses:
+        "200":
+          description: Project detail.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ProjectDetail" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/projects/{projectId}/agents:
+    parameters:
+      - $ref: "#/components/parameters/projectId"
+    get:
+      tags: [agents]
+      operationId: listProjectAgents
+      summary: Agent inventory of a project (any member).
+      description: Use `key` from each item as `{agentId}` in the agent routes.
+      responses:
+        "200":
+          description: Agents ordered by agent ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/AgentSummary" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/projects/{projectId}/tokens:
+    parameters:
+      - $ref: "#/components/parameters/projectId"
+    get:
+      tags: [projects]
+      operationId: listTokens
+      summary: List API tokens (owner or administrator). Secrets are never returned.
+      responses:
+        "200":
+          description: Token records.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/APIToken" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+    post:
+      tags: [projects]
+      operationId: createToken
+      summary: Create an API token (owner or administrator). The token is returned once.
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateTokenRequest" }
+      responses:
+        "201":
+          description: Token created. Store `token` now; it cannot be read again.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreateTokenResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/projects/{projectId}/tokens/{tokenId}:
+    parameters:
+      - $ref: "#/components/parameters/projectId"
+      - name: tokenId
+        in: path
+        required: true
+        schema: { type: string }
+    delete:
+      tags: [projects]
+      operationId: revokeToken
+      summary: Revoke an API token (owner or administrator).
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      responses:
+        "200":
+          description: Token revoked.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Status" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/projects/{projectId}/members:
+    parameters:
+      - $ref: "#/components/parameters/projectId"
+    get:
+      tags: [projects]
+      operationId: listMembers
+      summary: List project members (owner or administrator).
+      responses:
+        "200":
+          description: Members.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/Member" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+    post:
+      tags: [projects]
+      operationId: setMember
+      summary: Add a member or change a member's role (owner or administrator).
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SetMemberRequest" }
+      responses:
+        "200":
+          description: Membership stored.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Member" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+    delete:
+      tags: [projects]
+      operationId: removeMember
+      summary: Remove a member (owner or administrator).
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Member removed.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Status" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/scans:
+    post:
+      tags: [scans]
+      operationId: uploadScan
+      summary: Upload a ScanResult (project API token).
+      description: |
+        The project comes from the token. The body cannot select a project.
+        The upload is idempotent on the SHA-256 of the body within the
+        project: a repeated upload returns the existing scan with status 200.
+        Unknown fields, a `schema_version` other than "1", control IDs outside
+        AGC-001 to AGC-024, values outside the status, severity, and decision
+        enumerations, and timestamps more than 24 hours in the future are
+        rejected with `400 invalid_payload`.
+      security:
+        - bearerToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ScanResult" }
+      responses:
+        "200":
+          description: The same document was uploaded before. The existing scan is returned.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UploadResponse" }
+        "201":
+          description: Scan stored.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UploadResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "413": { $ref: "#/components/responses/Error" }
+        "415": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /api/v1/agents/{agentId}:
+    parameters:
+      - $ref: "#/components/parameters/agentId"
+    get:
+      tags: [agents]
+      operationId: getAgent
+      summary: Agent detail with its latest assessment (any member).
+      parameters:
+        - name: project
+          in: query
+          required: false
+          description: Optional project ID. When given, it must be the agent's project.
+          schema: { type: string }
+      responses:
+        "200":
+          description: Agent detail.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AgentDetail" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/agents/{agentId}/scans:
+    parameters:
+      - $ref: "#/components/parameters/agentId"
+    get:
+      tags: [agents]
+      operationId: listAgentScans
+      summary: Score and decision history of an agent, newest first (any member).
+      description: |
+        Each item carries the commit, profile, policy pack, and policy
+        version. Do not draw a trend across items whose profile, policy pack,
+        or policy version differ.
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 500, default: 100 }
+      responses:
+        "200":
+          description: History.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/AgentScan" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/scans/{scanId}:
+    parameters:
+      - $ref: "#/components/parameters/scanId"
+    get:
+      tags: [scans]
+      operationId: getScan
+      summary: Stored ScanResult with server metadata (any member).
+      responses:
+        "200":
+          description: Scan detail.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ScanDetail" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/scans/{scanId}/findings:
+    parameters:
+      - $ref: "#/components/parameters/scanId"
+    get:
+      tags: [scans]
+      operationId: listScanFindings
+      summary: Findings of a scan (any member).
+      parameters:
+        - name: severity
+          in: query
+          schema: { $ref: "#/components/schemas/Severity" }
+        - name: control_id
+          in: query
+          schema: { type: string }
+        - name: agent_id
+          in: query
+          description: Also returns repository-level findings (agent_id "*").
+          schema: { type: string }
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: A page of findings.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Page"
+                  - type: object
+                    required: [items]
+                    properties:
+                      items:
+                        type: array
+                        items: { $ref: "#/components/schemas/Finding" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/scans/{scanId}/controls:
+    parameters:
+      - $ref: "#/components/parameters/scanId"
+    get:
+      tags: [scans]
+      operationId: listScanControls
+      summary: Control results of a scan, one per agent and control (any member).
+      parameters:
+        - name: agent_id
+          in: query
+          schema: { type: string }
+        - name: status
+          in: query
+          schema: { $ref: "#/components/schemas/ControlStatus" }
+        - name: control_id
+          in: query
+          schema: { type: string }
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: A page of control results.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Page"
+                  - type: object
+                    required: [items]
+                    properties:
+                      items:
+                        type: array
+                        items: { $ref: "#/components/schemas/ControlResult" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/scans/{scanId}/compare/{otherScanId}:
+    parameters:
+      - $ref: "#/components/parameters/scanId"
+      - name: otherScanId
+        in: path
+        required: true
+        description: The baseline ("before") scan. It must be in the same project.
+        schema: { type: string }
+    get:
+      tags: [scans]
+      operationId: compareScans
+      summary: Compare {scanId} (after) with {otherScanId} (before) (any member).
+      description: |
+        Findings are matched by fingerprint. `comparable` is false when the
+        policy pack, policy version, or profile differ; a client must then
+        not present the difference as a trend.
+      responses:
+        "200":
+          description: Comparison.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CompareResponse" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/controls:
+    get:
+      tags: [catalog]
+      operationId: getControls
+      summary: The control catalog (any signed-in user).
+      responses:
+        "200":
+          description: Catalog.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Catalog" }
+        "401": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+  /api/v1/policies:
+    get:
+      tags: [catalog]
+      operationId: getPolicies
+      summary: Risk profiles, read-only (any signed-in user).
+      responses:
+        "200":
+          description: Profiles.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [profiles]
+                properties:
+                  profiles:
+                    type: array
+                    items: { $ref: "#/components/schemas/Profile" }
+        "401": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+  /api/v1/evidence/verify:
+    post:
+      tags: [catalog]
+      operationId: verifyEvidence
+      summary: Verify a detached Ed25519 signature over one evidence item.
+      description: |
+        The public key is selected by `key_id` from the keys configured on the
+        server. The request cannot supply a key or a URL. Nothing is stored.
+
+        The signature covers the canonical form used by the CLI
+        (`agentgov evidence sign`): one compact JSON object with sorted keys
+        and no HTML escaping, holding exactly `agent_id`, `collector`,
+        `commit_sha` ("" when unknown), `control_id`, `identity_context`,
+        `limitations`, `observed_at`, `result`, `signal`, `source_type`,
+        `strength`, `subject_digest`, `subject_paths` (sorted), `summary`,
+        and `valid_until` ("" when absent). Timestamps are UTC RFC 3339.
+        Fields the scanner sets (`evidence_id`, `policy_version`,
+        `scanner_version`, `source_location`, `location`, `artifact_digest`,
+        `integrity`, `validity`, `validity_reason`) are not covered.
+      security:
+        - sessionCookie: []
+          csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/EvidenceVerifyRequest" }
+      responses:
+        "200":
+          description: Verification result. `verified` is false for an unknown key or a bad signature.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EvidenceVerifyResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+  /api/v1/audit-events:
+    get:
+      tags: [audit]
+      operationId: listAuditEvents
+      summary: Audit events, newest first.
+      description: |
+        An administrator may omit `project` to list every event. A project
+        owner or reviewer must name a project they belong to.
+      parameters:
+        - name: project
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 1000, default: 100 }
+        - name: before
+          in: query
+          description: Return events with an ID lower than this value (paging).
+          schema: { type: integer, format: int64 }
+      responses:
+        "200":
+          description: Events.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/AuditEvent" }
+        "401": { $ref: "#/components/responses/Error" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/overview:
+    get:
+      tags: [projects]
+      operationId: getOverview
+      summary: Dashboard summary of every project the caller can see.
+      responses:
+        "200":
+          description: Overview.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OverviewResponse" }
+        "401": { $ref: "#/components/responses/Error" }
+security:
+  - sessionCookie: []
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: agentgov_session
+      description: Opaque session ID set by `POST /api/v1/login`.
+    csrfToken:
+      type: apiKey
+      in: header
+      name: X-CSRF-Token
+      description: Required with the session cookie on POST and DELETE. Value from `GET /api/v1/session`.
+    bearerToken:
+      type: http
+      scheme: bearer
+      bearerFormat: agt_<prefix>_<secret>
+      description: Project API token with the scope `scans:write`.
+  parameters:
+    projectId:
+      name: projectId
+      in: path
+      required: true
+      schema: { type: string }
+    agentId:
+      name: agentId
+      in: path
+      required: true
+      description: The opaque agent `key` from the agent listing. It is unique across projects.
+      schema: { type: string }
+    scanId:
+      name: scanId
+      in: path
+      required: true
+      description: The server-generated scan `id` (not `scan_id` from the document).
+      schema: { type: string }
+    limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 1000, default: 200 }
+    offset:
+      name: offset
+      in: query
+      schema: { type: integer, minimum: 0, default: 0 }
+  responses:
+    Error:
+      description: Error.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              description: |
+                One of: bad_request, invalid_request, invalid_payload,
+                unauthenticated, invalid_token, invalid_credentials, forbidden,
+                csrf_failed, cross_origin, invalid_bootstrap_token,
+                bootstrap_expired, setup_complete, not_found, user_not_found,
+                conflict, payload_too_large, unsupported_media_type,
+                rate_limited, method_not_allowed, catalog_not_loaded,
+                profiles_not_loaded, not_ready, internal_error.
+            message: { type: string }
+    Status:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string }
+    Version:
+      type: object
+      required: [name, version, api_version, schema_version, setup_required]
+      properties:
+        name: { type: string }
+        version: { type: string }
+        api_version: { type: string }
+        schema_version: { type: string, description: "ScanResult schema version the server accepts." }
+        setup_required: { type: boolean, description: "True when no user exists yet." }
+        token:
+          type: object
+          description: Present when the request carried a valid Bearer token.
+          properties:
+            token_id: { type: string }
+            project_id: { type: string }
+            scopes: { type: array, items: { type: string } }
+    SetupRequest:
+      type: object
+      required: [bootstrap_token, username, password]
+      additionalProperties: false
+      properties:
+        bootstrap_token: { type: string }
+        username: { type: string, pattern: "^[a-z0-9][a-z0-9._@-]{2,63}$" }
+        password: { type: string, minLength: 12, maxLength: 1024 }
+    LoginRequest:
+      type: object
+      required: [username, password]
+      additionalProperties: false
+      properties:
+        username: { type: string }
+        password: { type: string }
+    CreateUserRequest:
+      type: object
+      required: [username, password]
+      additionalProperties: false
+      properties:
+        username: { type: string, pattern: "^[a-z0-9][a-z0-9._@-]{2,63}$" }
+        password: { type: string, minLength: 12, maxLength: 1024 }
+        role: { type: string, enum: [user, administrator], default: user }
+    User:
+      type: object
+      required: [id, username, role, created_at, disabled]
+      properties:
+        id: { type: string }
+        username: { type: string }
+        role: { type: string, enum: [user, administrator] }
+        created_at: { type: string, format: date-time }
+        disabled: { type: boolean }
+    UserResponse:
+      type: object
+      required: [user]
+      properties:
+        user: { $ref: "#/components/schemas/User" }
+    Session:
+      type: object
+      required: [user, csrf_token, expires_at, idle_expires_at]
+      properties:
+        user: { $ref: "#/components/schemas/User" }
+        csrf_token: { type: string }
+        expires_at: { type: string, format: date-time }
+        idle_expires_at: { type: string, format: date-time }
+    CreateProjectRequest:
+      type: object
+      required: [slug, name]
+      additionalProperties: false
+      properties:
+        slug: { type: string, pattern: "^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$" }
+        name: { type: string, minLength: 1, maxLength: 200 }
+    Project:
+      type: object
+      required: [id, slug, name, created_by, created_at]
+      properties:
+        id: { type: string }
+        slug: { type: string }
+        name: { type: string }
+        created_by: { type: string }
+        created_at: { type: string, format: date-time }
+        role:
+          type: string
+          description: The caller's role in the project.
+          enum: [administrator, owner, reviewer, viewer]
+    Overview:
+      type: object
+      required: [project_id, agent_count, scan_count, decisions, open_critical, open_high, latest_scan_id, latest_decision, latest_scan_at]
+      properties:
+        project_id: { type: string }
+        agent_count: { type: integer }
+        scan_count: { type: integer }
+        decisions:
+          type: object
+          description: Count of agents by their last decision. The key is empty for agents whose last scan carried no assessment.
+          additionalProperties: { type: integer }
+        open_critical: { type: integer, description: "Critical findings in the latest scan of the project." }
+        open_high: { type: integer, description: "High findings in the latest scan of the project." }
+        latest_scan_id: { type: string }
+        latest_decision: { type: string }
+        latest_scan_at: { type: string, format: date-time, nullable: true }
+    ProjectDetail:
+      type: object
+      required: [project, overview, recent_scans]
+      properties:
+        project: { $ref: "#/components/schemas/Project" }
+        overview: { $ref: "#/components/schemas/Overview" }
+        recent_scans:
+          type: array
+          description: The 20 most recent scans.
+          items: { $ref: "#/components/schemas/ScanSummary" }
+    OverviewResponse:
+      type: object
+      required: [projects, totals]
+      properties:
+        projects:
+          type: array
+          items:
+            type: object
+            required: [project, overview]
+            properties:
+              project: { $ref: "#/components/schemas/Project" }
+              overview: { $ref: "#/components/schemas/Overview" }
+        totals:
+          type: object
+          required: [projects, agents, scans, open_critical, open_high, decisions, latest_scan_at]
+          properties:
+            projects: { type: integer }
+            agents: { type: integer }
+            scans: { type: integer }
+            open_critical: { type: integer }
+            open_high: { type: integer }
+            decisions:
+              type: object
+              additionalProperties: { type: integer }
+            latest_scan_at: { type: string, format: date-time, nullable: true }
+    Member:
+      type: object
+      required: [project_id, user_id, username, role]
+      properties:
+        project_id: { type: string }
+        user_id: { type: string }
+        username: { type: string }
+        role: { type: string, enum: [owner, reviewer, viewer] }
+    SetMemberRequest:
+      type: object
+      required: [role]
+      additionalProperties: false
+      description: Provide `user_id` or `username`.
+      properties:
+        user_id: { type: string }
+        username: { type: string }
+        role: { type: string, enum: [owner, reviewer, viewer] }
+    CreateTokenRequest:
+      type: object
+      required: [name]
+      additionalProperties: false
+      properties:
+        name: { type: string, minLength: 1, maxLength: 100 }
+        expires_in_days: { type: integer, minimum: 0, maximum: 366, description: "0 or absent means no expiry." }
+    APIToken:
+      type: object
+      required: [id, project_id, name, prefix, scopes, created_by, created_at, last_used_at, expires_at, revoked_at]
+      properties:
+        id: { type: string }
+        project_id: { type: string }
+        name: { type: string }
+        prefix: { type: string, description: "Display prefix of the token. Not a secret." }
+        scopes: { type: array, items: { type: string, enum: ["scans:write"] } }
+        created_by: { type: string }
+        created_at: { type: string, format: date-time }
+        last_used_at: { type: string, format: date-time, nullable: true }
+        expires_at: { type: string, format: date-time, nullable: true }
+        revoked_at: { type: string, format: date-time, nullable: true }
+    CreateTokenResponse:
+      type: object
+      required: [token, record]
+      properties:
+        token: { type: string, description: "The secret token, shown only in this response. Format: agt_<prefix>_<secret>." }
+        record: { $ref: "#/components/schemas/APIToken" }
+    UploadResponse:
+      type: object
+      required: [id, scan_id, project_id, created, received_at, url]
+      properties:
+        id: { type: string, description: "Server-generated scan ID." }
+        scan_id: { type: string, description: "scan.scan_id from the document." }
+        project_id: { type: string }
+        created: { type: boolean, description: "False when the same document was uploaded before." }
+        received_at: { type: string, format: date-time }
+        url: { type: string, description: "API path of the scan." }
+    ScanSummary:
+      type: object
+      description: Server metadata of one stored scan.
+      required: [id, project_id, scan_id, target, commit_sha, profile, policy_pack, policy_version, tool_version, decision, score, score_label, received_at, uploaded_by_token, payload_bytes, payload_sha256]
+      properties:
+        id: { type: string }
+        project_id: { type: string }
+        scan_id: { type: string }
+        target: { type: string }
+        commit_sha: { type: string }
+        profile: { type: string }
+        policy_pack: { type: string }
+        policy_version: { type: string }
+        tool_version: { type: string }
+        decision: { $ref: "#/components/schemas/Outcome" }
+        score: { type: integer, nullable: true, minimum: 0, maximum: 100 }
+        score_label: { type: string }
+        received_at: { type: string, format: date-time }
+        uploaded_by_token: { type: string, description: "ID of the API token that uploaded the scan." }
+        payload_bytes: { type: integer }
+        payload_sha256: { type: string }
+    ScanDetail:
+      type: object
+      required: [scan, result]
+      properties:
+        scan: { $ref: "#/components/schemas/ScanSummary" }
+        result: { $ref: "#/components/schemas/ScanResult" }
+    AgentSummary:
+      type: object
+      required: [key, project_id, agent_id, name, framework, language, owner, risk_tier, last_scan_id, last_decision, last_score, first_seen, last_seen]
+      properties:
+        key: { type: string, description: "Opaque server-generated key. Use it as {agentId}." }
+        project_id: { type: string }
+        agent_id: { type: string, description: "Agent ID from the scan. Unique within the project only." }
+        name: { type: string }
+        framework: { type: string }
+        language: { type: string }
+        owner: { type: string }
+        risk_tier: { type: string }
+        last_scan_id: { type: string }
+        last_decision: { type: string, description: "ALLOW, BLOCK, REVIEW_REQUIRED, or empty when the last scan carried no assessment for the agent." }
+        last_score: { type: integer, nullable: true }
+        first_seen: { type: string, format: date-time }
+        last_seen: { type: string, format: date-time }
+    AgentDetail:
+      type: object
+      required: [agent, scan, detail, assessment]
+      properties:
+        agent: { $ref: "#/components/schemas/AgentSummary" }
+        scan:
+          allOf: [{ $ref: "#/components/schemas/ScanSummary" }]
+          nullable: true
+          description: The latest scan that included the agent.
+        detail:
+          allOf: [{ $ref: "#/components/schemas/Agent" }]
+          nullable: true
+        assessment:
+          allOf: [{ $ref: "#/components/schemas/AgentAssessment" }]
+          nullable: true
+    AgentScan:
+      type: object
+      required: [id, scan_id, received_at, commit_sha, profile, policy_pack, policy_version, tool_version, decision, score, score_label]
+      properties:
+        id: { type: string, description: "Server-generated scan ID." }
+        scan_id: { type: string }
+        received_at: { type: string, format: date-time }
+        commit_sha: { type: string }
+        profile: { type: string }
+        policy_pack: { type: string }
+        policy_version: { type: string }
+        tool_version: { type: string }
+        decision: { type: string, description: "The agent's decision in this scan." }
+        score: { type: integer, nullable: true }
+        score_label: { type: string }
+    CompareResponse:
+      type: object
+      required: [before, after, comparison]
+      properties:
+        before: { $ref: "#/components/schemas/ScanSummary" }
+        after: { $ref: "#/components/schemas/ScanSummary" }
+        comparison: { $ref: "#/components/schemas/Comparison" }
+    Page:
+      type: object
+      required: [total, limit, offset]
+      properties:
+        total: { type: integer, description: "Number of items that match the filters." }
+        limit: { type: integer }
+        offset: { type: integer }
+    AuditEvent:
+      type: object
+      required: [id, at, actor_type, actor_id, action, target, project_id, detail, prev_hash, hash]
+      properties:
+        id: { type: integer, format: int64, description: "Sequence number in the hash chain." }
+        at: { type: string, format: date-time }
+        actor_type: { type: string, enum: [user, token, system] }
+        actor_id: { type: string }
+        action: { type: string }
+        target: { type: string }
+        project_id: { type: string, description: "Empty for events that belong to no project." }
+        detail: { type: object, additionalProperties: true }
+        prev_hash: { type: string }
+        hash: { type: string, description: "sha256(prev_hash || canonical event), lower-case hex." }
+    EvidenceVerifyRequest:
+      type: object
+      required: [evidence, signature, key_id]
+      additionalProperties: false
+      properties:
+        evidence: { $ref: "#/components/schemas/Evidence" }
+        signature: { type: string, description: "Base64 Ed25519 signature (64 bytes)." }
+        key_id: { type: string, description: "ID of a key configured on the server." }
+    EvidenceVerifyResponse:
+      type: object
+      required: [verified, key_id, reason]
+      properties:
+        verified: { type: boolean }
+        key_id: { type: string }
+        reason: { type: string }
+
+    # ------------------------------------------------------------------
+    # Shared model. Names and fields match the JSON of internal/model.
+    # ------------------------------------------------------------------
+    ControlStatus:
+      type: string
+      enum: [verified-operational, verified-tested, verified-implementation, declared-only, missing, failed, unknown, not-applicable, accepted-risk, error]
+    Severity:
+      type: string
+      enum: [critical, high, medium, low, info]
+    Confidence:
+      type: string
+      enum: [high, medium, low]
+    Outcome:
+      type: string
+      enum: [ALLOW, BLOCK, REVIEW_REQUIRED]
+    Location:
+      type: object
+      required: [path]
+      properties:
+        path: { type: string }
+        line: { type: integer }
+        end_line: { type: integer }
+    Fact:
+      type: object
+      properties:
+        kind: { type: string }
+        detail: { type: string }
+        location: { $ref: "#/components/schemas/Location" }
+        confidence: { $ref: "#/components/schemas/Confidence" }
+        collector: { type: string }
+        parser_version: { type: string }
+    Tool:
+      type: object
+      properties:
+        name: { type: string }
+        kind: { type: string }
+        location: { $ref: "#/components/schemas/Location" }
+        sensitive: { type: boolean }
+        sensitive_why: { type: string }
+        capabilities: { type: array, nullable: true, items: { type: string } }
+        declared: { type: boolean }
+    MCPConnection:
+      type: object
+      properties:
+        name: { type: string }
+        transport: { type: string }
+        target: { type: string }
+        pinned: { type: boolean }
+        version: { type: string }
+        location: { $ref: "#/components/schemas/Location" }
+    Agent:
+      type: object
+      required: [id]
+      properties:
+        id: { type: string, maxLength: 256 }
+        name: { type: string }
+        root: { type: string }
+        detection: { type: string, enum: [detected, suspected, not-detected] }
+        confidence: { $ref: "#/components/schemas/Confidence" }
+        framework: { type: string }
+        framework_version: { type: string }
+        language: { type: string }
+        entrypoint: { type: string }
+        owner: { type: string }
+        risk_tier: { type: string }
+        inferred_risk_tier: { type: string }
+        tools: { type: array, nullable: true, items: { $ref: "#/components/schemas/Tool" } }
+        permissions_declared: { type: array, nullable: true, items: { type: string } }
+        data_access_paths: { type: array, nullable: true, items: { type: string } }
+        mcp_connections: { type: array, nullable: true, items: { $ref: "#/components/schemas/MCPConnection" } }
+        capabilities: { type: array, nullable: true, items: { type: string } }
+        facts: { type: array, nullable: true, items: { $ref: "#/components/schemas/Fact" } }
+    Subject:
+      type: object
+      properties:
+        paths: { type: array, nullable: true, items: { type: string } }
+        digest: { type: string }
+    Evidence:
+      type: object
+      properties:
+        evidence_id: { type: string }
+        control_id: { type: string, pattern: "^AGC-0(0[1-9]|1[0-9]|2[0-4])$" }
+        agent_id: { type: string }
+        commit_sha: { type: string }
+        artifact_digest: { type: string }
+        subject: { $ref: "#/components/schemas/Subject" }
+        policy_version: { type: string }
+        scanner_version: { type: string }
+        source_type: { type: string, enum: [static, configuration, test, runtime, external-attestation, manual-review] }
+        source_location: { type: string }
+        location: { $ref: "#/components/schemas/Location" }
+        collector: { type: string }
+        observed_at: { type: string, format: date-time }
+        valid_until: { type: string, format: date-time, nullable: true }
+        identity_context: { type: string }
+        integrity: { type: string, enum: [verified, unsigned, invalid, not-available] }
+        result: { type: string, enum: [pass, fail, inconclusive] }
+        signal: { type: string, enum: [present, absent, violation, declared, error] }
+        strength: { type: string, enum: [declared, implementation, tested, operational] }
+        validity: { type: string, enum: [valid, expired, commit-mismatch, digest-mismatch, unbound, invalid-signature, malformed] }
+        validity_reason: { type: string }
+        summary: { type: string }
+        limitations: { type: array, nullable: true, items: { type: string } }
+    Mapping:
+      type: object
+      properties:
+        standard: { type: string }
+        version: { type: string }
+        requirement_id: { type: string }
+        url: { type: string }
+        rationale: { type: string }
+    Finding:
+      type: object
+      required: [finding_id, fingerprint, control_id, severity]
+      properties:
+        finding_id: { type: string, maxLength: 256 }
+        fingerprint: { type: string, maxLength: 256 }
+        rule_id: { type: string }
+        control_id: { type: string, pattern: "^AGC-0(0[1-9]|1[0-9]|2[0-4])$" }
+        agent_id: { type: string, description: 'Agent ID, or "*" for a repository-level finding.' }
+        severity: { $ref: "#/components/schemas/Severity" }
+        confidence: { $ref: "#/components/schemas/Confidence" }
+        title: { type: string }
+        description: { type: string }
+        why_it_matters: { type: string }
+        remediation: { type: array, nullable: true, items: { type: string } }
+        reproduction: { type: string }
+        location: { $ref: "#/components/schemas/Location" }
+        evidence_refs: { type: array, nullable: true, items: { type: string } }
+        mappings: { type: array, nullable: true, items: { $ref: "#/components/schemas/Mapping" } }
+    ControlResult:
+      type: object
+      required: [control_id, status, maturity]
+      properties:
+        control_id: { type: string, pattern: "^AGC-0(0[1-9]|1[0-9]|2[0-4])$" }
+        agent_id: { type: string }
+        title: { type: string }
+        domain: { type: string }
+        plain_language: { type: string }
+        status: { $ref: "#/components/schemas/ControlStatus" }
+        status_reason: { type: string }
+        maturity: { type: integer, minimum: 0, maximum: 4 }
+        max_static_maturity: { type: integer }
+        applicable: { type: boolean }
+        applicability_basis: { type: string }
+        applicability_reason: { type: string }
+        mandatory: { type: boolean }
+        min_maturity: { type: integer }
+        weight: { type: integer }
+        severity: { $ref: "#/components/schemas/Severity" }
+        evidence_refs: { type: array, nullable: true, items: { type: string } }
+        finding_refs: { type: array, nullable: true, items: { type: string } }
+        next_action: { type: string }
+        remediation: { type: array, nullable: true, items: { type: string } }
+        limitations: { type: array, nullable: true, items: { type: string } }
+    Score:
+      type: object
+      description: Illustrative maturity score. It is never a certification.
+      properties:
+        value: { type: integer, nullable: true, minimum: 0, maximum: 100 }
+        label: { type: string }
+        applicable_controls: { type: integer }
+        controls_with_evidence: { type: integer }
+        coverage_percent: { type: integer }
+        tested_percent: { type: integer }
+        operational_percent: { type: integer }
+        findings_by_severity: { type: object, nullable: true, additionalProperties: { type: integer } }
+        unresolved_mandatory: { type: array, nullable: true, items: { type: string } }
+        status_counts: { type: object, nullable: true, additionalProperties: { type: integer } }
+    Reason:
+      type: object
+      properties:
+        code: { type: string }
+        control_id: { type: string }
+        agent_id: { type: string }
+        message: { type: string }
+    Decision:
+      type: object
+      required: [outcome]
+      properties:
+        outcome: { $ref: "#/components/schemas/Outcome" }
+        reasons: { type: array, nullable: true, items: { $ref: "#/components/schemas/Reason" } }
+    AgentAssessment:
+      type: object
+      required: [agent_id, decision]
+      properties:
+        agent_id: { type: string }
+        score: { $ref: "#/components/schemas/Score" }
+        decision: { $ref: "#/components/schemas/Decision" }
+        controls: { type: array, nullable: true, maxItems: 24, items: { $ref: "#/components/schemas/ControlResult" } }
+    ScanMeta:
+      type: object
+      required: [scan_id]
+      properties:
+        scan_id: { type: string, maxLength: 256 }
+        started_at: { type: string, format: date-time }
+        finished_at: { type: string, format: date-time }
+        target: { type: string }
+        commit_sha: { type: string }
+        profile: { type: string }
+        profile_source: { type: string }
+        policy_pack: { type: string }
+        policy_version: { type: string }
+        config_path: { type: string }
+        offline: { type: boolean }
+    ToolInfo:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string }
+        version: { type: string }
+    Stats:
+      type: object
+      properties:
+        files_scanned: { type: integer }
+        files_skipped: { type: integer }
+        bytes_read: { type: integer, format: int64 }
+        duration_ms: { type: integer, format: int64 }
+    ScanResult:
+      type: object
+      description: The normalized scan output of the CLI (schema version "1"). Unknown fields are rejected on upload at every level.
+      required: [schema_version, tool, scan, decision]
+      additionalProperties: false
+      properties:
+        schema_version: { type: string, enum: ["1"] }
+        tool: { $ref: "#/components/schemas/ToolInfo" }
+        scan: { $ref: "#/components/schemas/ScanMeta" }
+        agents: { type: array, nullable: true, maxItems: 200, items: { $ref: "#/components/schemas/Agent" } }
+        assessments: { type: array, nullable: true, maxItems: 200, items: { $ref: "#/components/schemas/AgentAssessment" } }
+        evidence: { type: array, nullable: true, maxItems: 20000, items: { $ref: "#/components/schemas/Evidence" } }
+        findings: { type: array, nullable: true, maxItems: 10000, items: { $ref: "#/components/schemas/Finding" } }
+        score: { $ref: "#/components/schemas/Score" }
+        decision: { $ref: "#/components/schemas/Decision" }
+        stats: { $ref: "#/components/schemas/Stats" }
+        warnings: { type: array, nullable: true, items: { type: string } }
+        limitations: { type: array, nullable: true, items: { type: string } }
+    ControlChange:
+      type: object
+      properties:
+        control_id: { type: string }
+        agent_id: { type: string }
+        before_status: { $ref: "#/components/schemas/ControlStatus" }
+        after_status: { $ref: "#/components/schemas/ControlStatus" }
+        before_maturity: { type: integer }
+        after_maturity: { type: integer }
+    Comparison:
+      type: object
+      required: [comparable, new_findings, resolved_findings, unchanged_count, control_changes]
+      properties:
+        comparable: { type: boolean, description: "False when policy pack, policy version, or profile differ." }
+        not_comparable_why: { type: string }
+        before_commit: { type: string }
+        after_commit: { type: string }
+        before_score: { $ref: "#/components/schemas/Score" }
+        after_score: { $ref: "#/components/schemas/Score" }
+        before_decision: { $ref: "#/components/schemas/Outcome" }
+        after_decision: { $ref: "#/components/schemas/Outcome" }
+        new_findings: { type: array, items: { $ref: "#/components/schemas/Finding" } }
+        resolved_findings: { type: array, items: { $ref: "#/components/schemas/Finding" } }
+        unchanged_count: { type: integer }
+        control_changes: { type: array, items: { $ref: "#/components/schemas/ControlChange" } }
+    Applicability:
+      type: object
+      properties:
+        mode: { type: string, enum: [always, capability] }
+        capabilities_any: { type: array, items: { type: string } }
+        rationale: { type: string }
+    VerificationRules:
+      type: object
+      properties:
+        implementation: { type: string }
+        tested: { type: string }
+        operational: { type: string }
+        max_static_maturity: { type: integer }
+    Control:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        domain: { type: string }
+        intent: { type: string }
+        plain_language: { type: string }
+        applicability: { $ref: "#/components/schemas/Applicability" }
+        evidence_types: { type: array, nullable: true, items: { type: string } }
+        detectors: { type: array, nullable: true, items: { type: string } }
+        dynamic_tests: { type: array, nullable: true, items: { type: string } }
+        verification_rules: { $ref: "#/components/schemas/VerificationRules" }
+        remediation: { type: array, nullable: true, items: { type: string } }
+        severity: { $ref: "#/components/schemas/Severity" }
+        default_weight: { type: integer }
+        standards_mappings: { type: array, nullable: true, items: { $ref: "#/components/schemas/Mapping" } }
+        limitations: { type: array, nullable: true, items: { type: string } }
+        examples:
+          type: object
+          properties:
+            positive: { type: string }
+            negative: { type: string }
+    Catalog:
+      type: object
+      required: [pack, version, controls]
+      properties:
+        pack: { type: string }
+        version: { type: string }
+        controls: { type: array, items: { $ref: "#/components/schemas/Control" } }
+    Profile:
+      type: object
+      properties:
+        name: { type: string }
+        version: { type: string }
+        description: { type: string }
+        mandatory_controls: { type: array, nullable: true, items: { type: string } }
+        min_maturity: { type: integer }
+        require_signed_evidence: { type: boolean }
+        review_workflow: { type: boolean }
+        weights: { type: object, additionalProperties: { type: integer } }
+        control_min_maturity: { type: object, additionalProperties: { type: integer }, description: "Per-control override of min_maturity." }

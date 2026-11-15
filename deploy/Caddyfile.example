@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# STATUS: not yet verified. This example was written without a Caddy
+# installation to test it. Validate it with "caddy validate" and test it
+# before use.
+#
+# HTTPS reverse proxy for the AgentGov server. Caddy obtains and renews the
+# certificate for the host name automatically. Requirements:
+#   - DNS for agentgov.example.com points at this host;
+#   - the firewall allows inbound 80 and 443 to Caddy and NOTHING to 8080;
+#   - the AgentGov server listens on 127.0.0.1:8080 (the default), or is
+#     published on 127.0.0.1:8080 by deploy/compose.yaml;
+#   - AGENTGOV_TRUSTED_PROXIES names the address the server sees Caddy
+#     connect from: 127.0.0.1 without Docker; the Docker bridge gateway
+#     (for example 172.18.0.1, see docs/self-hosting.md) with Compose.
+#     Without it the server ignores X-Forwarded-Proto and does not mark the
+#     session cookie Secure.
+
+agentgov.example.com {
+	encode zstd gzip
+
+	# Operational metrics stay off the public site. Scrape them from the
+	# host itself.
+	@metrics path /metrics
+	respond @metrics 404
+
+	# Reject bodies larger than the server's upload limit (5 MiB by default)
+	# before they reach it.
+	request_body {
+		max_size 6MB
+	}
+
+	header {
+		# Browsers must use HTTPS for this host from now on.
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		# The server already sets X-Content-Type-Options, X-Frame-Options,
+		# Referrer-Policy, Cross-Origin-Opener-Policy, and the
+		# Content-Security-Policy. Do not override them here.
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+
+	# Caddy sets X-Forwarded-For and X-Forwarded-Proto itself and discards
+	# the values a client sent.
+	reverse_proxy 127.0.0.1:8080
+
+	log {
+		output file /var/log/caddy/agentgov-access.log
+	}
+}
