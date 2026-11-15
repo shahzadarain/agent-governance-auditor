@@ -224,7 +224,7 @@ The server is optional and in beta. It listens on `127.0.0.1` unless you decide 
 
 **Residual risk.**
 
-- The examples refer to this action at `@main`, because no release exists. A branch can change. Pin to a commit SHA that you have reviewed.
+- The examples refer to this action at `@main`. A branch can change. Pin to a commit SHA that you have reviewed.
 - The workflow written by `agentgov init --with-workflow` uses `actions/checkout@v4` and `@main`. Pin both before you rely on it.
 - There are no signed release binaries yet. The release workflow is written to produce checksums and build provenance, and it has not run.
 

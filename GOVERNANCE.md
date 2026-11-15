@@ -65,7 +65,7 @@ If the sole maintainer can no longer run the project, the intent is to hand it t
 
 The project uses [Semantic Versioning](https://semver.org/).
 
-- The current version is `0.1.0-dev`. No release has been tagged yet.
+- The first tagged release is `v0.1.0-alpha.1` (alpha).
 - While the version is `0.x`, breaking changes can happen in any minor release. The changelog lists them.
 - Pre-release tags such as `-alpha.1` or `-beta.1` mark builds that are not stable.
 - From `1.0.0`, breaking changes to the CLI or to documented formats need a new major version.

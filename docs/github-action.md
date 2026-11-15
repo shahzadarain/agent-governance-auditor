@@ -2,7 +2,7 @@
 
 The action runs `agentgov scan` on a repository in GitHub Actions. It writes a summary to the job page, saves the reports, and fails the job when your release policy fails.
 
-Status: the action is exercised by this repository's own CI workflow (`.github/workflows/ci.yml`, job "GitHub Action self-test"), which scans both example agents through it and checks the outputs. See the CI badge in the [README](../README.md) for the current state. No release tag exists yet.
+Status: the action is exercised by this repository's own CI workflow (`.github/workflows/ci.yml`, job "GitHub Action self-test"), which scans both example agents through it and checks the outputs. See the CI badge in the [README](../README.md) for the current state. The first release tag is `v0.1.0-alpha.1`.
 
 ## Contents
 

@@ -52,13 +52,22 @@ BLOCK   AGC-005 Allowlisted Tool Access                                     [Fai
 
 ## Quick start
 
-There is no packaged release yet. The version is `0.1.0-dev` and the project is in alpha. Today you install with Go or build from source. Downloadable binaries are planned for the first tagged release.
+The project is in alpha. The first release is `v0.1.0-alpha.1`. You can download a ready-built program, or build from source with Go.
 
 ### 1. Install
 
-You need [Go](https://go.dev/dl/) 1.27 or newer.
+**Option A: download.** You do not need Go.
 
-The route that works today is to clone this repository and build it. You also get the example agents this way.
+1. Open the [Releases page](https://github.com/shahzadarain/agent-governance-auditor/releases).
+2. Download the file for your system: `windows_amd64.zip` for most Windows computers, `darwin_arm64.tar.gz` for a Mac with Apple silicon, `darwin_amd64.tar.gz` for an Intel Mac, `linux_amd64.tar.gz` for most Linux computers.
+3. Unpack it. The folder holds one program: `agentgov.exe` on Windows, `agentgov` elsewhere.
+4. Open a terminal in that folder and run `.gentgov.exe version` (Windows) or `./agentgov version` (macOS, Linux).
+
+The binaries are not code-signed. Windows SmartScreen or macOS Gatekeeper can show a warning the first time. Each release includes a checksums file and build provenance, so you can check the download first: `gh attestation verify <file> --repo shahzadarain/agent-governance-auditor`.
+
+The download holds the tool only. Run `agentgov new my-agent` to create a starter agent to scan, or use Option B to get the example agents.
+
+**Option B: build from source.** You need [Go](https://go.dev/dl/) 1.27 or newer. You also get the example agents this way.
 
 Windows (PowerShell):
 
@@ -206,7 +215,7 @@ jobs:
           fail_on: block
 ```
 
-No release tag exists yet, so the example follows `main`. A branch can change. For real use, replace `main` with a full commit SHA that you have reviewed.
+The example follows `main`. A branch can change. For real use, replace `main` with a full commit SHA that you have reviewed.
 
 What the job does:
 

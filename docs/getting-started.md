@@ -41,7 +41,9 @@ A terminal is a window where you type a command and press Enter to run it. If yo
 
 ## Step 1: Install
 
-There is no packaged download yet. The project is in alpha, and binaries are planned for the first tagged release. For now you build the tool from its source. It takes three commands and they are the same on every system.
+This guide builds the tool from its source, because the source folder also holds the example agents used in Steps 2 to 6. It takes three commands and they are the same on every system.
+
+If you do not want to install Go, download a ready-built program from the [Releases page](https://github.com/shahzadarain/agent-governance-auditor/releases) instead. Pick the file for your system, unpack it, and run `agentgov` from that folder. The download holds the tool only, so start at Step 8 to create an agent to scan.
 
 Windows (PowerShell):
 
@@ -323,7 +325,7 @@ jobs:
 
 Two things to know:
 
-- The example follows the `main` branch because no release exists yet. For real use, replace `main` with a full commit SHA that you have reviewed.
+- The example follows the `main` branch. A branch can change. For real use, replace `main` with a full commit SHA that you have reviewed.
 - A pull request can edit `.agentgov.yaml`. To stop a pull request from lowering your requirements, keep your minimum rules in a file outside the repository and pass it with the `baseline` input.
 
 Both are explained in [github-action.md](github-action.md).

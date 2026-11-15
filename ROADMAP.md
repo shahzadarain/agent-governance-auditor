@@ -2,7 +2,7 @@
 
 This roadmap lists priorities, not promises. It has no dates. Priorities change with user feedback, bug reports, and the time the maintainer has.
 
-**Every item on this page is planned, not shipped.** No version has been released yet. The current version is `0.1.0-dev` (alpha). For what exists and has been verified today, read `docs/IMPLEMENTATION_STATUS.md`. That file is the source of truth, not this one.
+**Every item on this page is planned, not shipped.** The first release is `v0.1.0-alpha.1` (alpha). For what exists and has been verified today, read `docs/IMPLEMENTATION_STATUS.md`. That file is the source of truth, not this one.
 
 ## How priorities are chosen
 

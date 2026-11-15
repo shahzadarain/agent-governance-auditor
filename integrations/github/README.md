@@ -1,6 +1,6 @@
 # GitHub Actions
 
-**Status:** The action is exercised by this repository's own CI workflow. The project is in alpha (`0.1.0-dev`) and no release tag exists yet.
+**Status:** The action is exercised by this repository's own CI workflow. The project is in alpha. The first release tag is `v0.1.0-alpha.1`.
 
 The action scans a repository for AI agents, writes a summary to the job page, saves the reports as an artifact, and fails the job when your release policy fails.
 

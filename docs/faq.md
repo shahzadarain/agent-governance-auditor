@@ -1,6 +1,6 @@
 # Frequently asked questions
 
-Short, honest answers. The project is in alpha (`0.1.0-dev`), and no version has been released yet.
+Short, honest answers. The project is in alpha. The first release is `v0.1.0-alpha.1`.
 
 ## What the tool is
 

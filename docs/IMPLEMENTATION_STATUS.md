@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-15. Version: `0.1.0-dev` (alpha, no tagged release yet).
+Last updated: 2026-11-15. Version: `0.1.0-alpha.1` (alpha). Builds from `main` report `0.1.0-dev`.
 
 This file records what works, how it was verified, and what is not done. A
 feature is listed as working only when a command or test in this file proves
@@ -100,8 +100,6 @@ Not built
   login, the optional LLM reviewer.
 - Server endpoints for password change, account disable, project deletion,
   and retention.
-- Downloadable release binaries. The release workflow exists and runs when
-  a maintainer pushes a version tag. No tag has been pushed.
 - Standards mappings cover the OWASP Top 10 for Agentic Applications 2026
   identifiers and NIST AI RMF 1.0 functions only. AISVS and MITRE ATLAS are
   not mapped. AGC-003, AGC-022, and AGC-023 have no mapping.
@@ -109,5 +107,4 @@ Not built
 ## Next action
 
 1. Verify the Docker Compose deployment on a Linux host.
-2. Tag `v0.1.0-alpha.1` to produce the first binaries with checksums and
-   build provenance.
+2. Code-sign the Windows and macOS binaries.

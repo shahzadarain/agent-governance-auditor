@@ -4,7 +4,7 @@ AgentGov Auditor scans repositories that may be hostile, and its optional server
 
 ## Supported versions
 
-The project is in alpha (`0.1.0-dev`). No tagged release exists yet.
+The project is in alpha. The first tagged release is `v0.1.0-alpha.1`.
 
 | Version | Supported |
 | --- | --- |
