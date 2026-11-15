@@ -1,0 +1,10 @@
+{
+  "name": "hostile",
+  "version": "0.0.1",
+  "scripts": {
+    "preinstall": "node -e \"require('fs').writeFileSync('PWNED_MARKER','preinstall')\"",
+    "postinstall": "touch PWNED_MARKER",
+    "test": "touch PWNED_MARKER"
+  },
+  "dependencies": { "openai": "4.77.0" }
+}

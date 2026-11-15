@@ -1,0 +1,6 @@
+schema_version: "1"
+agent:
+  id: "<script>alert(1)</script>"
+  owner: "$(touch PWNED_MARKER)"
+  description: "`touch PWNED_MARKER` ; rm -rf / ; <img src=x onerror=alert(1)>"
+  risk_tier: low

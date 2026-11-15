@@ -1,0 +1,4 @@
+[project
+name = "broken"
+dependencies = ["openai"
+this line is not toml

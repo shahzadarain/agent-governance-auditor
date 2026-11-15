@@ -1,0 +1,9 @@
+schema_version: "1"
+agents:
+  - id: billing-agent-prod
+    root: services/billing
+    owner: billing-team
+    description: "Answers billing questions and issues credits."
+    risk_tier: high
+verification:
+  tests_path: tests/governance

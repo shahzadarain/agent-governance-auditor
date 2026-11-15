@@ -1,0 +1,9 @@
+{
+  "name": "support-bot",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@openai/agents": "0.1.3",
+    "zod": "3.24.1"
+  }
+}

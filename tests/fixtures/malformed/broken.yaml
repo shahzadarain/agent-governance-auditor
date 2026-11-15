@@ -1,0 +1,5 @@
+services:
+  agent:
+    image: python:3.12
+      privileged: true
+   - not: [valid
