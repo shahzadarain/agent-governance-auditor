@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-labelledby="banner-title banner-desc">
+  <title id="banner-title">AgentGov Auditor</title>
+  <desc id="banner-desc">Banner for AgentGov Auditor. A small graph of connected agent nodes joins a shield outline that holds a check mark. Tagline: Verify AI-agent controls before production.</desc>
+  <defs>
+    <linearGradient id="banner-accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="320" fill="#0B1220"/>
+  <rect x="0" y="312" width="1280" height="8" fill="url(#banner-accent)"/>
+
+  <!-- Agent node graph -->
+  <g fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round">
+    <line x1="70" y1="104" x2="150" y2="62"/>
+    <line x1="70" y1="104" x2="140" y2="160"/>
+    <line x1="150" y1="62" x2="140" y2="160"/>
+    <line x1="68" y1="222" x2="140" y2="160"/>
+    <line x1="68" y1="222" x2="158" y2="254"/>
+    <line x1="140" y1="160" x2="158" y2="254"/>
+  </g>
+  <!-- Links that merge into the shield -->
+  <g fill="none" stroke="#06B6D4" stroke-width="3" stroke-linecap="round">
+    <line x1="150" y1="62" x2="230" y2="106"/>
+    <line x1="140" y1="160" x2="230" y2="160"/>
+    <line x1="158" y1="254" x2="239" y2="206"/>
+  </g>
+  <g fill="#0B1220" stroke="#3B82F6" stroke-width="4">
+    <circle cx="70" cy="104" r="13"/>
+    <circle cx="150" cy="62" r="13"/>
+    <circle cx="68" cy="222" r="13"/>
+    <circle cx="158" cy="254" r="13"/>
+  </g>
+  <circle cx="140" cy="160" r="17" fill="#3B82F6"/>
+
+  <!-- Shield with check -->
+  <path d="M300 66 L370 94 V160 C370 208 340 238 300 256 C260 238 230 208 230 160 V94 Z" fill="#0F1B33" stroke="#06B6D4" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M268 160 L291 185 L334 132" fill="none" stroke="#06B6D4" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#06B6D4">
+    <circle cx="230" cy="106" r="7"/>
+    <circle cx="230" cy="160" r="7"/>
+    <circle cx="239" cy="206" r="7"/>
+  </g>
+
+  <!-- Wordmark and tagline -->
+  <text x="440" y="158" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="72" font-weight="700" fill="#F8FAFC">AgentGov <tspan fill="#06B6D4">Auditor</tspan></text>
+  <text x="442" y="218" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="32" font-weight="400" fill="#CBD5E1">Verify AI-agent controls before production.</text>
+</svg>

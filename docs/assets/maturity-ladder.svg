@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="1100" height="540" role="img" aria-labelledby="ladder-title ladder-desc">
+  <title id="ladder-title">Evidence maturity levels</title>
+  <desc id="ladder-desc">Five ascending steps. Level 0: No evidence. Level 1: Declared. Level 2: Implemented. Level 3: Tested. Level 4: Verified in operation. Note: a static scan alone reaches level 2 at most. Levels 3 and 4 need test results or runtime evidence.</desc>
+
+  <rect x="1" y="1" width="1098" height="538" rx="16" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
+
+  <text x="50" y="58" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0B1220">Evidence maturity levels</text>
+
+  <!-- Side note -->
+  <rect x="50" y="84" width="520" height="84" rx="12" fill="#FFFFFF" stroke="#0891B2" stroke-width="2"/>
+  <rect x="50" y="84" width="8" height="84" fill="#0891B2"/>
+  <text x="76" y="119" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#0B1220">A static scan alone reaches level 2 at most.</text>
+  <text x="76" y="146" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#334155">Levels 3 and 4 need test results or runtime evidence.</text>
+
+  <!-- Steps: each is 200 wide and rises 70 above the one before -->
+  <rect x="50" y="390" width="200" height="110" fill="#64748B"/>
+  <rect x="250" y="320" width="200" height="180" fill="#2563EB"/>
+  <rect x="450" y="250" width="200" height="250" fill="#1D4ED8"/>
+  <rect x="650" y="180" width="200" height="320" fill="#0E7490"/>
+  <rect x="850" y="110" width="200" height="390" fill="#155E75"/>
+  <rect x="50" y="500" width="1000" height="4" fill="#0B1220"/>
+
+  <!-- Limit of a static scan -->
+  <line x1="650" y1="196" x2="650" y2="500" stroke="#F8FAFC" stroke-width="3" stroke-dasharray="8 6"/>
+
+  <!-- Level numbers -->
+  <g font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="42" font-weight="700" text-anchor="middle" fill="#FFFFFF">
+    <text x="150" y="438">0</text>
+    <text x="350" y="368">1</text>
+    <text x="550" y="298">2</text>
+    <text x="750" y="228">3</text>
+    <text x="950" y="158">4</text>
+  </g>
+
+  <!-- Level names -->
+  <g font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">
+    <text x="150" y="464">No evidence</text>
+    <text x="350" y="394">Declared</text>
+    <text x="550" y="324">Implemented</text>
+    <text x="750" y="254">Tested</text>
+    <text x="950" y="184">Verified in operation</text>
+  </g>
+
+  <!-- Short meanings -->
+  <g font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#FFFFFF">
+    <text x="150" y="486">Nothing found</text>
+    <text x="350" y="416">Stated in config or docs</text>
+    <text x="550" y="346">Found in code</text>
+    <text x="750" y="276">Shown by test results</text>
+    <text x="950" y="206">Shown by runtime records</text>
+  </g>
+</svg>

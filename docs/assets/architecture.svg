@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">How a scan works</title>
+  <desc id="arch-desc">Left-to-right flow in six steps. Repository: files are read, never executed. Discovery: finds agents, tools, and MCP connections. Evidence: detectors and external evidence. Policy: 24 controls and a risk profile. Reports: terminal, JSON, HTML, and SARIF. CI or Server: exit code gate and an optional dashboard.</desc>
+
+  <rect x="1" y="1" width="1198" height="318" rx="16" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
+
+  <text x="50" y="58" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#0B1220">How a scan works</text>
+
+  <!-- Boxes -->
+  <g stroke-width="2.5">
+    <rect x="50" y="100" width="150" height="80" rx="12" fill="#FFFFFF" stroke="#3B82F6"/>
+    <rect x="240" y="100" width="150" height="80" rx="12" fill="#FFFFFF" stroke="#3B82F6"/>
+    <rect x="430" y="100" width="150" height="80" rx="12" fill="#FFFFFF" stroke="#3B82F6"/>
+    <rect x="620" y="100" width="150" height="80" rx="12" fill="#FFFFFF" stroke="#0891B2"/>
+    <rect x="810" y="100" width="150" height="80" rx="12" fill="#FFFFFF" stroke="#0891B2"/>
+    <rect x="1000" y="100" width="150" height="80" rx="12" fill="#0B1220" stroke="#0B1220"/>
+  </g>
+
+  <!-- Arrows -->
+  <g stroke="#475569" stroke-width="2.5" stroke-linecap="round">
+    <line x1="204" y1="140" x2="228" y2="140"/>
+    <line x1="394" y1="140" x2="418" y2="140"/>
+    <line x1="584" y1="140" x2="608" y2="140"/>
+    <line x1="774" y1="140" x2="798" y2="140"/>
+    <line x1="964" y1="140" x2="988" y2="140"/>
+  </g>
+  <g fill="#475569">
+    <path d="M236 140 L226 134 V146 Z"/>
+    <path d="M426 140 L416 134 V146 Z"/>
+    <path d="M616 140 L606 134 V146 Z"/>
+    <path d="M806 140 L796 134 V146 Z"/>
+    <path d="M996 140 L986 134 V146 Z"/>
+  </g>
+
+  <!-- Box labels -->
+  <g font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle" fill="#0B1220">
+    <text x="125" y="147">Repository</text>
+    <text x="315" y="147">Discovery</text>
+    <text x="505" y="147">Evidence</text>
+    <text x="695" y="147">Policy</text>
+    <text x="885" y="147">Reports</text>
+    <text x="1075" y="147" fill="#F8FAFC">CI / Server</text>
+  </g>
+
+  <!-- Step notes -->
+  <g font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" fill="#334155">
+    <text x="125" y="212">Files are read,</text>
+    <text x="125" y="232">never executed</text>
+    <text x="315" y="212">Finds agents,</text>
+    <text x="315" y="232">tools, and MCP</text>
+    <text x="505" y="212">Detectors and</text>
+    <text x="505" y="232">external evidence</text>
+    <text x="695" y="212">24 controls,</text>
+    <text x="695" y="232">risk profile</text>
+    <text x="885" y="212">Terminal, JSON,</text>
+    <text x="885" y="232">HTML, SARIF</text>
+    <text x="1075" y="212">Exit code gate,</text>
+    <text x="1075" y="232">optional dashboard</text>
+  </g>
+
+  <text x="50" y="286" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#334155">Scans are read-only and offline. Nothing leaves your machine unless you ask for an upload.</text>
+</svg>
