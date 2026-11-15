@@ -1,7 +1,7 @@
 name: AgentGov Auditor
 description: >-
-  Scan a repository for AI agents and check which governance controls have
-  real evidence. Read-only, offline, no account or API key needed.
+  Scan a repo for AI agents and check which governance controls have real
+  evidence. Read-only, offline, no API key.
 author: Shahzad Asghar
 branding:
   icon: shield
