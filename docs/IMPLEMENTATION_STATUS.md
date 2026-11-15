@@ -11,13 +11,16 @@ it.
 | Milestone | State |
 |-----------|-------|
 | 1. Offline CLI, 24 controls, scoring, release decision | Working, tested |
-| 2. Reports, onboarding commands, GitHub Action, release scripts | Working, tested locally; the action and multi-OS CI run on GitHub |
+| 2. Reports, onboarding commands, GitHub Action, release scripts | Working, tested. CI passes on Linux, macOS, and Windows runners, including the action self-test |
 | 3. Self-hosted API and dashboard | Beta. SQLite path tested. Docker, Compose, Caddy, and PostgreSQL files ship unverified |
 | 4. Tested and signed evidence | Working for file-based test evidence. Runtime adapters and OpenTelemetry import are not built |
 
 ## Verified commands
 
 All commands below were run on Windows Server 2022 (amd64) with Go 1.27.4.
+The CI workflow repeats the build, the tests, and the smoke scans on
+`ubuntu-latest`, `macos-latest`, and `windows-latest`, and passed on all three
+on 2026-11-15.
 
 | Command | Result |
 |---------|--------|
@@ -36,6 +39,8 @@ All commands below were run on Windows Server 2022 (amd64) with Go 1.27.4.
 | `agentgov serve`, `/healthz`, `/api/v1/version`, embedded dashboard | Served from the single binary on 127.0.0.1 |
 | Dashboard `npm run check`, `npm run build`, `npm audit --omit=dev` | 26 unit tests passed; build clean; 0 vulnerabilities |
 | Dashboard end-to-end, Chrome headless, against the real server | 15 of 15 passed, no CSP violations |
+| GitHub Action self-test (`action` job in CI) | Vulnerable example: BLOCK with findings. Safe example: not blocked. Outputs and artifacts produced |
+| Security workflow | `govulncheck` and `npm audit` passed |
 
 Test counts by package: cmd/agentgov 20, adapters 24, config 68, controls 31,
 detect 19, discovery 26, evidence 33, policy 117, reporting 76, rules 209,
@@ -80,7 +85,6 @@ Detection
 
 Not verified
 
-- Linux and macOS: compiled here; tests run there through the CI workflow.
 - Docker image, both Compose files, and the Caddy example: written, never
   run. No Docker host was available.
 - PostgreSQL: compiles and shares the SQLite query layer; never run against
@@ -104,7 +108,6 @@ Not built
 
 ## Next action
 
-1. Confirm the CI workflow passes on Linux, macOS, and Windows runners.
-2. Verify the Docker Compose deployment on a Linux host.
-3. Tag `v0.1.0-alpha.1` to produce the first binaries with checksums and
+1. Verify the Docker Compose deployment on a Linux host.
+2. Tag `v0.1.0-alpha.1` to produce the first binaries with checksums and
    build provenance.
