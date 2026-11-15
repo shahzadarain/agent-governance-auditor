@@ -1,0 +1,8 @@
+# The agent uses the Python standard library only, so there is nothing to pin.
+#
+# The hosted-model client in triage_agent/llm.py is optional. If you enable it,
+# add the SDK here with an exact version and hashes, for example:
+#
+#   openai==<exact version> --hash=sha256:<hash from your reviewed lockfile>
+#
+# and install with: pip install --require-hashes -r requirements.txt

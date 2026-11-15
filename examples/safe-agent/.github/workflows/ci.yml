@@ -1,0 +1,28 @@
+# Fixture workflow for the safe-agent example. It is part of the example and
+# is not the CI of the auditor repository.
+name: governance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  governance-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
+        with:
+          python-version: "3.12"
+      - name: Run governance tests and write the evidence file
+        run: python tools/run_governance_tests.py
+      - name: Keep the evidence file
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+        with:
+          name: governance-evidence
+          path: .agentgov/evidence/governance-tests.json

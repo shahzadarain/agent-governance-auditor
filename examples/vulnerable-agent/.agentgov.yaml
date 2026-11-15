@@ -1,0 +1,20 @@
+schema_version: "1"
+agent:
+  id: finance-processing-agent
+  owner: finance-technology
+  description: "Looks up invoices and issues refunds. Demo fixture, deliberately unsafe."
+  risk_tier: low
+  data_classification: confidential
+capabilities:
+  declared_tools:
+    - lookup_invoice
+    - refund_payment
+  sensitive_actions:
+    - refund_payment
+  external_connectivity: true
+verification:
+  profile: standard
+  tests_path: tests/governance
+  evidence_paths: [".agentgov/evidence"]
+policy:
+  pack: builtin/v1

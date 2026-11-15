@@ -1,0 +1,31 @@
+# Untested on the machine that produced this example (it has no Docker).
+# The settings are the point: non-root, read-only, no extra privileges.
+services:
+  ticket-triage-agent:
+    build: .
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 256m
+    pids_limit: 64
+    cpus: 0.5
+    network_mode: none
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid
+    environment:
+      - TICKET_AGENT_KILL_FILE=/control/KILL
+      - TICKET_AGENT_APPROVAL_KEY_FILE=/run/secrets/approval_key
+    secrets:
+      - approval_key
+    volumes:
+      - control:/control:ro
+
+secrets:
+  approval_key:
+    external: true
+
+volumes:
+  control: {}

@@ -1,0 +1,317 @@
+{
+  "schema_version": "1",
+  "evidence": [
+    {
+      "control_id": "AGC-005",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "4 governance tests passed (test_allowlist): a tool outside the allowlist is rejected at dispatch and never runs.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_allowlist.py",
+          "triage_agent/agent.py",
+          "triage_agent/tools.py"
+        ],
+        "digest": "198140e050f22d9234f79ee4c1bcab13993678000266bd2d09beb16d0a734271"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-007",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "6 governance tests passed (test_data_isolation): one user cannot read or change another user's records, and the model cannot supply an identity.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_data_isolation.py",
+          "triage_agent/agent.py",
+          "triage_agent/data.py",
+          "triage_agent/guards.py",
+          "triage_agent/tools.py"
+        ],
+        "digest": "fdc6cdca27970151c10d1dad9061561f60d14fedce589d7021ead17595c6930c"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-009",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "5 governance tests passed (test_policy): the policy decides before a tool runs, and a policy engine error is a denial.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_policy.py",
+          "triage_agent/agent.py",
+          "triage_agent/policy.py"
+        ],
+        "digest": "dff0f885571f3169857013edf236f9b766cde9336b34413823e76a9e5c4b7c2e"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-010",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "10 governance tests passed (test_approval): missing, expired, tampered, denied, mismatched, and replayed approvals are rejected.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_approval.py",
+          "triage_agent/agent.py",
+          "triage_agent/approval.py",
+          "triage_agent/policy.py"
+        ],
+        "digest": "5ff78f7695c6cd2231a65f922e8f445d912d5eafa58500a965e30f07593fadf2"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-011",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "4 governance tests passed (test_prompt_injection): instructions injected through tool results cannot trigger unlisted tools or skip approval.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_prompt_injection.py",
+          "triage_agent/agent.py",
+          "triage_agent/guards.py",
+          "triage_agent/tools.py"
+        ],
+        "digest": "a93f593e0c40c37b4c15c982bcd9ec8d140eda8bcbd170e8c4b178ca87efe5ec"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-012",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "4 governance tests passed (test_limits): the run stops when the step, token, or time limit is reached.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_limits.py",
+          "triage_agent/agent.py",
+          "triage_agent/limits.py"
+        ],
+        "digest": "91867c84b3e4887fd44323183548b332d4e73890ce106c261aa58649378491ef"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-015",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "5 governance tests passed (test_memory): memory is isolated per user and tenant and validated before storage.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_memory.py",
+          "triage_agent/agent.py",
+          "triage_agent/memory.py",
+          "triage_agent/tools.py"
+        ],
+        "digest": "f2e1f1849e418bcce62be9bad76ee8ce1ca3145b969d06cb22be6fe1572733ab"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-017",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "3 governance tests passed (test_killswitch): no action runs after the kill switch is engaged; a run in progress stops within one step.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_killswitch.py",
+          "triage_agent/agent.py",
+          "triage_agent/killswitch.py"
+        ],
+        "digest": "96731a3136af90bfdda3fc588509d46c26efd707968dd443e27fa246fa93762f"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-018",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "4 governance tests passed (test_idempotency): a repeated mutating request is applied once, a failed write leaves no partial state, and a close can be compensated.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_idempotency.py",
+          "triage_agent/data.py",
+          "triage_agent/tools.py"
+        ],
+        "digest": "e2264ec9f82f52472c6b0a85fc4434676fb71ab6beb90075dcd16d38bdb1f77c"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-020",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "The governance regression suite ran: 56 tests, 0 not passing. It covers permitted and forbidden tool use, authorization, data separation, and failure modes.",
+      "limitations": [
+        "One local run. Attach CI run records to show the suite runs on every change."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_allowlist.py",
+          "tests/governance/test_approval.py",
+          "tests/governance/test_audit.py",
+          "tests/governance/test_data_isolation.py",
+          "tests/governance/test_idempotency.py",
+          "tests/governance/test_killswitch.py",
+          "tests/governance/test_limits.py",
+          "tests/governance/test_memory.py",
+          "tests/governance/test_policy.py",
+          "tests/governance/test_prompt_injection.py",
+          "tests/governance/test_tracing.py"
+        ],
+        "digest": "0e5282ed8c4eacbb08a4bcc3acd34a1c9dbccc74c75745906b201d1203bd6861"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-022",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "5 governance tests passed (test_tracing): a step and its tool call share a run ID and are linked, and sensitive values are redacted.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_tracing.py",
+          "triage_agent/agent.py",
+          "triage_agent/tracing.py"
+        ],
+        "digest": "11f6a200f026f4d6436e341eb9e330d5af60f88e497c06361fa6a6817acc84a3"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    },
+    {
+      "control_id": "AGC-023",
+      "agent_id": "ticket-triage-agent",
+      "source_type": "test",
+      "collector": "safe-agent.governance-tests",
+      "observed_at": "2026-11-15T12:47:12Z",
+      "valid_until": "2027-02-13T12:47:12Z",
+      "result": "pass",
+      "signal": "present",
+      "strength": "tested",
+      "summary": "6 governance tests passed (test_audit): altered, removed, and reordered audit records are detected.",
+      "limitations": [
+        "The tests use a scripted model and synthetic data in one process. They do not show how a deployed agent behaves."
+      ],
+      "subject": {
+        "paths": [
+          "tests/governance/support.py",
+          "tests/governance/test_audit.py",
+          "triage_agent/audit.py"
+        ],
+        "digest": "bddcb168cf0448ee9d9f1a5693f4ae38f744a5d7254c65cc9482118cb4d19f66"
+      },
+      "identity_context": "local run of tools/run_governance_tests.py with Python 3.12"
+    }
+  ]
+}

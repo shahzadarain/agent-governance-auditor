@@ -1,0 +1,31 @@
+# Prometheus alert rules for the agent. The metrics are derived from the
+# structured trace and audit records (triage_agent/tracing.py and audit.py)
+# by a log-to-metrics exporter, which is not part of this example.
+groups:
+  - name: ticket-triage-agent
+    rules:
+      - alert: AgentPolicyDenialsSpike
+        expr: sum(rate(agent_policy_denied_total{agent="ticket-triage-agent"}[5m])) > 0.2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: The agent is asking for actions that policy denies more often than usual.
+      - alert: AgentToolOutsideAllowlist
+        expr: increase(agent_tool_denied_total{agent="ticket-triage-agent"}[10m]) > 0
+        labels:
+          severity: critical
+        annotations:
+          summary: The agent requested a tool that is not on the allowlist.
+      - alert: AgentStepLimitReached
+        expr: increase(agent_limit_exceeded_total{agent="ticket-triage-agent"}[15m]) > 3
+        labels:
+          severity: warning
+        annotations:
+          summary: Agent runs keep reaching their step, time, or token limit.
+      - alert: AgentAuditChainBroken
+        expr: agent_audit_chain_valid{agent="ticket-triage-agent"} == 0
+        labels:
+          severity: critical
+        annotations:
+          summary: Verification of the agent audit log failed.

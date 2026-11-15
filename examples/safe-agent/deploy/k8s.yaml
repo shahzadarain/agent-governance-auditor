@@ -1,0 +1,69 @@
+# Reference manifest. It shows a dedicated workload identity, injected
+# secrets, and a hardened container. It has not been applied to a cluster.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ticket-triage-agent
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-triage-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-triage-agent
+  template:
+    metadata:
+      labels:
+        app: ticket-triage-agent
+    spec:
+      serviceAccountName: ticket-triage-agent
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: agent
+          image: registry.example.com/support/ticket-triage-agent:1.0.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          env:
+            - name: TICKET_AGENT_KILL_FILE
+              value: /control/KILL
+            - name: TICKET_AGENT_APPROVAL_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ticket-triage-agent
+                  key: approval-key
+          volumeMounts:
+            - name: identity
+              mountPath: /var/run/secrets/tokens
+              readOnly: true
+            - name: control
+              mountPath: /control
+              readOnly: true
+      volumes:
+        - name: identity
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: agent-token
+                  audience: ticket-api
+                  expirationSeconds: 3600
+        - name: control
+          configMap:
+            name: ticket-triage-agent-control
+            optional: true

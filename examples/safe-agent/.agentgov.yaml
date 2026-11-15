@@ -1,0 +1,31 @@
+schema_version: "1"
+agent:
+  id: ticket-triage-agent
+  owner: support-engineering
+  description: "Triages support tickets for the signed-in user: search, read, annotate, and close with approval."
+  purpose: "Reduce time to first response on internal support tickets."
+  risk_tier: high
+  risk_rationale: "The agent changes ticket records and reads user-scoped data on behalf of a signed-in user."
+  data_classification: internal
+  last_reviewed: "2026-11-01"
+  reviewer: support-engineering-lead
+capabilities:
+  declared_tools:
+    - search_tickets
+    - get_ticket
+    - add_note
+    - close_ticket
+    - remember_preference
+  sensitive_actions:
+    - close_ticket
+  external_connectivity: false
+verification:
+  profile: standard
+  tests_path: tests/governance
+  evidence_paths: [".agentgov/evidence"]
+  offline: true
+policy:
+  pack: builtin/v1
+report:
+  redact_sensitive_data: true
+  formats: [terminal, json]
