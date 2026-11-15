@@ -1,0 +1,54 @@
+id: AGC-005
+title: Allowlisted Tool Access
+domain: "B: Identity and Access"
+intent: >-
+  An agent must be able to call only the tools on an explicit list, each
+  with the narrowest scope that works. Anything not on the list must be
+  refused by code, not by an instruction in a prompt. Broad shell, browser,
+  file, or network access widens what a mistake or an attack can reach.
+plain_language: The agent may use only the tools on an approved list, and everything else must be refused.
+applicability:
+  mode: capability
+  capabilities_any:
+    - tools
+  rationale: The control applies to an agent that exposes or calls tools. An agent with no tools has nothing to allowlist.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-005.*
+dynamic_tests:
+  - Unauthorized tool invocation and allowlist rejection.
+verification_rules:
+  implementation: >-
+    Code or configuration defines an explicit tool allowlist, and a check in
+    the tool-calling path refuses tools that are not on it.
+  tested: >-
+    A test calls a tool that is absent from the allowlist and confirms the
+    call is rejected, for this exact version.
+  operational: >-
+    Runtime records show that the enforcement point denied a tool call that
+    was not on the allowlist in the deployed environment.
+  max_static_maturity: 2
+remediation:
+  - List every tool the agent needs, and remove the rest.
+  - Enforce the list in code at the point where tools are dispatched, with deny as the default.
+  - Give each tool the narrowest scope that works, and avoid general shell, file, or network tools.
+  - Add a test that calls a tool outside the list and expects a refusal.
+  - Declare the tools in .agentgov.yaml so the scan can compare declared and detected tools.
+severity: high
+default_weight: 5
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI02
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: A deny-by-default tool allowlist reduces the set of tools an agent can be led to misuse.
+limitations:
+  - A static scan can find an allowlist and a check. It cannot prove the check runs on every path to a tool.
+  - Tools registered at run time, or by a remote MCP server, may not be visible in source code.
+examples:
+  positive: A passing test that requests a tool outside the allowlist and receives a denial from the dispatch layer.
+  negative: An agent that passes every function in a module to the model as a tool, with no list and no check.

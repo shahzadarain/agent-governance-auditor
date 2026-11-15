@@ -1,0 +1,9 @@
+# Policy pack metadata. The version changes whenever a control definition,
+# weight, or verification rule changes. Scans made with different versions
+# are not directly comparable.
+name: builtin/v1
+version: "1.0"
+description: >-
+  Built-in control catalog of AgentGov Auditor. The 24 controls are this
+  project's own governance model. They are not an official standard, and a
+  scan result is not a certification.

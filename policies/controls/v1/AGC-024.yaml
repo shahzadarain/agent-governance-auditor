@@ -1,0 +1,50 @@
+id: AGC-024
+title: Real-Time Operational Monitoring
+domain: "F: Assurance and Visibility"
+intent: >-
+  Someone must be watching the agent while it runs. Monitoring must raise
+  alerts for unexpected use of privileges, denied policy decisions, unusual
+  tool activity, service errors, and sudden rises in resource use. Alert
+  rules in a file do not show that an alert ever reaches a person.
+plain_language: The agent must be watched while it runs, and unusual behavior must raise an alert that reaches a person.
+applicability:
+  mode: always
+  rationale: Every running agent can behave in unexpected ways that only monitoring will reveal.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-024.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    The repository holds monitoring or alert rules for the agent that cover
+    denied actions, errors, or unusual tool activity.
+  tested: >-
+    A test sends a synthetic signal and confirms that the expected alert is
+    generated, for this exact version.
+  operational: >-
+    Records from the deployed environment show alerts that fired and were
+    handled, with the time to respond.
+  max_static_maturity: 2
+remediation:
+  - Emit metrics and events for tool calls, policy denials, errors, and resource use.
+  - Define alert rules for unexpected privilege use, repeated denials, unusual tool activity, and resource spikes.
+  - Route alerts to a person or a team that is on call.
+  - Send a synthetic signal and confirm that the alert arrives.
+severity: medium
+default_weight: 2
+standards_mappings:
+  - standard: NIST AI Risk Management Framework
+    version: "1.0"
+    requirement_id: MANAGE
+    url: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/
+    rationale: Live monitoring with alerts is part of the ongoing monitoring of and response to identified risks.
+limitations:
+  - Alert rules in a repository do not show that monitoring is deployed or that anyone receives the alerts.
+  - Monitoring configured in a hosted console is not visible to the scan.
+examples:
+  positive: A recorded test in which a synthetic burst of denied tool calls produces the expected alert.
+  negative: An agent in production with no metrics, no alert rules, and no on-call contact.

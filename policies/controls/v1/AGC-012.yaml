@@ -1,0 +1,52 @@
+id: AGC-012
+title: Multi-Level Resource Limits
+domain: "C: Action Controls"
+intent: >-
+  An agent must have hard limits on steps, tokens and cost, parallel tool
+  calls, run time, outbound requests, and money or transaction amounts where
+  those apply. Without limits, a loop or an attack can run up cost, flood
+  other systems, or repeat a harmful action many times.
+plain_language: The agent must have firm limits on how long it runs, how much it spends, and how many actions it takes.
+applicability:
+  mode: always
+  rationale: Every agent runs in a loop that consumes time and money, so every agent needs limits.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-012.*
+dynamic_tests:
+  - Step/time/token/resource budget violation.
+verification_rules:
+  implementation: >-
+    Code or configuration sets explicit limits, such as a maximum number of
+    steps, a timeout, and a token or cost budget.
+  tested: >-
+    A test runs a bounded loop and an over-limit request and confirms the
+    agent stops at the limit, for this exact version.
+  operational: >-
+    Runtime records show the limits in force and at least one run that was
+    stopped when it reached a limit.
+  max_static_maturity: 2
+remediation:
+  - Set a maximum number of steps or iterations for every agent run.
+  - Set a timeout and a token or cost budget for every run.
+  - Limit parallel tool calls and outbound requests.
+  - Cap money or transaction amounts where the agent can spend or transfer.
+  - Add a test that drives the agent past a limit and confirms it stops.
+severity: medium
+default_weight: 3
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI08
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Hard limits on steps, cost, and requests keep one fault from spreading into repeated or widening failures.
+limitations:
+  - A static scan can find limit settings. It cannot confirm that the values are suitable or that they hold under load.
+  - Limits set in a hosting platform or a model provider console are not visible in the repository.
+examples:
+  positive: A passing test in which a looping task stops after the configured maximum number of steps.
+  negative: An agent loop that runs until the model decides to stop, with no step limit and no timeout.

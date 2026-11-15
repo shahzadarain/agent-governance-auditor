@@ -1,0 +1,55 @@
+id: AGC-013
+title: Disposable Sandbox Environments
+domain: "C: Action Controls"
+intent: >-
+  Code and commands that an agent runs must execute in an isolated
+  environment that is thrown away afterward. The environment must run
+  without root, with a read-only file system, few privileges, limited
+  mounts and network, and a timeout. A container is not automatically an
+  adequate sandbox.
+plain_language: Anything the agent runs must happen in a locked-down, throwaway workspace that cannot harm real systems.
+applicability:
+  mode: capability
+  capabilities_any:
+    - shell-exec
+    - code-exec
+    - container
+  rationale: The control applies to an agent that runs shell commands or generated code, or that ships container manifests.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-013.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    Container or orchestration manifests set a non-root user, a read-only
+    root file system, dropped capabilities, and no privileged mode.
+  tested: >-
+    An isolated test, enabled on purpose, confirms that the sandbox blocks
+    writes, privilege gain, and unexpected network access for this version.
+  operational: >-
+    Runtime records show that execution environments are created for each
+    task and destroyed afterward, with the restrictions in force.
+  max_static_maturity: 2
+remediation:
+  - Run agent-executed code in a separate container or sandbox, never on the host.
+  - Set a non-root user, a read-only root file system, and no privileged mode, and drop all capabilities that are not needed.
+  - Restrict mounts and outbound network access to what the task needs.
+  - Set a timeout, and destroy the environment after each task.
+severity: high
+default_weight: 3
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI05
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: An isolated, disposable execution environment contains the effect of code that the agent should not have run.
+limitations:
+  - Manifest settings show intent. The scan does not start containers, so it cannot confirm the isolation holds.
+  - Settings applied by the cluster or the hosting platform are not visible in the repository.
+examples:
+  positive: A container manifest with a non-root user, a read-only root file system, all capabilities dropped, and no host mounts.
+  negative: A tool that passes model output to a shell on the host with the service account's full rights.

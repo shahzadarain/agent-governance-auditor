@@ -1,0 +1,48 @@
+id: AGC-022
+title: Complete Step Tracing
+domain: "F: Assurance and Visibility"
+intent: >-
+  Each agent run must leave a trace that links its decisions, its tool
+  calls, the identity it acted for, any approvals, and any errors under one
+  identifier. Without a trace, nobody can reconstruct what happened.
+  Sensitive prompts, customer data, credentials, and outputs must be
+  redacted by default.
+plain_language: Every step the agent takes must be recorded so people can later see exactly what it did and why.
+applicability:
+  mode: always
+  rationale: Every agent takes steps that someone may need to reconstruct later.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-022.*
+dynamic_tests:
+  - Correlated trace for an agent step and tool execution.
+verification_rules:
+  implementation: >-
+    Code or configuration sets up tracing around agent steps and tool calls,
+    with a shared run or trace identifier.
+  tested: >-
+    A synthetic end-to-end run produces one correlated trace that covers an
+    agent step and a tool execution, for this exact version.
+  operational: >-
+    Traces from the deployed environment show correlated steps, tool calls,
+    actor identity, and approval references, with redaction applied.
+  max_static_maturity: 2
+remediation:
+  - Instrument every agent step and every tool call with tracing, for example with OpenTelemetry.
+  - Carry one run or trace identifier through the whole run, including tool calls and approvals.
+  - Record the acting identity and any approval reference on each tool call.
+  - Redact prompts, customer data, credentials, and outputs by default.
+  - Add a test that runs one synthetic task and checks that the trace is complete.
+severity: high
+default_weight: 5
+standards_mappings: []
+limitations:
+  - A static scan can find tracing setup. It cannot confirm that traces are exported, complete, or retained.
+  - The scan cannot verify redaction of real data, because it never reads runtime content.
+examples:
+  positive: A recorded synthetic run with one trace identifier that links the agent step, the tool call, and the tool result.
+  negative: An agent that prints free-text messages to the console with no identifier that links one step to the next.

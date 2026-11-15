@@ -1,0 +1,45 @@
+id: AGC-003
+title: Integrated Change Control
+domain: "A: Accountability"
+intent: >-
+  A change to the model, the tools, the prompts, the permission scopes, the
+  policies, or the deployment manifests can change what an agent does. Each
+  such change must trigger a new assessment, and each release must link to
+  the exact commit and artifact that were assessed.
+plain_language: When the agent's model, tools, or permissions change, the change must be reviewed and checked again before release.
+applicability:
+  mode: always
+  rationale: Every agent changes over time, and every material change can alter its risk.
+evidence_types:
+  - static
+  - configuration
+  - external-attestation
+  - manual-review
+detectors:
+  - AGC-003.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    The repository holds a CI workflow that runs governance checks on changes,
+    and a review rule covers agent code, prompts, and policy files.
+  tested: >-
+    A recorded CI run for this exact commit shows that the governance checks
+    executed and that the required approvals were given.
+  operational: >-
+    Release records link each deployed version to its commit and artifact
+    digest, and to the approval that allowed it.
+  max_static_maturity: 2
+remediation:
+  - Add a CI workflow that runs the governance scan on every pull request.
+  - Require review from named owners for changes to agent code, prompts, tool definitions, and policy files.
+  - Record the commit and the artifact digest for every release.
+  - Supply CI run records as evidence so the scan can confirm the checks executed.
+severity: medium
+default_weight: 3
+standards_mappings: []
+limitations:
+  - A workflow file shows intent. It does not show that the workflow ran or that branch protection is enforced.
+  - The scan cannot see changes made outside the repository, such as a model version changed in a hosted console.
+examples:
+  positive: A CI record for the current commit that shows the governance scan ran and a required reviewer approved the change.
+  negative: A repository with no CI workflow and no review rule for prompt or tool changes.

@@ -1,0 +1,31 @@
+# local toolchain and build output
+/.tools/
+/bin/
+/dist/
+*.exe
+*.test
+*.out
+coverage.*
+# node
+node_modules/
+web/.vite/
+# local data
+*.db
+*.db-wal
+*.db-shm
+/data/
+.env
+# scan outputs
+/agentgov-results.json
+/agentgov-report.html
+/findings.sarif
+# editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+# assistant-local settings
+.claude/
+__pycache__/
+*.pyc
+/out/

@@ -1,0 +1,55 @@
+id: AGC-010
+title: Human Approval Gates
+domain: "C: Action Controls"
+intent: >-
+  A sensitive operation must wait for a decision from an authorized person
+  before it runs. The approval must be tied to the approver, the exact
+  action and its parameters, an expiry time, and a unique request, so it
+  cannot be reused or altered. A function with an approving name is not
+  proof of a gate.
+plain_language: A person must approve risky actions before the agent carries them out.
+applicability:
+  mode: capability
+  capabilities_any:
+    - sensitive-actions
+  rationale: The control applies to an agent with tools that move money, delete, send, or change records.
+evidence_types:
+  - static
+  - test
+  - runtime
+  - manual-review
+detectors:
+  - AGC-010.*
+dynamic_tests:
+  - Human approval missing, expired, denied, tampered, and replayed.
+verification_rules:
+  implementation: >-
+    Code shows that each sensitive tool checks for a recorded approval before
+    it executes, and that the approval is bound to the specific action.
+  tested: >-
+    Tests show that missing, expired, denied, tampered, and replayed approvals
+    are all rejected, for this exact version.
+  operational: >-
+    Runtime records show real approvals with approver, action, and request ID,
+    and at least one blocked attempt without approval.
+  max_static_maturity: 2
+remediation:
+  - Require an approval record before any sensitive tool executes, and check it in code on the execution path.
+  - Bind each approval to the approver, the exact action, a digest of the parameters, an expiry time, and a unique request ID.
+  - Reject an approval that is missing, expired, denied, altered, or already used.
+  - Add tests for each of those rejection cases.
+  - Record every approval and every refusal in the audit trail.
+severity: critical
+default_weight: 5
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI02
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: A human decision in front of sensitive tools stops a misled agent from completing a harmful tool action on its own.
+limitations:
+  - A static scan can find an approval check near a sensitive tool. It cannot prove the check cannot be bypassed.
+  - The scan cannot judge whether the approver is the right person or whether approvers read what they approve.
+examples:
+  positive: A passing test that replays a used approval for a payment and confirms the second attempt is refused.
+  negative: A tool that deletes customer records as soon as the model requests it, with no approval step.

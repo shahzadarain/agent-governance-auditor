@@ -1,0 +1,50 @@
+AgentGov Auditor
+Copyright 2026 Shahzad Asghar and contributors
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full text.
+
+------------------------------------------------------------------------
+Third-party software
+------------------------------------------------------------------------
+
+This product depends on the following open-source Go modules. Each module
+remains under its own license. The list covers direct dependencies. For
+the complete list, including indirect dependencies and exact versions,
+see go.mod and go.sum.
+
+  github.com/spf13/cobra
+    License: Apache-2.0
+
+  gopkg.in/yaml.v3
+    License: MIT and Apache-2.0
+
+  github.com/santhosh-tekuri/jsonschema
+    License: Apache-2.0
+
+  modernc.org/sqlite
+    License: BSD-3-Clause
+
+  github.com/jackc/pgx
+    License: MIT
+
+  golang.org/x/crypto
+  golang.org/x/term
+  golang.org/x/sys
+    License: BSD-3-Clause
+
+The self-hosted dashboard is built with open-source JavaScript packages.
+See web/package.json and web/package-lock.json for that list.
+
+------------------------------------------------------------------------
+Control catalog and external references
+------------------------------------------------------------------------
+
+The governance control catalog in this product is original to this
+project.
+
+Names of external frameworks and organizations, including OWASP and NIST,
+are referenced only to map controls to related public guidance. These
+references do not imply endorsement, approval, sponsorship, or
+certification by those organizations. All trademarks belong to their
+respective owners.

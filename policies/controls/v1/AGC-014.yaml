@@ -1,0 +1,51 @@
+id: AGC-014
+title: Vetted Tool Supply Chain
+domain: "D: Trust Boundaries"
+intent: >-
+  The tools, MCP servers, libraries, and container images an agent depends
+  on must be known, pinned to exact versions, and checked for origin and
+  integrity. An unpinned dependency can change without review. Unversioned
+  is a weakness to fix, and it is not the same as known malicious.
+plain_language: The outside tools and software the agent relies on must come from known sources and be fixed to checked versions.
+applicability:
+  mode: always
+  rationale: Every agent depends on outside software, at least a model client or a framework.
+evidence_types:
+  - static
+  - configuration
+  - external-attestation
+  - test
+detectors:
+  - AGC-014.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    Dependencies, MCP servers, and container images are pinned to exact
+    versions or digests, and a lock file is present.
+  tested: >-
+    A CI check for this exact commit verifies hashes or signatures of
+    dependencies and reports no unpinned or unexpected component.
+  operational: >-
+    Provenance attestations or a signed software bill of materials cover the
+    deployed artifact, and version drift is checked on a schedule.
+  max_static_maturity: 2
+remediation:
+  - Pin every dependency, MCP server, and container image to an exact version or digest.
+  - Commit lock files and verify hashes during installation.
+  - Keep an inventory of the MCP servers and outside tools the agent connects to, with their sources.
+  - Produce a software bill of materials for each release.
+  - Review and update pinned versions on a schedule.
+severity: medium
+default_weight: 3
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI04
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Pinning and verifying tools, MCP servers, and dependencies addresses weaknesses in the agent's supply chain.
+limitations:
+  - An offline scan does not look up known vulnerabilities. Pinned does not mean safe.
+  - The scan cannot inspect the behavior of a remote MCP server or a hosted tool.
+examples:
+  positive: A lock file with hashes, MCP servers pinned to exact versions, and container images referenced by digest.
+  negative: An MCP server started with a package runner and no version, so the newest release runs every time.

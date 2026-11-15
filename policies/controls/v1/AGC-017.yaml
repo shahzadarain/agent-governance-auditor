@@ -1,0 +1,52 @@
+id: AGC-017
+title: Instant Agent Kill Switch
+domain: "E: Containment and Recovery"
+intent: >-
+  An operator must be able to stop an agent at once from a central place.
+  Stopping must cancel queued work, end tool calls in progress, revoke the
+  agent's credentials, and prevent new actions. A Boolean flag that the
+  agent may read later does not prove that anything stops.
+plain_language: Someone must be able to stop the agent immediately, and the stop must actually end its actions.
+applicability:
+  mode: always
+  rationale: Every agent may need to be stopped quickly, whatever it can do.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-017.*
+dynamic_tests:
+  - Emergency stop during a running synthetic task.
+verification_rules:
+  implementation: >-
+    Code shows a stop mechanism that is checked before each action and that
+    cancels running work, not only a flag that is set.
+  tested: >-
+    An isolated test starts an agent task, triggers the stop, and confirms
+    that further actions are denied within a set time, for this version.
+  operational: >-
+    Records of a stop exercise in the deployed environment show the time to
+    stop and the revocation of the agent's credentials.
+  max_static_maturity: 2
+remediation:
+  - Add a central stop control that an operator can trigger without a deployment.
+  - Check the stop state before every tool call and every new step.
+  - Cancel queued jobs and end tool calls in progress when the stop is triggered.
+  - Revoke the agent's credentials as part of the stop.
+  - Add a test that stops a running task and measures how long further actions continue.
+severity: critical
+default_weight: 5
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI10
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: A reliable stop mechanism is the last line of containment for an agent that acts outside its intended behavior.
+limitations:
+  - A static scan can find a stop check. It cannot prove that running work actually ends.
+  - Credential revocation happens in the identity provider and is not visible in the repository.
+examples:
+  positive: A passing test in which a running synthetic task is stopped and the next tool call is denied within the time bound.
+  negative: A configuration value named enabled that is read once at startup and never checked again.

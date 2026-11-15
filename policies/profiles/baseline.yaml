@@ -1,0 +1,21 @@
+# Project default profile. Edit a copy to fit your organization.
+name: baseline
+version: "1.0"
+description: >-
+  Project default for a lower-risk internal agent. It requires a named owner,
+  an allowlist of tools, protected secrets, and step tracing, each supported
+  at implementation level. This is a project default, not an external
+  standard. A high score never waives a mandatory control.
+mandatory_controls:
+  - AGC-001
+  - AGC-005
+  - AGC-008
+  - AGC-022
+min_maturity: 2
+# A static scan can only see a declaration for AGC-001 (owner and inventory).
+# This profile accepts a schema-valid declaration for that control. The
+# high-risk profile does not: it needs reviewed or attested evidence.
+control_min_maturity:
+  AGC-001: 1
+require_signed_evidence: false
+review_workflow: false

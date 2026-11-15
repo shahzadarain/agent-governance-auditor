@@ -1,0 +1,54 @@
+id: AGC-021
+title: Continuous Red Teaming
+domain: "F: Assurance and Visibility"
+intent: >-
+  An agent must face repeatable adversarial tests that match its risk.
+  Scenarios include prompt injection, tool misuse, privilege escalation,
+  memory tampering, and failure to stop. Tests run against synthetic or
+  explicitly authorized targets only. One past exercise does not cover
+  later versions.
+plain_language: People or tools must regularly try to trick or break the agent, in a safe test setting, to find weaknesses first.
+applicability:
+  mode: always
+  rationale: Every agent accepts input that an attacker can shape, so every agent needs adversarial testing in proportion to its risk.
+evidence_types:
+  - static
+  - test
+  - external-attestation
+  - manual-review
+detectors:
+  - AGC-021.*
+dynamic_tests:
+  - Unauthorized tool invocation and allowlist rejection.
+  - Memory poisoning and cross-user memory isolation.
+  - Emergency stop during a running synthetic task.
+verification_rules:
+  implementation: >-
+    The repository holds adversarial test scenarios and a schedule or CI
+    job that is set to run them.
+  tested: >-
+    Recorded results for this exact version show that the adversarial
+    scenarios executed, with the outcomes and any open findings.
+  operational: >-
+    Records show that adversarial testing recurs on a schedule against the
+    deployed configuration and that findings are tracked to closure.
+  max_static_maturity: 2
+remediation:
+  - Define adversarial scenarios for prompt injection, tool misuse, privilege escalation, memory tampering, and failure to stop.
+  - Run the scenarios against synthetic targets on a schedule and after material changes.
+  - Record the results for each version as evidence, and track every finding to closure.
+  - Obtain written authorization before any test that touches a system you do not own.
+severity: medium
+default_weight: 2
+standards_mappings:
+  - standard: NIST AI Risk Management Framework
+    version: "1.0"
+    requirement_id: MEASURE
+    url: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/
+    rationale: Recurring adversarial tests are a method to assess how the system behaves under hostile conditions.
+limitations:
+  - The scanner does not attack live systems. It reads scenario definitions and imported results.
+  - Results cover the scenarios that ran. They do not show that the agent resists techniques that were not tried.
+examples:
+  positive: An imported red-team result set for the current version with scenario names, outcomes, and tracked findings.
+  negative: A statement in a document that the agent was tested last year, with no scenarios and no results.

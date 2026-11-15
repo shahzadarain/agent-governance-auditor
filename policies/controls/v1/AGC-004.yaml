@@ -1,0 +1,50 @@
+id: AGC-004
+title: Dedicated Non-Human Identity
+domain: "B: Identity and Access"
+intent: >-
+  An agent must act under its own identity, separate from any person and
+  separate for each environment. When an agent borrows a staff account or a
+  broad host credential, its actions cannot be told apart from a person's,
+  and its access cannot be limited or revoked on its own.
+plain_language: The agent must use its own account, not a staff member's login or a shared password.
+applicability:
+  mode: always
+  rationale: Every agent acts on some system, and every action needs an identity that can be traced and revoked.
+evidence_types:
+  - static
+  - configuration
+  - runtime
+  - external-attestation
+detectors:
+  - AGC-004.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    Code or configuration shows a workload identity or a service account that
+    is specific to the agent, and no shared or personal credential is found.
+  tested: >-
+    A test shows that the agent authenticates with its own identity in each
+    environment and that a personal or shared credential is rejected.
+  operational: >-
+    Records from the identity provider or the runtime show that the deployed
+    agent uses its dedicated identity.
+  max_static_maturity: 2
+remediation:
+  - Create a service account or workload identity that only this agent uses.
+  - Remove any personal, shared, or administrator credentials from the agent's code and configuration.
+  - Use a separate identity for each environment, such as development and production.
+  - Supply identity-provider records as evidence of the identity in use.
+severity: high
+default_weight: 5
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI03
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: A dedicated identity for each agent limits the damage when an identity or its privileges are abused.
+limitations:
+  - A static scan can spot signs of shared credentials. It cannot see which identity the deployed agent actually uses.
+  - Identity that is assigned by the hosting platform is often not visible in the repository.
+examples:
+  positive: Deployment configuration that binds the agent to its own workload identity, with a different identity for each environment.
+  negative: Agent code that signs in with a named employee's username and a hardcoded password.

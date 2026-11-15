@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentgov.invalid/schema/profile.schema.json",
+  "title": "AgentGov Auditor risk profile",
+  "description": "A versioned risk profile or organization baseline: which controls are mandatory and how mature they must be.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "version", "description", "mandatory_controls", "min_maturity"],
+  "properties": {
+    "name": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,62}$" },
+    "version": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+){0,2}$" },
+    "description": { "type": "string", "minLength": 10 },
+    "mandatory_controls": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^AGC-0(0[1-9]|1[0-9]|2[0-4])$" }
+    },
+    "min_maturity": { "type": "integer", "minimum": 0, "maximum": 4 },
+    "require_signed_evidence": { "type": "boolean" },
+    "review_workflow": { "type": "boolean" },
+    "control_min_maturity": {
+      "description": "Per-control override of min_maturity for mandatory controls. It may be lower or higher than min_maturity.",
+      "type": "object",
+      "propertyNames": { "pattern": "^AGC-0(0[1-9]|1[0-9]|2[0-4])$" },
+      "additionalProperties": { "type": "integer", "minimum": 0, "maximum": 4 }
+    },
+    "weights": {
+      "type": "object",
+      "propertyNames": { "pattern": "^AGC-0(0[1-9]|1[0-9]|2[0-4])$" },
+      "additionalProperties": { "type": "integer", "minimum": 1, "maximum": 100 }
+    }
+  }
+}

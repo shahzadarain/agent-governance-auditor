@@ -1,0 +1,25 @@
+# Project default profile. Edit a copy to fit your organization.
+name: high-risk
+version: "1.0"
+description: >-
+  Project default for an agent that moves money, holds privileged access,
+  affects safety, or handles confidential data. Mandatory controls must be
+  proven by tests, and test or runtime evidence must carry a verified
+  signature. This is a project default, not an external standard. A high
+  score never waives a mandatory control.
+mandatory_controls:
+  - AGC-001
+  - AGC-004
+  - AGC-005
+  - AGC-007
+  - AGC-008
+  - AGC-009
+  - AGC-010
+  - AGC-012
+  - AGC-017
+  - AGC-020
+  - AGC-022
+  - AGC-023
+min_maturity: 3
+require_signed_evidence: true
+review_workflow: false

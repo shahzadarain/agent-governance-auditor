@@ -1,0 +1,53 @@
+id: AGC-018
+title: Reversible Action Design
+domain: "E: Containment and Recovery"
+intent: >-
+  Actions that change state must be designed so a mistake can be undone or
+  contained. That means safe retries, clear transaction boundaries, and a
+  way to roll back or compensate. Where an action cannot be reversed, the
+  design must say so and require approval and an explicit risk decision.
+plain_language: When the agent changes something, there must be a way to undo it, or a clear approval for anything that cannot be undone.
+applicability:
+  mode: capability
+  capabilities_any:
+    - mutating-actions
+    - sensitive-actions
+  rationale: The control applies to an agent with tools that write state or take sensitive actions.
+evidence_types:
+  - static
+  - test
+  - runtime
+  - manual-review
+detectors:
+  - AGC-018.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    Code shows idempotency keys, transactions, or compensation steps on
+    mutating tools, or a documented reason why an action is irreversible.
+  tested: >-
+    Synthetic tests show that a repeated request does not apply twice and
+    that the compensation step restores the earlier state.
+  operational: >-
+    Records show a recovery procedure that operators have used or exercised
+    in the deployed environment.
+  max_static_maturity: 2
+remediation:
+  - Add an idempotency key to every mutating tool so a retry does not apply the change twice.
+  - Wrap related changes in a transaction, or write a compensation step that reverses them.
+  - List the actions that cannot be reversed, and require human approval for each.
+  - Write the recovery procedure for operators and test it with synthetic data.
+severity: medium
+default_weight: 2
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI08
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Actions that can be rolled back or compensated limit how far the effects of one faulty action spread.
+limitations:
+  - A static scan recognizes common code patterns only. It can miss rollback logic in other services.
+  - Some actions, such as sending a message, cannot be reversed. The scan cannot judge whether the stated reason is sound.
+examples:
+  positive: A passing test that submits the same transfer twice with one idempotency key and sees one transfer.
+  negative: A tool that updates account balances with no transaction, no idempotency key, and no way to reverse the change.

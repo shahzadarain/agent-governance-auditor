@@ -1,0 +1,55 @@
+id: AGC-016
+title: Authenticated Inter-Agent Messages
+domain: "D: Trust Boundaries"
+intent: >-
+  When agents send requests to each other, the receiver must know who is
+  asking and what that sender is allowed to ask for. Messages must be
+  protected against forgery, alteration, and replay, and the sender must
+  confirm the identity of the receiver. Plain message passing without
+  independent authentication does not meet this control.
+plain_language: When agents talk to each other, each one must prove who it is, and messages must be protected from forgery.
+applicability:
+  mode: capability
+  capabilities_any:
+    - multi-agent
+  rationale: The control applies to an agent that sends messages or hands work to other agents.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-016.*
+dynamic_tests:
+  - Inter-agent authentication failure.
+verification_rules:
+  implementation: >-
+    Code or configuration shows that messages between agents carry an
+    authenticated identity and that the receiver checks it and its scope.
+  tested: >-
+    Tests with synthetic identities show that unauthenticated, forged,
+    altered, and replayed messages are rejected, for this exact version.
+  operational: >-
+    Runtime records show authenticated agent-to-agent calls and at least one
+    rejected message in the deployed environment.
+  max_static_maturity: 2
+remediation:
+  - Give each agent its own identity and authenticate every message between agents.
+  - Check on receipt that the sender is allowed to make the request.
+  - Protect messages against alteration and replay, for example with signatures and single-use identifiers.
+  - Verify the identity of the receiving agent before sending sensitive content.
+  - Add tests with forged and replayed messages.
+severity: medium
+default_weight: 3
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI07
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Authenticated, integrity-protected messages address insecure communication between agents.
+limitations:
+  - Frameworks that pass messages inside one process give the scan little to inspect. Such cases are reported as unknown.
+  - A static scan cannot confirm that keys are managed safely or that replay protection works.
+examples:
+  positive: A passing test in which a message with a forged sender identity is rejected by the receiving agent.
+  negative: Agents that accept any message placed on a shared queue and act on it.

@@ -1,0 +1,1046 @@
+{
+  "$defs": {
+    "Agent": {
+      "additionalProperties": false,
+      "description": "One detected or suspected AI agent.",
+      "properties": {
+        "capabilities": {
+          "items": {
+            "enum": [
+              "tools",
+              "sensitive-actions",
+              "mutating-actions",
+              "shell-exec",
+              "code-exec",
+              "filesystem",
+              "network",
+              "browser",
+              "data-access",
+              "memory",
+              "multi-agent",
+              "mcp",
+              "credentials",
+              "container"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "data_access_paths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "detection": {
+          "$ref": "#/$defs/DetectionState"
+        },
+        "entrypoint": {
+          "type": "string"
+        },
+        "facts": {
+          "items": {
+            "$ref": "#/$defs/Fact"
+          },
+          "type": "array"
+        },
+        "framework": {
+          "type": "string"
+        },
+        "framework_version": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "inferred_risk_tier": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "mcp_connections": {
+          "items": {
+            "$ref": "#/$defs/MCPConnection"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "permissions_declared": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "risk_tier": {
+          "type": "string"
+        },
+        "root": {
+          "type": "string"
+        },
+        "tools": {
+          "items": {
+            "$ref": "#/$defs/Tool"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "root",
+        "detection",
+        "confidence",
+        "framework",
+        "framework_version",
+        "language",
+        "entrypoint",
+        "owner",
+        "risk_tier",
+        "inferred_risk_tier",
+        "tools",
+        "permissions_declared",
+        "data_access_paths",
+        "mcp_connections",
+        "capabilities",
+        "facts"
+      ],
+      "type": "object"
+    },
+    "AgentAssessment": {
+      "additionalProperties": false,
+      "description": "The complete assessment of one agent.",
+      "properties": {
+        "agent_id": {
+          "type": "string"
+        },
+        "controls": {
+          "items": {
+            "$ref": "#/$defs/ControlResult"
+          },
+          "type": "array"
+        },
+        "decision": {
+          "$ref": "#/$defs/Decision"
+        },
+        "score": {
+          "$ref": "#/$defs/Score"
+        }
+      },
+      "required": [
+        "agent_id",
+        "score",
+        "decision",
+        "controls"
+      ],
+      "type": "object"
+    },
+    "Confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "type": "string"
+    },
+    "ControlResult": {
+      "additionalProperties": false,
+      "description": "The assessment of one control for one agent.",
+      "properties": {
+        "agent_id": {
+          "type": "string"
+        },
+        "applicability_basis": {
+          "enum": [
+            "always",
+            "detected",
+            "declared",
+            "inferred",
+            "approved"
+          ],
+          "type": "string"
+        },
+        "applicability_reason": {
+          "type": "string"
+        },
+        "applicable": {
+          "type": "boolean"
+        },
+        "control_id": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "finding_refs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "mandatory": {
+          "type": "boolean"
+        },
+        "maturity": {
+          "maximum": 4,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "max_static_maturity": {
+          "maximum": 4,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "min_maturity": {
+          "maximum": 4,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "next_action": {
+          "type": "string"
+        },
+        "plain_language": {
+          "type": "string"
+        },
+        "remediation": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "status_reason": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "weight": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "control_id",
+        "agent_id",
+        "title",
+        "domain",
+        "plain_language",
+        "status",
+        "status_reason",
+        "maturity",
+        "max_static_maturity",
+        "applicable",
+        "applicability_basis",
+        "applicability_reason",
+        "mandatory",
+        "min_maturity",
+        "weight",
+        "severity",
+        "evidence_refs",
+        "finding_refs",
+        "next_action",
+        "remediation",
+        "limitations"
+      ],
+      "type": "object"
+    },
+    "Decision": {
+      "additionalProperties": false,
+      "description": "The definitive policy decision.",
+      "properties": {
+        "outcome": {
+          "$ref": "#/$defs/Outcome"
+        },
+        "reasons": {
+          "items": {
+            "$ref": "#/$defs/Reason"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "outcome",
+        "reasons"
+      ],
+      "type": "object"
+    },
+    "DetectionState": {
+      "enum": [
+        "detected",
+        "suspected",
+        "not-detected"
+      ],
+      "type": "string"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "One typed evidence item for one control.",
+      "properties": {
+        "agent_id": {
+          "type": "string"
+        },
+        "artifact_digest": {
+          "type": "string"
+        },
+        "collector": {
+          "type": "string"
+        },
+        "commit_sha": {
+          "type": "string"
+        },
+        "control_id": {
+          "type": "string"
+        },
+        "evidence_id": {
+          "type": "string"
+        },
+        "identity_context": {
+          "type": "string"
+        },
+        "integrity": {
+          "$ref": "#/$defs/Integrity"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "location": {
+          "$ref": "#/$defs/Location"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "policy_version": {
+          "type": "string"
+        },
+        "result": {
+          "$ref": "#/$defs/Result"
+        },
+        "scanner_version": {
+          "type": "string"
+        },
+        "signal": {
+          "$ref": "#/$defs/Signal"
+        },
+        "source_location": {
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/SourceType"
+        },
+        "strength": {
+          "$ref": "#/$defs/Strength"
+        },
+        "subject": {
+          "$ref": "#/$defs/Subject"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "validity": {
+          "$ref": "#/$defs/Validity"
+        },
+        "validity_reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "control_id",
+        "agent_id",
+        "commit_sha",
+        "policy_version",
+        "scanner_version",
+        "source_type",
+        "source_location",
+        "collector",
+        "observed_at",
+        "valid_until",
+        "integrity",
+        "result",
+        "signal",
+        "strength",
+        "validity",
+        "summary",
+        "limitations"
+      ],
+      "type": "object"
+    },
+    "Fact": {
+      "additionalProperties": false,
+      "description": "One normalized observation made by a discovery adapter.",
+      "properties": {
+        "collector": {
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/Location"
+        },
+        "parser_version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "detail",
+        "location",
+        "confidence",
+        "collector",
+        "parser_version"
+      ],
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "description": "One actionable issue.",
+      "properties": {
+        "agent_id": {
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "control_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "finding_id": {
+          "type": "string"
+        },
+        "fingerprint": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/Location"
+        },
+        "mappings": {
+          "items": {
+            "$ref": "#/$defs/Mapping"
+          },
+          "type": "array"
+        },
+        "remediation": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "reproduction": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "title": {
+          "type": "string"
+        },
+        "why_it_matters": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "fingerprint",
+        "rule_id",
+        "control_id",
+        "agent_id",
+        "severity",
+        "confidence",
+        "title",
+        "description",
+        "why_it_matters",
+        "remediation",
+        "evidence_refs",
+        "mappings"
+      ],
+      "type": "object"
+    },
+    "Integrity": {
+      "enum": [
+        "verified",
+        "unsigned",
+        "invalid",
+        "not-available"
+      ],
+      "type": "string"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "description": "A place in the scanned repository. Paths are repository-relative with forward slashes.",
+      "properties": {
+        "end_line": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "line": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "type": "object"
+    },
+    "MCPConnection": {
+      "additionalProperties": false,
+      "description": "A configured MCP server or client connection.",
+      "properties": {
+        "location": {
+          "$ref": "#/$defs/Location"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pinned": {
+          "type": "boolean"
+        },
+        "target": {
+          "type": "string"
+        },
+        "transport": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "transport",
+        "target",
+        "pinned",
+        "location"
+      ],
+      "type": "object"
+    },
+    "Mapping": {
+      "additionalProperties": false,
+      "description": "A link from a finding to a published external standard. Informative only.",
+      "properties": {
+        "rationale": {
+          "type": "string"
+        },
+        "requirement_id": {
+          "type": "string"
+        },
+        "standard": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "standard",
+        "version",
+        "requirement_id",
+        "url",
+        "rationale"
+      ],
+      "type": "object"
+    },
+    "Outcome": {
+      "enum": [
+        "ALLOW",
+        "BLOCK",
+        "REVIEW_REQUIRED"
+      ],
+      "type": "string"
+    },
+    "Reason": {
+      "additionalProperties": false,
+      "description": "One machine-readable reason behind a decision.",
+      "properties": {
+        "agent_id": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "control_id": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "Result": {
+      "enum": [
+        "pass",
+        "fail",
+        "inconclusive"
+      ],
+      "type": "string"
+    },
+    "ScanMeta": {
+      "additionalProperties": false,
+      "description": "Scan-level metadata.",
+      "properties": {
+        "commit_sha": {
+          "type": "string"
+        },
+        "config_path": {
+          "type": "string"
+        },
+        "finished_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "offline": {
+          "type": "boolean"
+        },
+        "policy_pack": {
+          "type": "string"
+        },
+        "policy_version": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "profile_source": {
+          "type": "string"
+        },
+        "scan_id": {
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "scan_id",
+        "started_at",
+        "finished_at",
+        "target",
+        "commit_sha",
+        "profile",
+        "profile_source",
+        "policy_pack",
+        "policy_version",
+        "config_path",
+        "offline"
+      ],
+      "type": "object"
+    },
+    "ScanResult": {
+      "additionalProperties": false,
+      "description": "The normalized scan output. All report formats render from this one value.",
+      "properties": {
+        "agents": {
+          "items": {
+            "$ref": "#/$defs/Agent"
+          },
+          "type": "array"
+        },
+        "assessments": {
+          "items": {
+            "$ref": "#/$defs/AgentAssessment"
+          },
+          "type": "array"
+        },
+        "decision": {
+          "$ref": "#/$defs/Decision"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "type": "array"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "scan": {
+          "$ref": "#/$defs/ScanMeta"
+        },
+        "schema_version": {
+          "const": "1",
+          "type": "string"
+        },
+        "score": {
+          "$ref": "#/$defs/Score"
+        },
+        "stats": {
+          "$ref": "#/$defs/Stats"
+        },
+        "tool": {
+          "$ref": "#/$defs/ToolInfo"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "tool",
+        "scan",
+        "agents",
+        "assessments",
+        "evidence",
+        "findings",
+        "score",
+        "decision",
+        "stats",
+        "warnings",
+        "limitations"
+      ],
+      "type": "object"
+    },
+    "Score": {
+      "additionalProperties": false,
+      "description": "The illustrative maturity score and its companion measures. It is not a certification or a probability of safety.",
+      "properties": {
+        "applicable_controls": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "controls_with_evidence": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "coverage_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "findings_by_severity": {
+          "additionalProperties": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "label": {
+          "type": "string"
+        },
+        "operational_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "status_counts": {
+          "additionalProperties": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "tested_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "unresolved_mandatory": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "value": {
+          "maximum": 100,
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "label",
+        "applicable_controls",
+        "controls_with_evidence",
+        "coverage_percent",
+        "tested_percent",
+        "operational_percent",
+        "findings_by_severity",
+        "unresolved_mandatory",
+        "status_counts"
+      ],
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "info"
+      ],
+      "type": "string"
+    },
+    "Signal": {
+      "enum": [
+        "present",
+        "absent",
+        "violation",
+        "declared",
+        "error"
+      ],
+      "type": "string"
+    },
+    "SourceType": {
+      "enum": [
+        "static",
+        "configuration",
+        "test",
+        "runtime",
+        "external-attestation",
+        "manual-review"
+      ],
+      "type": "string"
+    },
+    "Stats": {
+      "additionalProperties": false,
+      "description": "The work a scan performed.",
+      "properties": {
+        "bytes_read": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "duration_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "files_scanned": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "files_skipped": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "files_scanned",
+        "files_skipped",
+        "bytes_read",
+        "duration_ms"
+      ],
+      "type": "object"
+    },
+    "Status": {
+      "enum": [
+        "verified-operational",
+        "verified-tested",
+        "verified-implementation",
+        "declared-only",
+        "missing",
+        "failed",
+        "unknown",
+        "not-applicable",
+        "accepted-risk",
+        "error"
+      ],
+      "type": "string"
+    },
+    "Strength": {
+      "enum": [
+        "declared",
+        "implementation",
+        "tested",
+        "operational"
+      ],
+      "type": "string"
+    },
+    "Subject": {
+      "additionalProperties": false,
+      "description": "Binds external evidence to exact file content.",
+      "properties": {
+        "digest": {
+          "type": "string"
+        },
+        "paths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "paths",
+        "digest"
+      ],
+      "type": "object"
+    },
+    "Tool": {
+      "additionalProperties": false,
+      "description": "A tool or action an agent can invoke.",
+      "properties": {
+        "capabilities": {
+          "items": {
+            "enum": [
+              "tools",
+              "sensitive-actions",
+              "mutating-actions",
+              "shell-exec",
+              "code-exec",
+              "filesystem",
+              "network",
+              "browser",
+              "data-access",
+              "memory",
+              "multi-agent",
+              "mcp",
+              "credentials",
+              "container"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "declared": {
+          "type": "boolean"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/Location"
+        },
+        "name": {
+          "type": "string"
+        },
+        "sensitive": {
+          "type": "boolean"
+        },
+        "sensitive_why": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "location",
+        "sensitive",
+        "capabilities",
+        "declared"
+      ],
+      "type": "object"
+    },
+    "ToolInfo": {
+      "additionalProperties": false,
+      "description": "The scanner build.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "type": "object"
+    },
+    "Validity": {
+      "enum": [
+        "valid",
+        "expired",
+        "commit-mismatch",
+        "digest-mismatch",
+        "unbound",
+        "invalid-signature",
+        "malformed"
+      ],
+      "type": "string"
+    }
+  },
+  "$id": "https://github.com/shahzadarain/agent-governance-auditor/policies/schema/scan-result.schema.json",
+  "$ref": "#/$defs/ScanResult",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The JSON document written by `agentgov scan --format json`. Schema version 1. Generated from internal/model; do not edit by hand.",
+  "title": "AgentGov Auditor scan result"
+}

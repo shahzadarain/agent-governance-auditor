@@ -1,0 +1,51 @@
+id: AGC-011
+title: Dual Content Guardrails
+domain: "C: Action Controls"
+intent: >-
+  Content that enters the agent and content that leaves it must both be
+  checked. Text from tools, web pages, and retrieved documents is untrusted
+  and may carry hidden instructions. Outputs must follow restricted formats
+  and must not leak sensitive content. A guardrail reduces risk but does not
+  guarantee protection.
+plain_language: What goes into the agent and what comes out must both be checked, so hidden instructions and sensitive data do not slip through.
+applicability:
+  mode: always
+  rationale: Every agent reads input and produces output, so both directions need checks.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-011.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    Code or configuration shows validation of untrusted input and tool
+    results, and a check or a restricted format on outputs.
+  tested: >-
+    Adversarial test cases, including instructions hidden in retrieved
+    content, pass for this exact version, and the results are recorded.
+  operational: >-
+    Runtime records show that the input and output checks ran on real
+    traffic and blocked or flagged at least one case.
+  max_static_maturity: 2
+remediation:
+  - Treat tool results and retrieved content as untrusted data, and never follow instructions found in them.
+  - Validate inputs and tool results against expected types and formats.
+  - Restrict outputs to a defined structure and check them for sensitive content before they leave.
+  - Add adversarial test cases with instructions hidden in documents and tool results.
+severity: medium
+default_weight: 3
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI01
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Checks on untrusted input and on output make it harder for injected content to redirect the agent's goal.
+limitations:
+  - The presence of a guardrail library does not show that it is effective against a determined attacker.
+  - Test results cover only the cases in the test set. New injection techniques may pass.
+examples:
+  positive: A recorded adversarial test run in which a document containing hidden instructions does not change the agent's actions.
+  negative: An agent that inserts raw web page text into its prompt and acts on whatever the text says.

@@ -1,0 +1,52 @@
+id: AGC-006
+title: Short-Lived Scoped Tokens
+domain: "B: Identity and Access"
+intent: >-
+  Tokens that an agent holds must expire quickly and must be limited to one
+  purpose, one audience, and the smallest scope that works. A long-lived or
+  broad token gives an attacker lasting access if it leaks. Tokens must be
+  rotated without manual effort.
+plain_language: The agent's access keys must expire quickly and must open only what the agent needs.
+applicability:
+  mode: capability
+  capabilities_any:
+    - credentials
+  rationale: The control applies to an agent that handles API keys, tokens, or passwords.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-006.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    Token configuration sets a short lifetime, an audience, and a narrow
+    scope, and no long-lived static token is found.
+  tested: >-
+    Tests against a mock identity provider show that expired, wrong-audience,
+    and over-scoped tokens are rejected, for this exact version.
+  operational: >-
+    Records from the identity provider show the lifetimes and scopes of the
+    tokens actually issued to the deployed agent.
+  max_static_maturity: 2
+remediation:
+  - Replace long-lived keys with tokens that expire within minutes or hours.
+  - Set an audience and the narrowest scope on every token the agent requests.
+  - Rotate credentials automatically and remove any manual rotation step.
+  - Add tests with a mock identity provider for expired, wrong-audience, and over-scoped tokens.
+severity: medium
+default_weight: 3
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI03
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Short lifetimes and narrow scopes reduce what a stolen or misused agent credential can do.
+limitations:
+  - Static configuration cannot prove how long a real token lives. Only the issuer knows.
+  - The scan never requests or inspects live credentials, so it cannot check the scopes of issued tokens.
+examples:
+  positive: A passing test in which a mock identity provider issues an expired token and the agent's call is refused.
+  negative: An API key with no expiry and full account scope, read from a configuration file.

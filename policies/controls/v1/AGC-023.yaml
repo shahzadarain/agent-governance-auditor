@@ -1,0 +1,48 @@
+id: AGC-023
+title: Tamper-Evident Audit Trail
+domain: "F: Assurance and Visibility"
+intent: >-
+  Records of what an agent did must be protected so that any later change
+  or deletion can be detected. That requires protected storage, or signed or
+  hash-chained records, with a time, a source, and a retention period.
+  Plain application logs can be edited without a trace and do not meet this
+  control.
+plain_language: The record of what the agent did must be protected so that nobody can secretly change or delete it.
+applicability:
+  mode: always
+  rationale: Every agent needs a record that can be trusted after an incident or a dispute.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-023.*
+dynamic_tests:
+  - Tamper-evident log alteration detection.
+verification_rules:
+  implementation: >-
+    Code or configuration shows signed or hash-chained audit records, or
+    write-once storage, with a retention setting.
+  tested: >-
+    A test alters a sample audit record and confirms that verification
+    detects the change, for this exact version.
+  operational: >-
+    Records from the deployed environment show that integrity verification
+    runs on the audit trail and that retention is enforced.
+  max_static_maturity: 2
+remediation:
+  - Write audit records to append-only or write-once storage, or sign or hash-chain each record.
+  - Include the time, the source, the actor, and the action in every record.
+  - Set a retention period and restrict who can delete records.
+  - Add a test that alters a record and confirms the change is detected.
+  - Verify the integrity of the audit trail on a schedule.
+severity: high
+default_weight: 3
+standards_mappings: []
+limitations:
+  - A static scan can find signing or hash-chain code. It cannot confirm how the storage is protected in production.
+  - Access rights on the log store are set outside the repository and are not visible to the scan.
+examples:
+  positive: A passing test that changes one entry in a hash-chained log and sees verification fail at that entry.
+  negative: Audit events written to an ordinary log file that any service account can rewrite.

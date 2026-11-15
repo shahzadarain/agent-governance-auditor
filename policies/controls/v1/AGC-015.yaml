@@ -1,0 +1,55 @@
+id: AGC-015
+title: Context Memory Integrity
+domain: "D: Trust Boundaries"
+intent: >-
+  What an agent stores in long-term memory shapes its later behavior.
+  Memory must be separated by user or tenant, checked before it is saved,
+  labeled with where it came from, and removed when it is no longer needed.
+  Otherwise false or hostile content can be planted once and trusted
+  forever.
+plain_language: What the agent remembers must be checked before it is saved, kept separate for each user, and protected from tampering.
+applicability:
+  mode: capability
+  capabilities_any:
+    - memory
+  rationale: The control applies to an agent with persistent memory or vector store writes.
+evidence_types:
+  - static
+  - test
+  - runtime
+  - manual-review
+detectors:
+  - AGC-015.*
+dynamic_tests:
+  - Memory poisoning and cross-user memory isolation.
+verification_rules:
+  implementation: >-
+    Code shows that memory writes are validated, that reads and writes are
+    scoped to a user or tenant, and that entries record their source.
+  tested: >-
+    A deterministic test shows that poisoned content is not persisted or not
+    trusted, and that one user cannot read another user's memory.
+  operational: >-
+    Runtime records show memory isolation and retention rules in force in
+    the deployed environment.
+  max_static_maturity: 2
+remediation:
+  - Scope every memory read and write to the current user or tenant.
+  - Validate content before it is saved, and do not store raw untrusted text as trusted memory.
+  - Record the source and the time of every memory entry.
+  - Set a retention period and remove entries when it ends.
+  - Add a test that plants hostile content and confirms it does not change later behavior.
+severity: medium
+default_weight: 3
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI06
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Validation, isolation, and provenance for stored memory address the poisoning of an agent's memory and context.
+limitations:
+  - A static scan can see memory read and write paths. It cannot observe what is actually stored.
+  - Memory stores without a supported adapter are reported as unknown, not as passing.
+examples:
+  positive: A passing test in which content planted by one test user never appears in another test user's session.
+  negative: An agent that writes every retrieved web page into a shared vector store with no user scope and no validation.

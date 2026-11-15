@@ -1,0 +1,51 @@
+id: AGC-019
+title: Dedicated Incident Runbook
+domain: "E: Containment and Recovery"
+intent: >-
+  A team needs a current, agent-specific procedure for when the agent
+  misbehaves. The procedure must name an owner and cover escalation,
+  containment, preserving evidence, revoking tokens, and recovery. It must
+  be practiced. A file in the repository is weak evidence that any of this
+  works.
+plain_language: There must be a written and practiced plan for what to do when the agent goes wrong.
+applicability:
+  mode: always
+  rationale: Any agent can fail or be misused, so every agent needs a response plan.
+evidence_types:
+  - static
+  - manual-review
+  - external-attestation
+detectors:
+  - AGC-019.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    A static scan cannot reach this level. A reviewer must approve the
+    runbook as current and specific to this agent, with a name and a date.
+  tested: >-
+    A recorded exercise shows that the team followed the runbook for a
+    simulated agent incident, with the date and the findings.
+  operational: >-
+    Independently verified exercise or incident records show that the
+    runbook was used and updated within the review period.
+  max_static_maturity: 1
+remediation:
+  - Write an incident runbook for this agent that names an owner and an escalation path.
+  - Cover containment, evidence preservation, token revocation, and recovery in the runbook.
+  - Run an exercise with a simulated incident and record the date and the findings.
+  - Have a reviewer approve the runbook, and record the approval as evidence.
+  - Review the runbook after every incident and at least once a year.
+severity: medium
+default_weight: 2
+standards_mappings:
+  - standard: NIST AI Risk Management Framework
+    version: "1.0"
+    requirement_id: MANAGE
+    url: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/
+    rationale: A practiced incident procedure is a planned response to risks that have been identified for the system.
+limitations:
+  - The scan can find a runbook file and check for expected sections. It cannot judge the quality of the plan or whether the team can follow it.
+  - A static scan cannot verify exercise history. That needs reviewed or attested evidence.
+examples:
+  positive: A reviewed exercise record, bound to the current commit, that shows the team stopped a simulated runaway agent by following the runbook.
+  negative: A repository with no incident procedure, or a generic template that never mentions the agent.

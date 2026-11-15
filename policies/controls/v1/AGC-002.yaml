@@ -1,0 +1,50 @@
+id: AGC-002
+title: Dynamic Risk Tiering
+domain: "A: Accountability"
+intent: >-
+  An agent's risk tier must reflect what the agent can actually do, how
+  sensitive its data is, how exposed it is, and how much harm a mistake could
+  cause. The tier must change when the capabilities change. Only an
+  authorized reviewer may approve a lower tier.
+plain_language: The agent must have a risk level that matches what it can really do, and someone must explain and approve that level.
+applicability:
+  mode: always
+  rationale: Every agent needs a risk tier, because the tier decides which controls are mandatory.
+evidence_types:
+  - configuration
+  - static
+  - manual-review
+  - external-attestation
+detectors:
+  - AGC-002.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    A static scan cannot reach this level. A reviewer must approve the tier
+    and the written rationale, with a name and a date.
+  tested: >-
+    A recorded review confirms that the declared tier is at least as high as
+    the tier the detected capabilities suggest, for this exact version.
+  operational: >-
+    A change history shows that the tier was reassessed after capability
+    changes, and every downgrade has an authorized approval.
+  max_static_maturity: 1
+remediation:
+  - Declare risk_tier and risk_rationale for the agent in .agentgov.yaml.
+  - Compare the declared tier with the tier the scan inferred from detected capabilities, and resolve any mismatch.
+  - Have an authorized reviewer approve the tier and record the reviewer and date.
+  - Reassess the tier whenever tools, data access, or exposure change.
+severity: medium
+default_weight: 2
+standards_mappings:
+  - standard: NIST AI Risk Management Framework
+    version: "1.0"
+    requirement_id: MAP
+    url: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/
+    rationale: Assigning a risk tier from capabilities and impact is a way to establish context and identify risks for the system.
+limitations:
+  - The inferred tier comes from capabilities visible in source code. It can miss exposure and business impact.
+  - A static scan cannot confirm who approved a tier or whether that person had the authority.
+examples:
+  positive: A reviewed risk decision that names the tier, the rationale, the reviewer, and the date, bound to the current commit.
+  negative: An agent declared as low risk while the scan detects tools that move money or delete records.

@@ -1,0 +1,57 @@
+id: AGC-009
+title: External Policy Engine
+domain: "C: Action Controls"
+intent: >-
+  Sensitive actions must pass through a trusted checkpoint that asks a
+  deterministic policy, held outside the model, whether the action is
+  allowed. An instruction in a system prompt is not a policy. When the
+  policy service fails or times out, high-impact actions must be denied.
+plain_language: Fixed rules outside the AI model must decide whether a risky action is allowed, and the answer must be no when the rules cannot be checked.
+applicability:
+  mode: capability
+  capabilities_any:
+    - sensitive-actions
+    - mutating-actions
+    - shell-exec
+    - code-exec
+  rationale: The control applies to an agent that can change state, run commands, or take sensitive actions.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-009.*
+dynamic_tests:
+  - Policy engine unavailable and default-deny behavior.
+verification_rules:
+  implementation: >-
+    Code shows that sensitive tool calls pass through an enforcement point
+    that evaluates a policy defined outside the prompt.
+  tested: >-
+    Tests cover allow, deny, error, timeout, and unavailable-service cases and
+    confirm default deny for high-impact actions, for this exact version.
+  operational: >-
+    Runtime records show policy decisions for real tool calls, including at
+    least one denial, in the deployed environment.
+  max_static_maturity: 2
+remediation:
+  - Route every sensitive tool call through one enforcement point in code.
+  - Write the rules as a deterministic policy outside the prompt, for example in a policy engine or a structured rule file.
+  - Deny the action when the policy service returns an error, times out, or cannot be reached.
+  - Add tests for allow, deny, error, timeout, and unavailable-service behavior.
+  - Record every policy decision with the action and the reason.
+severity: high
+default_weight: 5
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI02
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: A deterministic policy check in front of sensitive tools limits how far a misled agent can misuse them.
+limitations:
+  - A static scan can find a call to a policy check. It cannot prove that every sensitive action passes through it.
+  - This scanner audits. It does not enforce policy at run time unless a separate enforcement point is installed.
+examples:
+  positive: A passing test that stops the policy service and confirms the agent refuses a high-impact action.
+  negative: A system prompt that tells the model not to issue refunds above a limit, with no check in code.

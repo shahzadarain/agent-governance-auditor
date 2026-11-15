@@ -1,0 +1,51 @@
+id: AGC-020
+title: Mandatory Regression Evals
+domain: "F: Assurance and Visibility"
+intent: >-
+  An agent needs versioned tests that cover both what it should do and what
+  it must refuse. The tests must cover tool use, authorization, data
+  separation, and failure modes, and they must run on every material change.
+  A directory named tests is not evidence. Only executed results count.
+plain_language: The agent must pass a fixed set of tests, covering what it should and should not do, before every release.
+applicability:
+  mode: always
+  rationale: Every agent changes, and every change can break a behavior that used to be safe.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - external-attestation
+detectors:
+  - AGC-020.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    The repository holds governance test definitions that cover permitted
+    and forbidden behavior, and a CI workflow is set to run them.
+  tested: >-
+    A recorded CI result for this exact commit shows that the governance
+    tests executed and passed.
+  operational: >-
+    Records show that the tests gate every release, and that a failing run
+    blocked a release or was resolved before deployment.
+  max_static_maturity: 2
+remediation:
+  - Write tests for behavior the agent must refuse, not only for behavior it should perform.
+  - Cover tool use, authorization, data separation, and failure modes.
+  - Run the tests in CI on every change to code, prompts, tools, or models.
+  - Record the test results for each commit as evidence.
+  - Block the release when a governance test fails.
+severity: high
+default_weight: 4
+standards_mappings:
+  - standard: NIST AI Risk Management Framework
+    version: "1.0"
+    requirement_id: MEASURE
+    url: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/
+    rationale: Repeatable tests that run on each change are a method to analyze and track the system's risks over time.
+limitations:
+  - The scan can confirm that test files and a CI workflow exist. It does not run the tests during a static scan.
+  - Passing tests show only what the tests cover. The scan cannot measure how complete the test set is.
+examples:
+  positive: A CI test report for the current commit in which the governance tests ran and passed.
+  negative: A tests directory that contains only an empty placeholder file.

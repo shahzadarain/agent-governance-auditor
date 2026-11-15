@@ -1,0 +1,51 @@
+id: AGC-008
+title: Vault-Injected Secrets
+domain: "B: Identity and Access"
+intent: >-
+  Secrets such as API keys and passwords must never be written in source
+  code, prompts, or plain configuration files. A secret manager must supply
+  them at run time to the agent's own identity. The presence of a vault
+  library alone does not show that secrets are protected.
+plain_language: Passwords and keys must never be written in the code, and a secure store must supply them when the agent runs.
+applicability:
+  mode: always
+  rationale: Any repository can contain a hardcoded secret, so the check always runs.
+evidence_types:
+  - static
+  - configuration
+  - test
+  - runtime
+detectors:
+  - AGC-008.*
+dynamic_tests: []
+verification_rules:
+  implementation: >-
+    The scan finds no hardcoded secret, and code or configuration references
+    secrets through a secret manager or workload-based injection.
+  tested: >-
+    A secret-scanning check passes in CI for this exact commit, and a test
+    shows the agent fails safely when the secret manager refuses access.
+  operational: >-
+    Records from the secret manager show that the agent's own identity
+    retrieved the secrets under a retrieval policy.
+  max_static_maturity: 2
+remediation:
+  - Remove every hardcoded secret from code, prompts, and configuration, and rotate each one that was exposed.
+  - Store secrets in a secret manager and inject them at run time.
+  - Grant the agent's own identity access to only the secrets it needs.
+  - Add a secret-scanning check to CI so new secrets are caught before merge.
+severity: critical
+default_weight: 4
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI03
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Keeping credentials out of source code removes an easy route to taking over the agent's identity and privileges.
+limitations:
+  - Pattern-based secret detection can miss secrets in unusual formats and can flag harmless test values.
+  - The scan reports where a suspected secret is. It never prints the value, and it cannot tell whether the secret is still live.
+  - Importing a vault library does not prove that every secret comes from the vault.
+examples:
+  positive: Deployment configuration that references secrets by name from a secret manager, with a clean secret scan for the current commit.
+  negative: An API key written as a string literal in the agent's source file.

@@ -1,0 +1,53 @@
+id: AGC-007
+title: User-Enforced Data Layer
+domain: "B: Identity and Access"
+intent: >-
+  When an agent fetches data for a user, the data source must apply that
+  user's permissions. The check must happen in a trusted backend service,
+  not in prompt text that the model may ignore. Otherwise one user can ask
+  the agent for another user's records.
+plain_language: The agent must only fetch data that the person it is working for is allowed to see.
+applicability:
+  mode: capability
+  capabilities_any:
+    - data-access
+  rationale: The control applies to an agent that retrieves documents or queries a database.
+evidence_types:
+  - static
+  - test
+  - runtime
+  - manual-review
+detectors:
+  - AGC-007.*
+dynamic_tests:
+  - User A trying to read User B's test record.
+verification_rules:
+  implementation: >-
+    Code shows that the user's identity or authorization context is passed to
+    retrieval and data tools, and that a backend filter applies it.
+  tested: >-
+    A test with two synthetic identities shows that one user cannot read the
+    other user's records through the agent, for this exact version.
+  operational: >-
+    Runtime records show that data requests carry the end user's identity and
+    that the backend denied a cross-user request.
+  max_static_maturity: 2
+remediation:
+  - Pass the end user's identity to every retrieval and data-access tool.
+  - Apply the permission filter in the backend service or the database, not in the prompt.
+  - Remove any data path where the agent queries with its own broad access on behalf of a user.
+  - Add a test with two test users that confirms one cannot read the other's records.
+severity: high
+default_weight: 5
+standards_mappings:
+  - standard: OWASP Top 10 for Agentic Applications
+    version: "2026"
+    requirement_id: ASI03
+    url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+    rationale: Applying the end user's permissions at the data layer stops an agent's broad access from being used to reach another user's data.
+limitations:
+  - A static scan can see whether user context is passed along. It cannot prove that the backend applies it correctly.
+  - Data stores and frameworks without a supported adapter are reported as unknown, not as passing.
+examples:
+  positive: A passing test in which user A asks the agent for user B's record and the data layer returns nothing.
+  negative: A retrieval tool that searches a shared index with the agent's own credentials and no user filter.

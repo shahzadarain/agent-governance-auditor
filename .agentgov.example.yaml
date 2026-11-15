@@ -1,0 +1,115 @@
+# Example configuration for AgentGov Auditor.
+#
+# Copy this file to .agentgov.yaml at the root of your repository and edit it.
+# The file is optional. A scan works with no configuration at all.
+#
+# What this file is:
+#   - A declaration by the repository author about the agent.
+#   - A way to ADD mandatory controls and RAISE the minimum maturity.
+#
+# What this file is not:
+#   - It is not evidence. Declaring a control here never makes it pass.
+#   - It cannot remove a mandatory control, lower the minimum maturity, or
+#     weaken an organization baseline supplied outside the repository.
+#
+# Validation is strict. An unknown or misspelled key is reported as a problem.
+# Check the file with: agentgov policy validate
+
+# Required. Always the string "1" for this release.
+schema_version: "1"
+
+# Who answers for the agent, and what it is for (controls AGC-001, AGC-002).
+agent:
+  id: finance-processing-agent
+  owner: finance-technology
+  description: "Processes controlled financial adjustments"
+  purpose: "Applies approved adjustments to customer accounts"
+  # low | medium | high. A declared tier lower than the tier the scan infers
+  # from detected capabilities does not lower the profile.
+  risk_tier: high
+  risk_rationale: "Moves money and reads confidential customer records"
+  # public | internal | confidential | restricted
+  data_classification: confidential
+  registry_ref: "agent-registry/finance-processing-agent"
+  last_reviewed: "2026-10-01"
+  reviewer: governance-review-board
+
+# For a monorepo, list several agents instead, each with its own root:
+# agents:
+#   - id: support-agent
+#     root: services/support
+#     owner: customer-support
+#     risk_tier: medium
+#   - id: billing-agent
+#     root: services/billing
+#     owner: finance-technology
+#     risk_tier: high
+
+# What the agent is allowed to do. The scan compares this with what it finds.
+capabilities:
+  declared_tools:
+    - finance.read
+    - finance.adjust
+  # Actions that move money, delete, send, or change records.
+  sensitive_actions:
+    - finance.adjust
+  external_connectivity: false
+
+verification:
+  # baseline | standard | high-risk. Project defaults, described in
+  # docs/policy-reference.md.
+  profile: high-risk
+  # Repository-relative paths only. No leading "/", no "..".
+  tests_path: tests/governance
+  # Directories of evidence JSON files (test results, attestations).
+  evidence_paths: [".agentgov/evidence"]
+  offline: true
+
+policy:
+  pack: builtin/v1
+  # Added to the mandatory controls of the profile. This list cannot remove
+  # a control that the profile or the organization baseline requires.
+  mandatory_controls:
+    - AGC-004
+    - AGC-005
+    - AGC-007
+    - AGC-009
+    - AGC-010
+    - AGC-017
+    - AGC-022
+  # 0 to 4. A value below the profile minimum has no effect.
+  min_maturity: 3
+
+  # An approved decision that a control does not apply. It needs a reason and
+  # an approver. The control leaves the score denominator. A recorded
+  # violation or collector error on the control still shows and still counts.
+  not_applicable:
+    - control: AGC-016
+      reason: "Single agent. It does not exchange messages with other agents."
+      approved_by: governance-review-board
+      expires: "2027-06-30"
+
+  # A risk the organization accepts for now. The control stays visible at
+  # maturity 0 and stays in the score denominator. On a mandatory control an
+  # accepted risk leads to REVIEW_REQUIRED, never to ALLOW.
+  accepted_risks:
+    - control: AGC-021
+      reason: "Red-team exercise is scheduled for the next quarter."
+      approved_by: chief-information-security-officer
+      expires: "2027-03-31"
+
+report:
+  redact_sensitive_data: true
+  # terminal | json | markdown | html | sarif
+  formats: [terminal, json]
+
+# File discovery. Patterns are repository-relative globs.
+scan:
+  include:
+    - "src/**"
+    - "agents/**"
+  exclude:
+    - "**/node_modules/**"
+    - "**/.venv/**"
+  # Largest file the scanner reads, in bytes.
+  max_file_size: 1048576
