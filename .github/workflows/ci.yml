@@ -45,7 +45,7 @@ jobs:
       - name: Governance tests of the safe example (Python, standard library only)
         shell: bash
         working-directory: examples/safe-agent
-        run: python -m unittest discover -s tests/governance -v
+        run: python -m unittest discover -s tests/governance -t .
       - name: Smoke test, vulnerable example must be blocked (exit code 1)
         shell: bash
         run: |
